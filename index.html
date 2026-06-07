@@ -562,6 +562,8 @@
 
 <script src="./src/js/storage.js"></script>
 <script src="./src/js/navigation.js"></script>
+<script src="./src/js/favorites.js"></script>
+<script src="./src/js/noun.js"></script>
 <script src="./src/js/app.js"></script>
 <script>
 // ===== 页面切换 =====
@@ -639,46 +641,7 @@ function filterHot(dyn,btn){
 
 // ===== 登录 / Toast 已迁移到 src/js/navigation.js，并通过 app.js 暴露为兼容全局函数 =====
 
-// ===== 名词解释 =====
-var nounData={
-  '商鞅变法':{text:'商鞅变法是中国战国时期秦国的一次重要改革，由商鞅（公孙鞅）在秦孝公支持下推行。主要内容包括：废井田、开阡陌；奖励军功，实行二十等爵制；推行县制，加强中央集权；统一度量衡；焚诗书、明法令。变法使秦国迅速富强，为后来秦始皇统一六国奠定了坚实的经济和军事基础。',related:['秦始皇','郡县制','井田制']},
-  '军机处':{text:'军机处是清朝雍正皇帝于1729年设立的中央决策机构。最初为处理西北军务而设，后逐渐成为清朝最高决策机构。军机大臣直接听命于皇帝，负责起草诏令、处理奏折、商议军国大政。军机处的设立标志着中国君主集权制度达到顶峰。1906年清政府实行官制改革时废除军机处。',related:['雍正','内阁','军机大臣']},
-  '科举制':{text:'科举制是中国古代通过考试选拔官吏的制度，始于隋炀帝大业元年（605年），终于清光绪三十一年（1905年），绵延1300年。科举制打破了中国古代门阀世族对政治权力的垄断，为社会各阶层提供了向上流动的通道。"朝为田舍郎，暮登天子堂"成为现实。宋代创立的糊名法和誊录制度确保了考试的公平性。',related:['隋炀帝','九品中正制','八股文']},
-  '靖难之役':{text:'靖难之役是明朝开国皇帝朱元璋死后发生的一场大规模内战。朱元璋死后，皇太孙朱允炆继位，是为建文帝。建文帝推行削藩政策，引起诸王不满。燕王朱棣以"清君侧"为名，于1399年（建文元年）在北平起兵。经过四年战争，朱棣于1402年攻入南京，夺取皇位，改元永乐，是为明成祖。建文帝在城破时下落不明，成为历史悬案。',related:['朱元璋','建文帝','永乐大帝']}
-};
-function openNounDet(name) {
-  document.getElementById('nd-title').textContent=name;
-  var d=nounData[name];
-  document.getElementById('nd-text').textContent=(d&&d.text)||'暂无详细解释。';
-  var rel=document.getElementById('nd-related');
-  rel.innerHTML='';
-  if(d&&d.related){d.related.forEach(function(r){rel.innerHTML+='<button class="nrtag" onclick="openNounDet(\''+r+'\')">'+r+'</button>'});}
-  else{rel.innerHTML='<span style="font-size:12px;color:#B5ADA5">暂无相关名词</span>'}
-  document.getElementById('noun-detail').classList.add('act');
-}
-function closeNounDet(){document.getElementById('noun-detail').classList.remove('act');}
-function togNounFav(btn,name){
-  btn.classList.toggle('faved');
-  if(btn.classList.contains('faved')){btn.textContent='★';showToast('已收藏「'+name+'」')}
-  else{btn.textContent='☆';showToast('已取消收藏「'+name+'」')}
-}
-function shareNoun(name){
-  if(navigator.share){navigator.share({title:'学的是史 - '+name,text:'来「学的是史」小程序查看「'+name+'」的详细解释！',url:location.href}).catch(function(){})}
-  else{navigator.clipboard.writeText('来「学的是史」查看「'+name+'」的详细解释！').then(function(){showToast('链接已复制，快去分享给好友吧！')})}
-}
-
-// ===== 名词搜索 =====
-var nounList=['商鞅变法','军机处','科举制','靖难之役'];
-function searchNouns(){
-  var q=document.getElementById('noun-search-input').value.trim().toLowerCase();
-  var grid=document.getElementById('noun-grid');if(!grid)return;
-  var cards=grid.querySelectorAll('.ncard');
-  cards.forEach(function(c){
-    var name=c.querySelector('h4').textContent;
-    var desc=c.querySelector('p').textContent;
-    c.style.display=(!q||name.includes(q)||desc.includes(q)||name.toLowerCase().includes(q)||desc.toLowerCase().includes(q))?'block':'none';
-  });
-}
+// ===== 名词解释 / 名词搜索 已迁移到 src/js/noun.js =====
 
 // ===== 时间轴朝代 =====
 function selDyn(id, btn) {

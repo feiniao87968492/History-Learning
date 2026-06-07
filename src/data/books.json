@@ -1,0 +1,71 @@
+{
+  "books": [
+    {
+      "id": "book-wanli-fifteen-years",
+      "type": "book",
+      "title": "万历十五年",
+      "author": "黄仁宇",
+      "rating": "9.0",
+      "summary": "从万历十五年切入，观察明朝制度运行的问题。",
+      "icon": "📘"
+    },
+    {
+      "id": "book-china-history",
+      "type": "book",
+      "title": "中国大历史",
+      "author": "黄仁宇",
+      "rating": "8.3",
+      "summary": "以宏观视角讲述中国历史的发展脉络。",
+      "icon": "📗"
+    },
+    {
+      "id": "book-ming-dynasty",
+      "type": "book",
+      "title": "明朝那些事儿",
+      "author": "当年明月",
+      "rating": "9.1",
+      "summary": "用生动笔触讲述明朝三百年兴衰。",
+      "icon": "📕"
+    }
+  ],
+  "films": [
+    {
+      "id": "film-last-emperor",
+      "type": "film",
+      "title": "末代皇帝",
+      "author": "贝纳尔多·贝托鲁奇",
+      "rating": "9.3",
+      "summary": "清朝末代皇帝溥仪的一生。",
+      "icon": "🎬"
+    },
+    {
+      "id": "film-daming-1566",
+      "type": "film",
+      "title": "大明王朝1566",
+      "author": "张黎导演",
+      "rating": "9.7",
+      "summary": "以嘉靖年间为背景的历史正剧。",
+      "icon": "📺"
+    }
+  ],
+  "docs": [
+    {
+      "id": "doc-hexi-corridor",
+      "type": "doc",
+      "title": "河西走廊",
+      "author": "央视纪录片",
+      "rating": "9.7",
+      "summary": "河西走廊的历史变迁与文明交汇。",
+      "icon": "🎥"
+    },
+    {
+      "id": "doc-great-powers",
+      "type": "doc",
+      "title": "大国崛起",
+      "author": "央视纪录片",
+      "rating": "9.2",
+      "summary": "世界大国崛起的历史经验。",
+      "icon": "🌍"
+    }
+  ]
+}
