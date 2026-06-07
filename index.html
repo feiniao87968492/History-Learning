@@ -560,18 +560,11 @@
 <!-- ===== Toast ===== -->
 <div class="toast" id="toast"></div>
 
+<script src="./src/js/storage.js"></script>
+<script src="./src/js/navigation.js"></script>
+<script src="./src/js/app.js"></script>
 <script>
-// ===== 全局错误捕获 =====
-window.onerror=function(msg,url,line,col,err){
-  var t=document.getElementById('toast');
-  if(t){t.textContent='JS错误:'+msg.slice(0,40);t.classList.add('sh');setTimeout(function(){t.classList.remove('sh')},4000)}
-  return false;
-};
 // ===== 页面切换 =====
-function resetAIFab(){
-  var fab=document.getElementById('ai-fab');
-  if(fab){fab.style.top='auto';fab.style.left='auto';fab.style.bottom='';fab.style.right='';}
-}
 function swTab(btn, pid) {
   document.querySelectorAll('.sub').forEach(function(p){p.classList.remove('act')});
   document.querySelectorAll('.nd').forEach(function(p){p.classList.remove('act')});
@@ -586,21 +579,6 @@ function swTab(btn, pid) {
   if(pid==='login-page'){af.classList.remove('sh');document.getElementById('bnav').style.display='none'}
   else{af.classList.add('sh');document.getElementById('bnav').style.display='flex'}
   resetAIFab();
-}
-function openSub(id) {
-  document.getElementById(id).classList.add('act');
-}
-function closeSub(id) {
-  document.querySelectorAll('.sub').forEach(function(p){p.classList.remove('act')});
-  if(typeof id==='string'&&id){
-    var t = document.getElementById(id);
-    if(t){
-      if(!t.classList.contains('sub')){
-        document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
-      }
-      t.classList.add(t.classList.contains('sub')?'act':'active');
-    }
-  }
 }
 
 // 子页面Tab切换
@@ -659,24 +637,7 @@ function filterHot(dyn,btn){
   });
 }
 
-// ===== 登录 =====
-function login() {
-  document.getElementById('login-page').classList.remove('active');
-  document.getElementById('home-page').classList.add('active');
-  document.getElementById('ai-fab').classList.add('sh');
-  document.getElementById('bnav').style.display='flex';
-  resetAIFab();
-  showToast('欢迎回来，历史学习者！');
-}
-
-// ===== Toast =====
-var tt=null;
-function showToast(m) {
-  var t=document.getElementById('toast');
-  t.textContent=m;t.classList.add('sh');
-  if(tt)clearTimeout(tt);
-  tt=setTimeout(function(){t.classList.remove('sh')},2000);
-}
+// ===== 登录 / Toast 已迁移到 src/js/navigation.js，并通过 app.js 暴露为兼容全局函数 =====
 
 // ===== 名词解释 =====
 var nounData={
