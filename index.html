@@ -805,52 +805,7 @@ function openFeatDet(title, text) {
 }
 function closeFeatDet(e){if(e.target===document.getElementById('feat-detail-overlay'))document.getElementById('feat-detail-overlay').classList.remove('act')}
 
-// ===== AI助手拖动 =====
-(function(){
-  var fab=document.getElementById('ai-fab');
-  if(!fab)return;
-  var isDragging=false,startX,startY,initRight,initBottom,hasMoved=false;
-  function getRight(){return window.innerWidth-fab.offsetLeft-fab.offsetWidth}
-  fab.addEventListener('touchstart',function(e){
-    if(e.touches.length!==1)return;
-    isDragging=true;hasMoved=false;
-    startX=e.touches[0].clientX;startY=e.touches[0].clientY;
-    initRight=getRight();initBottom=parseInt(getComputedStyle(fab).bottom)||120;
-    fab.style.transition='none';
-  },{passive:false});
-  fab.addEventListener('touchmove',function(e){
-    if(!isDragging)return;
-    var dx=startX-e.touches[0].clientX,dy=startY-e.touches[0].clientY;
-    if(Math.abs(dx)>5||Math.abs(dy)>5)hasMoved=true;
-    fab.style.right=Math.max(8,Math.min(window.innerWidth-60,initRight+dx))+'px';
-    fab.style.bottom=Math.max(80,Math.min(window.innerHeight-140,initBottom+dy))+'px';
-    e.preventDefault();
-  },{passive:false});
-  fab.addEventListener('touchend',function(e){
-    isDragging=false;fab.style.transition='';
-    if(hasMoved){e.stopPropagation();hasMoved=false}
-  });
-  fab.addEventListener('mousedown',function(e){
-    isDragging=true;hasMoved=false;
-    startX=e.clientX;startY=e.clientY;
-    initRight=getRight();initBottom=parseInt(getComputedStyle(fab).bottom)||120;
-    fab.style.transition='none';e.preventDefault();
-  });
-  document.addEventListener('mousemove',function(e){
-    if(!isDragging)return;
-    var dx=startX-e.clientX,dy=startY-e.clientY;
-    if(Math.abs(dx)>5||Math.abs(dy)>5)hasMoved=true;
-    fab.style.right=Math.max(8,Math.min(window.innerWidth-60,initRight+dx))+'px';
-    fab.style.bottom=Math.max(80,Math.min(window.innerHeight-140,initBottom+dy))+'px';
-  });
-  document.addEventListener('mouseup',function(e){
-    if(isDragging&&hasMoved){e.preventDefault();e.stopPropagation()}
-    isDragging=false;fab.style.transition='';
-  });
-  fab.addEventListener('click',function(e){
-    if(hasMoved){e.preventDefault();e.stopPropagation();hasMoved=false}
-  });
-})();
+// ===== AI助手拖动 已迁移到 src/js/ai-assistant.js =====
 
 // ===== 讨论区功能 =====
 function openPost(){document.getElementById('post-overlay').classList.add('act')}
