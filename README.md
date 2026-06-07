@@ -84,3 +84,40 @@ git commit -m "feat: describe your changes"
 ```text
 docs/deployment.md
 ```
+
+## GitHub 仓库
+
+GitHub 地址：
+
+```text
+https://github.com/feiniao87968492/History-Learning
+```
+
+## 发布与同步
+
+项目具有两个独立流程。
+
+只更新服务器网站：
+
+```bash
+./scripts/deploy.sh
+```
+
+只同步 GitHub：
+
+```bash
+./scripts/push-github.sh
+```
+
+同步 GitHub 并更新服务器网站：
+
+```bash
+./scripts/publish-all.sh
+```
+
+完整说明：
+
+```text
+docs/deployment.md
+docs/github-sync.md
+```

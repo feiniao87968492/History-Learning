@@ -22,7 +22,25 @@ id_ed25519_*.pub
 .vscode/
 .idea/
 
+# Additional certificate types
+*.p12
+*.pfx
+
+# Credentials and local secrets
+.credentials
+credentials.json
+secrets.json
+*.secret
+*.secrets
+
+# Coverage output
+coverage/
+
 # Dependencies and builds
 node_modules/
 dist/
 build/
+
+# Temporary files
+*.tmp
+*.swp
