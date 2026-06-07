@@ -1,0 +1,52 @@
+[
+  {
+    "id": "podcast-zhenguan",
+    "title": "贞观之治：盛世背后的智慧",
+    "category": "suitang",
+    "dur": 1680,
+    "icon": "🏛️",
+    "colors": ["#5A3E1B", "#8B6914"],
+    "author": "AI历史助手",
+    "audioUrl": ""
+  },
+  {
+    "id": "podcast-shangyang",
+    "title": "商鞅变法：战国变局的破局者",
+    "category": "qin",
+    "dur": 1320,
+    "icon": "⚔️",
+    "colors": ["#C0392B", "#E74C3C"],
+    "author": "AI历史助手",
+    "audioUrl": ""
+  },
+  {
+    "id": "podcast-zhangqian",
+    "title": "张骞通西域：丝绸之路的诞生",
+    "category": "han",
+    "dur": 1500,
+    "icon": "🐫",
+    "colors": ["#2980B9", "#3498DB"],
+    "author": "AI历史助手",
+    "audioUrl": ""
+  },
+  {
+    "id": "podcast-wanli",
+    "title": "万历十五年：帝国黄昏的序曲",
+    "category": "mingqing",
+    "dur": 1800,
+    "icon": "👑",
+    "colors": ["#2C3E50", "#34495E"],
+    "author": "AI历史助手",
+    "audioUrl": ""
+  },
+  {
+    "id": "podcast-opium",
+    "title": "鸦片战争：天朝上国的幻梦破碎",
+    "category": "modern",
+    "dur": 1560,
+    "icon": "💣",
+    "colors": ["#8E44AD", "#9B59B6"],
+    "author": "AI历史助手",
+    "audioUrl": ""
+  }
+]

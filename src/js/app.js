@@ -37,6 +37,24 @@
       window.renderEventList = window.timelineAPI.renderEventList;
       window.zoomTL = window.timelineAPI.zoomTL;
     }
+
+    if (window.podcastAPI) {
+      window.filterPodcast = window.podcastAPI.filterPodcast;
+      window.openPlayer = window.podcastAPI.openPlayer;
+      window.closePlayer = window.podcastAPI.closePlayer;
+      window.togglePlay = window.podcastAPI.togglePlay;
+      window.seekPodcast = window.podcastAPI.seekPodcast;
+      window.setTimer = window.podcastAPI.setTimer;
+      window.showTimer = window.podcastAPI.showTimer;
+      window.prevPodcast = window.podcastAPI.prevPodcast;
+      window.nextPodcast = window.podcastAPI.nextPodcast;
+    }
+
+    if (window.aiAssistantAPI) {
+      window.togAI = window.aiAssistantAPI.togAI;
+      window.aiAsk = window.aiAssistantAPI.aiAsk;
+      window.aiSend = window.aiAssistantAPI.aiSend;
+    }
   }
 
   async function loadJSON(path, fallback) {
@@ -63,6 +81,9 @@
       try { window.timelineAPI.renderTimeline(); } catch (e) { console.error('renderTimeline err:', e); }
       try { window.timelineAPI.renderEventList(); } catch (e) { console.error('renderEventList err:', e); }
     }
+
+    var podcasts = await loadJSON('./src/data/podcasts.json', []);
+    if (window.podcastAPI) window.podcastAPI.setPodcasts(podcasts);
   }
 
   function registerGlobalErrorToast() {

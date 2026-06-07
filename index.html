@@ -565,6 +565,8 @@
 <script src="./src/js/favorites.js"></script>
 <script src="./src/js/noun.js"></script>
 <script src="./src/js/timeline.js"></script>
+<script src="./src/js/podcast.js"></script>
+<script src="./src/js/ai-assistant.js"></script>
 <script src="./src/js/app.js"></script>
 <script>
 // ===== 页面切换 =====
@@ -690,91 +692,7 @@ function subFB(){
   showToast('反馈已提交，感谢你的建议！');
 }
 
-// ===== AI播客 =====
-var podcastData=[
-  {title:'贞观之治：盛世背后的智慧',cat:'suitang',dur:1680,icon:'🏛️',colors:['#5A3E1B','#8B6914'],author:'AI历史助手'},
-  {title:'商鞅变法：战国变局的破局者',cat:'qin',dur:1320,icon:'⚔️',colors:['#C0392B','#E74C3C'],author:'AI历史助手'},
-  {title:'张骞通西域：丝绸之路的诞生',cat:'han',dur:1500,icon:'🐫',colors:['#2980B9','#3498DB'],author:'AI历史助手'},
-  {title:'万历十五年：帝国黄昏的序曲',cat:'mingqing',dur:1800,icon:'👑',colors:['#2C3E50','#34495E'],author:'AI历史助手'},
-  {title:'鸦片战争：天朝上国的幻梦破碎',cat:'modern',dur:1560,icon:'💣',colors:['#8E44AD','#9B59B6'],author:'AI历史助手'}
-];
-var curPodcast=0,isPlaying=false,plTimer=null,plCur=0,plSpeed=1.0,timerID=null;
-function filterPodcast(cat,btn){
-  document.querySelectorAll('#podcast-tabs .pctab').forEach(function(t){t.classList.remove('act')});
-  if(btn)btn.classList.add('act');
-  document.querySelectorAll('#podcast-list .pccard').forEach(function(c){c.style.display=(cat==='all'||c.dataset.cat===cat)?'flex':'none'});
-}
-function openPlayer(idx){
-  var d=podcastData[idx];if(!d)return;
-  curPodcast=idx;plCur=0;isPlaying=false;
-  document.getElementById('pl-icon').textContent=d.icon;
-  document.getElementById('pl-icon').style.background='linear-gradient('+d.colors[0]+','+d.colors[1]+')';
-  document.getElementById('pl-title').textContent=d.title;
-  document.getElementById('pl-author').textContent=d.author;
-  document.getElementById('pl-dur').textContent=fmtTime(d.dur);
-  document.getElementById('pl-cur').textContent='00:00';
-  document.getElementById('pl-prog').style.width='0%';
-  document.getElementById('pl-playbtn').textContent='▶';
-  document.getElementById('podcast-player').classList.add('act');
-  startPlayProgress();
-}
-function closePlayer(){document.getElementById('podcast-player').classList.remove('act');isPlaying=false;clearInterval(plTimer)}
-function togglePlay(){
-  isPlaying=!isPlaying;
-  document.getElementById('pl-playbtn').textContent=isPlaying?'⏸️':'▶';
-  if(isPlaying)startPlayProgress();else clearInterval(plTimer);
-}
-function startPlayProgress(){
-  clearInterval(plTimer);
-  if(!isPlaying)return;
-  plTimer=setInterval(function(){
-    plCur+=1;var d=podcastData[curPodcast];if(!d)return;
-    var pct=Math.min(100,plCur/d.dur*100);
-    document.getElementById('pl-prog').style.width=pct+'%';
-    document.getElementById('pl-cur').textContent=fmtTime(plCur);
-    if(plCur>=d.dur){isPlaying=false;document.getElementById('pl-playbtn').textContent='▶';clearInterval(plTimer)}
-  },1000/plSpeed);
-}
-function fmtTime(s){var m=Math.floor(s/60),ss=s%60;return(m<10?'0':'')+m+':'+(ss<10?'0':'')+ss}
-function seekPodcast(e){
-  var bar=document.getElementById('pl-bar'),r=bar.getBoundingClientRect();
-  var pct=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));
-  plCur=Math.floor(pct*podcastData[curPodcast].dur);
-  document.getElementById('pl-prog').style.width=(pct*100)+'%';
-  document.getElementById('pl-cur').textContent=fmtTime(plCur);
-}
-function setTimer(n){
-  clearTimeout(timerID);
-  if(n>0){timerID=setTimeout(function(){closePlayer();showToast('定时关闭已触发')},n*60000);showToast('将在'+n+'分钟后关闭播放')}
-  else{showToast('已取消定时关闭')}
-  document.getElementById('pl-timer').style.display='none';
-}
-function showTimer(){document.getElementById('pl-timer').style.display='block'}
-function prevPodcast(){openPlayer(Math.max(0,curPodcast-1))}
-function nextPodcast(){openPlayer(Math.min(podcastData.length-1,curPodcast+1))}
-
-// ===== AI助手 =====
-function togAI(){document.getElementById('ai-panel').classList.toggle('act')}
-function aiAsk(q){document.getElementById('ai-input').value=q;aiSend()}
-function aiSend(){
-  var inp=document.getElementById('ai-input'),q=inp.value.trim();if(!q)return;
-  var b=document.getElementById('ai-body');
-  b.innerHTML+='<div class="amsg usr"><div class="amb">'+q+'</div></div>';
-  inp.value='';b.scrollTop=b.scrollHeight;
-  setTimeout(function(){
-    var a=aiReply(q);
-    b.innerHTML+='<div class="amsg bot"><div class="amb">'+a+'</div></div>';
-    b.scrollTop=b.scrollHeight;
-  },800);
-}
-function aiReply(q){
-  var m={
-    '贞观之治是什么？':'贞观之治是唐太宗李世民在位期间（627-649年）出现的政治清明、社会安定的盛世局面。核心特征：虚心纳谏（魏征）、任用贤能（房玄龄、杜如晦）、轻徭薄赋、厉行节约。被史学家视为中国古代治世的典范。',
-    '科举制的发展历程':'科举制始于隋炀帝大业元年（605年），唐代进一步完善，宋代达到鼎盛（殿试、糊名法、誊录制），明代实行八股取士，清代沿明制，1905年废除。共延续1300年，是古代中国最重要的选官制度。',
-    '明朝灭亡的原因':'明朝灭亡是多重因素叠加的结果：1.财政危机（辽饷、剿饷、练饷三饷加派）；2.农民起义（李自成、张献忠等）；3.满洲兴起（后金/清的外在压力）；4.政治腐败（万历怠政、魏忠贤专权等）；5.小冰期气候导致农业大量减产。'
-  };
-  return m[q]||'这是一个很好的历史问题！📜<br>关于「'+q.replace(/</g,'&lt;')+'」，建议查阅相关史料和学术论文来获取更深入的理解。你也可以在学习模块中找到相关内容～';
-}
+// ===== AI播客 / AI助手 已迁移到 src/js/podcast.js 和 src/js/ai-assistant.js =====
 
 // ===== 人物关系网 =====
 var peoData={
