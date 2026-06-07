@@ -62,3 +62,25 @@ http://localhost:8000
 - 浏览器 LocalStorage
 
 暂未引入构建工具和第三方框架。
+
+## 部署
+
+线上地址：
+
+```text
+http://118.178.140.171:9090
+```
+
+日常发布：
+
+```bash
+git add .
+git commit -m "feat: describe your changes"
+./scripts/deploy.sh
+```
+
+完整部署说明：
+
+```text
+docs/deployment.md
+```
