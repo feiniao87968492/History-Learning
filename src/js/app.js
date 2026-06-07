@@ -26,6 +26,17 @@
     if (window.favoritesAPI) {
       window.renderFavorites = window.favoritesAPI.renderFavorites;
     }
+
+    if (window.timelineAPI) {
+      window.selDyn = window.timelineAPI.selDyn;
+      window.prevDyn = window.timelineAPI.prevDyn;
+      window.nextDyn = window.timelineAPI.nextDyn;
+      window.showTimelineDetail = window.timelineAPI.showTimelineDetail;
+      window.showTimelineConn = window.timelineAPI.showTimelineConn;
+      window.renderTimeline = window.timelineAPI.renderTimeline;
+      window.renderEventList = window.timelineAPI.renderEventList;
+      window.zoomTL = window.timelineAPI.zoomTL;
+    }
   }
 
   async function loadJSON(path, fallback) {
@@ -44,6 +55,14 @@
   async function initializeData() {
     var nouns = await loadJSON('./src/data/nouns.json', {});
     if (window.nounAPI) window.nounAPI.setNounData(nouns);
+
+    var timeline = await loadJSON('./src/data/timeline.json', { dynasties: [], events: [] });
+    if (window.timelineAPI) {
+      window.timelineAPI.setDynasties(timeline.dynasties);
+      window.timelineAPI.setTimelineEvents(timeline.events);
+      try { window.timelineAPI.renderTimeline(); } catch (e) { console.error('renderTimeline err:', e); }
+      try { window.timelineAPI.renderEventList(); } catch (e) { console.error('renderEventList err:', e); }
+    }
   }
 
   function registerGlobalErrorToast() {
