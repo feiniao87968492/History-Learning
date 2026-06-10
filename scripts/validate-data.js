@@ -131,6 +131,85 @@ function validateTimeline(data, fileName) {
   });
 }
 
+function validatePeople(data, fileName) {
+  var ids = {};
+
+  if (Array.isArray(data)) {
+    data.forEach(function (person, index) {
+      if (!person || typeof person !== 'object') {
+        addResult('ERROR', fileName, 'entries[' + index + '] must be an object');
+        return;
+      }
+
+      if (isBlank(person.id)) {
+        addResult('ERROR', fileName, 'entries[' + index + '] missing field: id');
+        return;
+      }
+
+      if (ids[person.id]) {
+        addResult('ERROR', fileName, 'duplicate person id: ' + person.id);
+      } else {
+        ids[person.id] = true;
+      }
+    });
+
+    if (Array.isArray(data.relations)) {
+      addResult('WARN', fileName, 'array data with relations property is unexpected, relation checks skipped');
+    }
+    return;
+  }
+
+  if (data && typeof data === 'object' && data.centers && typeof data.centers === 'object') {
+    addResult('WARN', fileName, 'uses centers-based structure, id and relations checks skipped');
+    return;
+  }
+
+  addResult('WARN', fileName, 'structure does not match expected people validators, specialized checks skipped');
+}
+
+function validateQuestions(data, fileName) {
+  var ids = {};
+
+  if (!Array.isArray(data)) {
+    addResult('ERROR', fileName, 'expected array of questions');
+    return;
+  }
+
+  data.forEach(function (item, index) {
+    if (isBlank(item.id)) {
+      addResult('ERROR', fileName, 'questions[' + index + '] missing field: id');
+    } else if (ids[item.id]) {
+      addResult('ERROR', fileName, 'duplicate question id: ' + item.id);
+    } else {
+      ids[item.id] = true;
+    }
+
+    if (!Array.isArray(item.options) || !item.options.length) {
+      addResult('ERROR', fileName, 'questions[' + index + '] missing options array');
+      return;
+    }
+
+    if (item.options.indexOf(item.answer) === -1) {
+      addResult('ERROR', fileName, 'questions[' + index + '] answer not found in options');
+    }
+  });
+}
+
+function validateMediaList(fileName, data, requiredFields) {
+  if (!Array.isArray(data)) {
+    addResult('ERROR', fileName, 'expected array');
+    return;
+  }
+
+  data.forEach(function (item, index) {
+    requiredFields.forEach(function (fieldName) {
+      if (isBlank(item[fieldName])) {
+        addResult('ERROR', fileName, 'entries[' + index + '] missing field: ' + fieldName);
+      }
+    });
+  });
+}
+
 function validateFileData(fileName, data) {
   if (fileName === 'nouns.json') {
     validateNouns(data, fileName);
@@ -139,6 +218,31 @@ function validateFileData(fileName, data) {
 
   if (fileName === 'timeline.json') {
     validateTimeline(data, fileName);
+    return;
+  }
+
+  if (fileName === 'people.json') {
+    validatePeople(data, fileName);
+    return;
+  }
+
+  if (fileName === 'films.json') {
+    validateMediaList(fileName, data, ['id', 'title', 'type']);
+    return;
+  }
+
+  if (fileName === 'podcasts.json') {
+    validateMediaList(fileName, data, ['id', 'title']);
+    return;
+  }
+
+  if (fileName === 'hot-articles.json') {
+    validateMediaList(fileName, data, ['title']);
+    return;
+  }
+
+  if (fileName === 'questions.json') {
+    validateQuestions(data, fileName);
   }
 }
 
@@ -156,6 +260,10 @@ function validateAllJsonFiles() {
       addResult('ERROR', fileName, 'parse failed: ' + error.message);
     }
   });
+
+  if (files.indexOf('questions.json') === -1) {
+    addResult('WARN', 'questions.json', 'file not found, specialized checks skipped');
+  }
 }
 
 function main() {
