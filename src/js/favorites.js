@@ -1,6 +1,23 @@
 (function () {
   var FAV_KEY = 'xds_favorites';
 
+  function escapeHtml(value) {
+    if (window.htmlUtils && typeof window.htmlUtils.escapeHtml === 'function') {
+      return window.htmlUtils.escapeHtml(value);
+    }
+
+    if (value === null || typeof value === 'undefined') {
+      return '';
+    }
+
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   function getFavorites() {
     return window.storageAPI ? window.storageAPI.getStoredJSON(FAV_KEY, []) : [];
   }
@@ -35,12 +52,17 @@
     var html = '';
     list.forEach(function (item) {
       html += '<div class="wlitem">' +
-        '<div class="wlthumb">' + (item.icon || '📖') + '</div>' +
-        '<div class="wlinfo"><h5>' + item.title + '</h5><p>' + (item.subtitle || '') + '</p></div>' +
-        '<button class="wldel" onclick="window.favoritesAPI.removeFav(\'' + item.id + '\')">×</button>' +
+        '<div class="wlthumb">' + escapeHtml(item.icon || '📖') + '</div>' +
+        '<div class="wlinfo"><h5>' + escapeHtml(item.title || '') + '</h5><p>' + escapeHtml(item.subtitle || '') + '</p></div>' +
+        '<button class="wldel" data-favorite-id="' + escapeHtml(item.id || '') + '">×</button>' +
         '</div>';
     });
     container.innerHTML = html;
+    container.querySelectorAll('.wldel').forEach(function (button) {
+      button.onclick = function () {
+        removeFav(button.getAttribute('data-favorite-id'));
+      };
+    });
   }
 
   function removeFav(id) {
