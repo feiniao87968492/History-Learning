@@ -17,7 +17,13 @@
     rel.innerHTML = '';
     if (d && Array.isArray(d.related) && d.related.length) {
       d.related.forEach(function (r) {
-        rel.innerHTML += '<button class="nrtag" onclick="openNounDet(\'' + r + '\')">' + r + '</button>';
+        var button = document.createElement('button');
+        button.className = 'nrtag';
+        button.textContent = r;
+        button.onclick = function () {
+          openNounDet(r);
+        };
+        rel.appendChild(button);
       });
     } else {
       rel.innerHTML = '<span style="font-size:12px;color:#B5ADA5">暂无相关名词</span>';

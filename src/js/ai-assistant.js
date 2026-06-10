@@ -1,4 +1,21 @@
 (function () {
+  function escapeHtml(value) {
+    if (window.htmlUtils && typeof window.htmlUtils.escapeHtml === 'function') {
+      return window.htmlUtils.escapeHtml(value);
+    }
+
+    if (value === null || typeof value === 'undefined') {
+      return '';
+    }
+
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   function togAI() {
     document.getElementById('ai-panel').classList.toggle('act');
   }
@@ -9,19 +26,20 @@
   }
 
   function aiReply(q) {
+    var safeQuestion = escapeHtml(q);
     var m = {
       '贞观之治是什么？': '贞观之治是唐太宗李世民在位期间（627-649年）出现的政治清明、社会安定的盛世局面。核心特征：虚心纳谏（魏征）、任用贤能（房玄龄、杜如晦）、轻徭薄赋、厉行节约。被史学家视为中国古代治世的典范。',
       '科举制的发展历程': '科举制始于隋炀帝大业元年（605年），唐代进一步完善，宋代达到鼎盛（殿试、糊名法、誊录制），明代实行八股取士，清代沿明制，1905年废除。共延续1300年，是古代中国最重要的选官制度。',
       '明朝灭亡的原因': '明朝灭亡是多重因素叠加的结果：1.财政危机（辽饷、剿饷、练饷三饷加派）；2.农民起义（李自成、张献忠等）；3.满洲兴起（后金/清的外在压力）；4.政治腐败（万历怠政、魏忠贤专权等）；5.小冰期气候导致农业大量减产。'
     };
-    return m[q] || '这是一个很好的历史问题！📜<br>关于「' + q.replace(/</g, '&lt;') + '」，建议查阅相关史料和学术论文来获取更深入的理解。你也可以在学习模块中找到相关内容～';
+    return m[q] || '这是一个很好的历史问题！📜<br>关于「' + safeQuestion + '」，建议查阅相关史料和学术论文来获取更深入的理解。你也可以在学习模块中找到相关内容～';
   }
 
   function aiSend() {
     var inp = document.getElementById('ai-input'), q = inp.value.trim();
     if (!q) return;
     var b = document.getElementById('ai-body');
-    b.innerHTML += '<div class="amsg usr"><div class="amb">' + q + '</div></div>';
+    b.innerHTML += '<div class="amsg usr"><div class="amb">' + escapeHtml(q) + '</div></div>';
     inp.value = '';
     b.scrollTop = b.scrollHeight;
     setTimeout(function () {
