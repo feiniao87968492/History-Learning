@@ -4,6 +4,28 @@
   var timelineEvents = [];
   var timelineZoom = 0;
 
+  function escapeHtml(value) {
+    if (window.htmlUtils && typeof window.htmlUtils.escapeHtml === 'function') {
+      return window.htmlUtils.escapeHtml(value);
+    }
+
+    if (value === null || typeof value === 'undefined') {
+      return '';
+    }
+
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function safeNumber(value, fallbackValue) {
+    var num = Number(value);
+    return isFinite(num) ? num : fallbackValue;
+  }
+
   function setDynasties(list) {
     dynasties = Array.isArray(list) ? list : dynasties;
   }
@@ -65,17 +87,17 @@
     for (var i = 0; i < timelineEvents.length - 1; i++) {
       var a = timelineEvents[i], b = timelineEvents[i + 1];
       if (!a.conn || !b) continue;
-      s += '<line x1="' + a.x + '" y1="' + a.pol + '" x2="' + b.x + '" y2="' + b.pol + '" stroke="#C0392B" stroke-width="1" stroke-dasharray="5,3" opacity="0.4" class="tldash" data-i="' + i + '" data-dim="pol" onclick="showTimelineConn(' + i + ',\'pol\')" style="cursor:pointer"/>';
-      s += '<line x1="' + a.x + '" y1="' + a.eco + '" x2="' + b.x + '" y2="' + b.eco + '" stroke="#27AE60" stroke-width="1" stroke-dasharray="5,3" opacity="0.4" class="tldash" data-i="' + i + '" data-dim="eco" onclick="showTimelineConn(' + i + ',\'eco\')" style="cursor:pointer"/>';
-      s += '<line x1="' + a.x + '" y1="' + a.cul + '" x2="' + b.x + '" y2="' + b.cul + '" stroke="#8B6914" stroke-width="1" stroke-dasharray="5,3" opacity="0.4" class="tldash" data-i="' + i + '" data-dim="cul" onclick="showTimelineConn(' + i + ',\'cul\')" style="cursor:pointer"/>';
+      s += '<line x1="' + safeNumber(a.x, 0) + '" y1="' + safeNumber(a.pol, 0) + '" x2="' + safeNumber(b.x, 0) + '" y2="' + safeNumber(b.pol, 0) + '" stroke="#C0392B" stroke-width="1" stroke-dasharray="5,3" opacity="0.4" class="tldash" data-i="' + i + '" data-dim="pol" onclick="showTimelineConn(' + i + ',\'pol\')" style="cursor:pointer"/>';
+      s += '<line x1="' + safeNumber(a.x, 0) + '" y1="' + safeNumber(a.eco, 0) + '" x2="' + safeNumber(b.x, 0) + '" y2="' + safeNumber(b.eco, 0) + '" stroke="#27AE60" stroke-width="1" stroke-dasharray="5,3" opacity="0.4" class="tldash" data-i="' + i + '" data-dim="eco" onclick="showTimelineConn(' + i + ',\'eco\')" style="cursor:pointer"/>';
+      s += '<line x1="' + safeNumber(a.x, 0) + '" y1="' + safeNumber(a.cul, 0) + '" x2="' + safeNumber(b.x, 0) + '" y2="' + safeNumber(b.cul, 0) + '" stroke="#8B6914" stroke-width="1" stroke-dasharray="5,3" opacity="0.4" class="tldash" data-i="' + i + '" data-dim="cul" onclick="showTimelineConn(' + i + ',\'cul\')" style="cursor:pointer"/>';
     }
 
     timelineEvents.forEach(function (d) {
-      s += '<circle cx="' + d.x + '" cy="' + d.pol + '" r="6" fill="#C0392B" opacity="0.85" stroke="#fff" stroke-width="1" class="tlevt" onclick="showTimelineDetail(' + timelineEvents.indexOf(d) + ')" style="cursor:pointer"/>';
-      s += '<text x="' + d.x + '" y="' + (d.pol - 10) + '" font-size="8" text-anchor="middle" fill="#C0392B" font-weight="700">' + d.name + '</text>';
-      s += '<text x="' + d.x + '" y="' + (d.pol - 20) + '" font-size="7" text-anchor="middle" fill="#8A7A6A">' + d.year + '</text>';
-      s += '<circle cx="' + d.x + '" cy="' + d.eco + '" r="5" fill="#27AE60" opacity="0.85" stroke="#fff" stroke-width="1"/>';
-      s += '<circle cx="' + d.x + '" cy="' + d.cul + '" r="4" fill="#8B6914" opacity="0.85" stroke="#fff" stroke-width="1"/>';
+      s += '<circle cx="' + safeNumber(d.x, 0) + '" cy="' + safeNumber(d.pol, 0) + '" r="6" fill="#C0392B" opacity="0.85" stroke="#fff" stroke-width="1" class="tlevt" onclick="showTimelineDetail(' + timelineEvents.indexOf(d) + ')" style="cursor:pointer"/>';
+      s += '<text x="' + safeNumber(d.x, 0) + '" y="' + (safeNumber(d.pol, 0) - 10) + '" font-size="8" text-anchor="middle" fill="#C0392B" font-weight="700">' + escapeHtml(d.name) + '</text>';
+      s += '<text x="' + safeNumber(d.x, 0) + '" y="' + (safeNumber(d.pol, 0) - 20) + '" font-size="7" text-anchor="middle" fill="#8A7A6A">' + escapeHtml(d.year) + '</text>';
+      s += '<circle cx="' + safeNumber(d.x, 0) + '" cy="' + safeNumber(d.eco, 0) + '" r="5" fill="#27AE60" opacity="0.85" stroke="#fff" stroke-width="1"/>';
+      s += '<circle cx="' + safeNumber(d.x, 0) + '" cy="' + safeNumber(d.cul, 0) + '" r="4" fill="#8B6914" opacity="0.85" stroke="#fff" stroke-width="1"/>';
     });
     s += '<text x="' + (x0 + (w) / 2) + '" y="' + (y1 + 40) + '" font-size="8" fill="#8A7A6A" text-anchor="middle">🔴政治  🟢经济  🟤文化  |  从秦至清，政治集权逐步增强，经济与文化同步演进</text>';
     s += '<text x="' + (x0 + (w) / 2) + '" y="' + (y1 + 53) + '" font-size="7" fill="#C0392B" text-anchor="middle" opacity="0.7">点按虚线上每段可查看事件间相坒作用</text>';
@@ -94,7 +116,7 @@
     if (!el) return;
     var h = '';
     timelineEvents.forEach(function (d, i) {
-      h += '<div class="evitem" onclick="showTimelineDetail(' + i + ')"><div class="evdot pol"></div><div class="evtxt"><h5>' + d.name + ' <span class="evyr">' + d.year + '</span></h5><div class="evdesc">' + d.description + '</div></div></div>';
+      h += '<div class="evitem" onclick="showTimelineDetail(' + i + ')"><div class="evdot pol"></div><div class="evtxt"><h5>' + escapeHtml(d.name) + ' <span class="evyr">' + escapeHtml(d.year) + '</span></h5><div class="evdesc">' + escapeHtml(d.description) + '</div></div></div>';
     });
     el.innerHTML = h || '<div style="padding:16px;text-align:center;color:#B5ADA5">暂无事件数据</div>';
   }

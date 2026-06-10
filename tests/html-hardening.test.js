@@ -138,3 +138,36 @@ describe('favorites and film rendering hardening', () => {
     expect(document.getElementById('film-grid').querySelector('script')).toBeNull();
   });
 });
+
+describe('timeline rendering hardening', () => {
+  test('escapes timeline event fields before injecting SVG and list HTML', async () => {
+    mountDOM(`
+      <div id="coord-chart"></div>
+      <div id="event-list"></div>
+    `);
+    window.openFeatDet = vi.fn();
+    window.showToast = vi.fn();
+    await import('../src/js/timeline.js');
+
+    window.timelineAPI.setTimelineEvents([
+      {
+        name: '<script>alert(1)</script>',
+        year: '<b>前221</b>',
+        description: '<img src=x onerror=1>',
+        x: 100,
+        pol: 100,
+        eco: 160,
+        cul: 220,
+        conn: { next: '<i>汉</i>', pol: '影响', eco: '影响', cul: '影响' }
+      }
+    ]);
+
+    window.timelineAPI.renderTimeline();
+    window.timelineAPI.renderEventList();
+
+    expect(document.getElementById('coord-chart').querySelector('script')).toBeNull();
+    expect(document.getElementById('coord-chart').textContent).toContain('<script>alert(1)</script>');
+    expect(document.getElementById('event-list').querySelector('img')).toBeNull();
+    expect(document.getElementById('event-list').textContent).toContain('<img src=x onerror=1>');
+  });
+});
