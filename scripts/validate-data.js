@@ -18,7 +18,7 @@ function addResult(level, file, message) {
 
 function printResults() {
   results.forEach(function (item) {
-    console.log('[' + item.level + '] ' + item.file + ' ' + item.message);
+    console.log('[' + item.level + '] ' + item.file + ': ' + item.message);
   });
 }
 
@@ -267,6 +267,8 @@ function validateAllJsonFiles() {
 }
 
 function main() {
+  console.log('History Learning data validation');
+  console.log('');
   validateAllJsonFiles();
   printResults();
   printSummary();
