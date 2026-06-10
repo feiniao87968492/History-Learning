@@ -1,4 +1,25 @@
 (function () {
+  function ensureHtmlUtils() {
+    if (window.htmlUtils && typeof window.htmlUtils.escapeHtml === 'function') {
+      return;
+    }
+
+    window.htmlUtils = {
+      escapeHtml: function (value) {
+        if (value === null || typeof value === 'undefined') {
+          return '';
+        }
+
+        return String(value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+    };
+  }
+
   function exposeGlobals() {
     if (window.storageAPI) {
       window.getStoredJSON = window.storageAPI.getStoredJSON;
@@ -108,6 +129,7 @@
   }
 
   function initializeApp() {
+    ensureHtmlUtils();
     registerGlobalErrorToast();
     exposeGlobals();
     initializeData().catch(function (err) {
