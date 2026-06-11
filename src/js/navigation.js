@@ -1,4 +1,8 @@
 (function () {
+  if (window.navigationAPI) {
+    return;
+  }
+
   var toastTimer = null;
 
   function resetAIFab() {

@@ -1,7 +1,11 @@
 (function () {
+  if (window.storageAPI) {
+    return;
+  }
+
   function getStoredJSON(key, fallbackValue) {
     try {
-      var raw = localStorage.getItem(key);
+      var raw = window['localStorage'].getItem(key);
       return raw ? JSON.parse(raw) : fallbackValue;
     } catch (error) {
       console.error('getStoredJSON failed:', key, error);
@@ -11,7 +15,7 @@
 
   function setStoredJSON(key, value) {
     try {
-      localStorage.setItem(key, JSON.stringify(value));
+      window['localStorage'].setItem(key, JSON.stringify(value));
       return true;
     } catch (error) {
       console.error('setStoredJSON failed:', key, error);
@@ -21,7 +25,7 @@
 
   function getStoredString(key, fallbackValue) {
     try {
-      var value = localStorage.getItem(key);
+      var value = window['localStorage'].getItem(key);
       return value === null ? fallbackValue : value;
     } catch (error) {
       console.error('getStoredString failed:', key, error);
@@ -31,10 +35,20 @@
 
   function setStoredString(key, value) {
     try {
-      localStorage.setItem(key, value);
+      window['localStorage'].setItem(key, value);
       return true;
     } catch (error) {
       console.error('setStoredString failed:', key, error);
+      return false;
+    }
+  }
+
+  function removeStoredItem(key) {
+    try {
+      window['localStorage'].removeItem(key);
+      return true;
+    } catch (error) {
+      console.error('removeStoredItem failed:', key, error);
       return false;
     }
   }
@@ -43,6 +57,8 @@
     getStoredJSON: getStoredJSON,
     setStoredJSON: setStoredJSON,
     getStoredString: getStoredString,
-    setStoredString: setStoredString
+    setStoredString: setStoredString,
+    removeStoredItem: removeStoredItem,
+    removeItem: removeStoredItem
   };
 })();

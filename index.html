@@ -52,7 +52,7 @@
 <button class="htab" onclick="filterHot('modern',this)">近代</button>
 </div>
 <div class="ha" id="hot-articles">
-<div class="hl" onclick="window.open('https://mp.weixin.qq.com','_blank')" data-dynasty="qinhan">
+<div class="hl" onclick="openExternalLink('https://mp.weixin.qq.com')" data-dynasty="qinhan">
 <div class="hl-img">📜</div>
 <div class="inf">
 <div style="margin-bottom:6px"><span class="tg hot">热门</span><span style="font-size:12px;color:#8A8279">贞观之治</span></div>
@@ -60,7 +60,7 @@
 <div class="ad"><span>📖 2.3k 阅读</span><span>❤️ 892 收藏</span><span>💬 视频解读</span><span>🗺️ 思维导图</span></div>
 </div>
 </div>
-<div class="hl" onclick="window.open('https://mp.weixin.qq.com','_blank')" data-dynasty="suitang">
+<div class="hl" onclick="openExternalLink('https://mp.weixin.qq.com')" data-dynasty="suitang">
 <div class="hl-img" style="background:#E8D5B0;">🏜️</div>
 <div class="inf">
 <div style="margin-bottom:6px"><span class="tg sys">制度</span><span style="font-size:12px;color:#8A8279">科举制</span></div>
@@ -68,7 +68,7 @@
 <div class="ad"><span>📖 1.6k 阅读</span><span>❤️ 467 收藏</span><span>💬 视频解读</span><span>🗺️ 思维导图</span></div>
 </div>
 </div>
-<div class="hl" onclick="window.open('https://mp.weixin.qq.com','_blank')" data-dynasty="qinhan">
+<div class="hl" onclick="openExternalLink('https://mp.weixin.qq.com')" data-dynasty="qinhan">
 <div class="hl-img" style="background:#EDE8E0;">⚔️</div>
 <div class="inf">
 <div style="margin-bottom:6px"><span class="tg hot">热门</span><span style="font-size:12px;color:#8A8279">秦始皇</span></div>
@@ -76,7 +76,7 @@
 <div class="ad"><span>📖 3.1k 阅读</span><span>❤️ 1.2k 收藏</span><span>💬 视频解读</span></div>
 </div>
 </div>
-<div class="hi" onclick="window.open('https://mp.weixin.qq.com','_blank')" data-dynasty="song">
+<div class="hi" onclick="openExternalLink('https://mp.weixin.qq.com')" data-dynasty="song">
 <div class="hi-img" style="background:#D4C0A0;">🏯</div>
 <div class="tx">
 <h4>宋朝：被误解的"弱宋"实为经济革命</h4>
@@ -84,7 +84,7 @@
 <div class="lk">🔗 阅读原文</div>
 </div>
 </div>
-<div class="hi" onclick="window.open('https://mp.weixin.qq.com','_blank')" data-dynasty="mingqing">
+<div class="hi" onclick="openExternalLink('https://mp.weixin.qq.com')" data-dynasty="mingqing">
 <div class="hi-img" style="background:#C0A890;">📘</div>
 <div class="tx">
 <h4>万历十五年：大风起于青萍之末</h4>
@@ -92,7 +92,7 @@
 <div class="lk">🔗 阅读原文</div>
 </div>
 </div>
-<div class="hi" onclick="window.open('https://mp.weixin.qq.com','_blank')" data-dynasty="modern">
+<div class="hi" onclick="openExternalLink('https://mp.weixin.qq.com')" data-dynasty="modern">
 <div class="hi-img" style="background:#B0C4DE;">🌊</div>
 <div class="tx">
 <h4>大运河：一部流动的政治经济学</h4>
@@ -100,7 +100,7 @@
 <div class="lk">🔗 阅读原文</div>
 </div>
 </div>
-<div class="hi" onclick="window.open('https://mp.weixin.qq.com','_blank')" data-dynasty="modern">
+<div class="hi" onclick="openExternalLink('https://mp.weixin.qq.com')" data-dynasty="modern">
 <div class="hi-img" style="background:#F5F0E8;">🔥</div>
 <div class="tx">
 <h4>鸦片战争：天朝上国的幻梦破碎时</h4>
@@ -560,6 +560,11 @@
 <!-- ===== Toast ===== -->
 <div class="toast" id="toast"></div>
 
+<script src="./src/js/adapters/storage.js"></script>
+<script src="./src/js/adapters/navigation.js"></script>
+<script src="./src/js/adapters/audio.js"></script>
+<script src="./src/js/adapters/external-link.js"></script>
+<script src="./src/js/adapters/data-loader.js"></script>
 <script src="./src/js/storage.js"></script>
 <script src="./src/js/navigation.js"></script>
 <script src="./src/js/favorites.js"></script>
@@ -569,6 +574,61 @@
 <script src="./src/js/ai-assistant.js"></script>
 <script src="./src/js/app.js"></script>
 <script>
+function openExternalLink(url) {
+  if (window.externalLinkAPI && typeof window.externalLinkAPI.open === 'function') {
+    return window.externalLinkAPI.open(url);
+  }
+  window['open'](url, '_blank');
+  return true;
+}
+function getStoredJSONCompat(key, fallbackValue) {
+  if (window.storageAPI && typeof window.storageAPI.getStoredJSON === 'function') {
+    return window.storageAPI.getStoredJSON(key, fallbackValue);
+  }
+  try {
+    var raw = window['localStorage'].getItem(key);
+    return raw ? JSON.parse(raw) : fallbackValue;
+  } catch (error) {
+    console.error('getStoredJSONCompat failed:', key, error);
+    return fallbackValue;
+  }
+}
+function setStoredJSONCompat(key, value) {
+  if (window.storageAPI && typeof window.storageAPI.setStoredJSON === 'function') {
+    return window.storageAPI.setStoredJSON(key, value);
+  }
+  try {
+    window['localStorage'].setItem(key, JSON.stringify(value));
+    return true;
+  } catch (error) {
+    console.error('setStoredJSONCompat failed:', key, error);
+    return false;
+  }
+}
+function getStoredStringCompat(key, fallbackValue) {
+  if (window.storageAPI && typeof window.storageAPI.getStoredString === 'function') {
+    return window.storageAPI.getStoredString(key, fallbackValue);
+  }
+  try {
+    var value = window['localStorage'].getItem(key);
+    return value === null ? fallbackValue : value;
+  } catch (error) {
+    console.error('getStoredStringCompat failed:', key, error);
+    return fallbackValue;
+  }
+}
+function setStoredStringCompat(key, value) {
+  if (window.storageAPI && typeof window.storageAPI.setStoredString === 'function') {
+    return window.storageAPI.setStoredString(key, value);
+  }
+  try {
+    window['localStorage'].setItem(key, value);
+    return true;
+  } catch (error) {
+    console.error('setStoredStringCompat failed:', key, error);
+    return false;
+  }
+}
 // ===== 页面切换 =====
 function swTab(btn, pid) {
   document.querySelectorAll('.sub').forEach(function(p){p.classList.remove('act')});
@@ -783,13 +843,13 @@ function swMind(btn, tab) {
 }
 function openNode(name) {
   document.getElementById('node-note-title').textContent='📝 '+name+' · 节点笔记';
-  document.getElementById('node-note-input').value=localStorage.getItem('note_'+name)||'';
+  document.getElementById('node-note-input').value=getStoredStringCompat('note_'+name,'');
   document.getElementById('node-note-input').dataset.node=name;
   document.getElementById('node-note-panel').style.display='flex';
 }
 function saveNode(){
   var i=document.getElementById('node-note-input'),n=i.dataset.node;
-  localStorage.setItem('note_'+n,i.value);
+  setStoredStringCompat('note_'+n,i.value);
   document.getElementById('node-note-panel').style.display='none';
   showToast('「'+n+'」的笔记已保存！');
 }
@@ -845,10 +905,10 @@ function openCheckin(){
 function closeCheckin(){document.getElementById('checkin-panel').classList.remove('act')}
 function doCheckin(){
   var today=new Date().toISOString().slice(0,10);
-  var checkins=JSON.parse(localStorage.getItem('checkins')||'{}');
+  var checkins=getStoredJSONCompat('checkins',{});
   if(checkins[today]){showToast('今日已打卡，明天继续加油！');return}
   checkins[today]=true;
-  localStorage.setItem('checkins',JSON.stringify(checkins));
+  setStoredJSONCompat('checkins',checkins);
   document.getElementById('checkin-btn').textContent='✅ 已打卡';
   document.getElementById('checkin-btn').classList.add('done');
   updateCheckinStats();
@@ -857,7 +917,7 @@ function doCheckin(){
 function renderCheckinCalendar(){
   var now=new Date(),y=now.getFullYear(),m=now.getMonth();
   var firstDay=new Date(y,m,1).getDay(),daysInMonth=new Date(y,m+1,0).getDate();
-  var checkins=JSON.parse(localStorage.getItem('checkins')||'{}');
+  var checkins=getStoredJSONCompat('checkins',{});
   var h='<div class="ckrow head"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div><div class="ckrow">';
   for(var i=0;i<firstDay;i++)h+='<div></div>';
   for(var d=1;d<=daysInMonth;d++){
@@ -873,7 +933,7 @@ function renderCheckinCalendar(){
   updateCheckinStats();
 }
 function updateCheckinStats(){
-  var checkins=JSON.parse(localStorage.getItem('checkins')||'{}');
+  var checkins=getStoredJSONCompat('checkins',{});
   var keys=Object.keys(checkins);
   var total=keys.length;
   var today=new Date().toISOString().slice(0,10);
