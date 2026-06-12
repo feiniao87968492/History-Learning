@@ -9,6 +9,25 @@ function makePeople(count) {
   }));
 }
 
+describe('data validation timeline rules', () => {
+  test('flags missing timeline id dynasty and sparse dynasty seeds', async () => {
+    const validator = await import('../scripts/validate-data.js?case=invalid-timeline');
+    const results = validator.validateTimelineDataForTest({
+      dynasties: ['qin', 'han'],
+      events: [
+        { name: '缺字段事件', year: '前221年', x: 100, pol: 300, eco: 280, cul: 260, description: '缺少 id 和 dynasty' },
+        { id: 'han-event', dynasty: 'han', name: '汉事件', year: '前127年', x: 140, pol: 280, eco: 260, cul: 240, description: '数量不足' }
+      ]
+    });
+    const messages = results.map((item) => item.message);
+
+    expect(messages).toContain('events[0] missing field: id');
+    expect(messages).toContain('events[0] missing field: dynasty');
+    expect(messages).toContain('dynasty qin must have 3-5 timeline events for Phase 4');
+    expect(messages).toContain('dynasty han must have 3-5 timeline events for Phase 4');
+  });
+});
+
 describe('data validation people graph rules', () => {
   test('flags reversed duplicate people relations as duplicates', async () => {
     const validator = await import('../scripts/validate-data.js?case=reversed-duplicate');

@@ -102,6 +102,8 @@ function inRange(value, min, max) {
 }
 
 function validateTimeline(data, fileName) {
+  var dynastyCounts = {};
+
   if (!data || typeof data !== 'object' || Array.isArray(data)) {
     addResult('ERROR', fileName, 'expected object with dynasties and events');
     return;
@@ -112,7 +114,23 @@ function validateTimeline(data, fileName) {
     return;
   }
 
+  if (Array.isArray(data.dynasties)) {
+    data.dynasties.forEach(function (dynasty) {
+      dynastyCounts[dynasty] = 0;
+    });
+  }
+
   data.events.forEach(function (eventItem, index) {
+    ['id', 'dynasty', 'name', 'year', 'description'].forEach(function (fieldName) {
+      if (isBlank(eventItem[fieldName])) {
+        addResult('ERROR', fileName, 'events[' + index + '] missing field: ' + fieldName);
+      }
+    });
+
+    if (!isBlank(eventItem.dynasty) && Object.prototype.hasOwnProperty.call(dynastyCounts, eventItem.dynasty)) {
+      dynastyCounts[eventItem.dynasty] += 1;
+    }
+
     [
       { key: 'x', min: 0, max: 1000 },
       { key: 'pol', min: 0, max: 500 },
@@ -129,6 +147,14 @@ function validateTimeline(data, fileName) {
       }
     });
   });
+
+  if (Array.isArray(data.dynasties)) {
+    data.dynasties.forEach(function (dynasty) {
+      if (dynastyCounts[dynasty] < 3 || dynastyCounts[dynasty] > 5) {
+        addResult('ERROR', fileName, 'dynasty ' + dynasty + ' must have 3-5 timeline events for Phase 4');
+      }
+    });
+  }
 }
 
 var PEOPLE_RELATION_TYPES = {
@@ -336,6 +362,16 @@ function validateAllJsonFiles() {
   }
 }
 
+function validateTimelineDataForTest(data) {
+  var previousResults = results;
+  var snapshot;
+  results = [];
+  validateTimeline(data, 'timeline.json');
+  snapshot = results.slice();
+  results = previousResults;
+  return snapshot;
+}
+
 function validatePeopleDataForTest(data) {
   var previousResults = results;
   var snapshot;
@@ -358,4 +394,4 @@ if (!process.env.VITEST) {
   main();
 }
 
-export { validatePeopleDataForTest };
+export { validatePeopleDataForTest, validateTimelineDataForTest };
