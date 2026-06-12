@@ -2,6 +2,22 @@
 
 ## 2026-06-12
 
+### 时间轴缩放与布局修复
+
+- 修复时间轴「缩小 / 放大」视觉语义反转问题：`zoomTL(1)` 现在通过 SVG `viewBox` 真实放大，`zoomTL(-1)` 真实缩小查看全景。
+- 时间轴渲染改为固定逻辑坐标系，背景坐标轴、文化斜线、节点与因果线使用同一套 SVG 坐标，不再出现缩放后背景线单独变角度、节点不随之变化的问题。
+- 当前朝代可见事件的 `x` 坐标会按本朝代事件范围重新映射到绘图区，避免每个朝代节点挤在全局时间轴的一小段区域。
+- 时间轴拖拽平移改为更新 SVG `viewBox`，与缩放使用同一坐标系统。
+- 调整时间轴图表 CSS：移除 `.cc svg` 的 `min-width:350px` 裁切风险，增加 `touch-action:none`，并仅放宽 `#timeline-page.sub` 的桌面最大宽度。
+- 扩展 `tests/timeline.test.js`，覆盖真实缩放语义、朝代节点横向铺开、因果线连接节点、背景文化斜线逻辑坐标稳定、单事件居中。
+
+#### 验证
+
+- `npx vitest run tests/timeline.test.js --environment jsdom`：通过，`16` 项测试通过。
+- `npx vitest run tests/timeline.test.js tests/app-static-data.test.js tests/adapter-wiring.test.js --environment jsdom`：通过，`3` 个测试文件、`26` 项测试通过。
+- `node scripts/validate-data.js`：通过，`15 OK`、`0 WARN`、`0 ERROR`。
+- `npx vitest run --environment jsdom`：通过，`28` 个测试文件、`206` 项测试通过。
+
 ### Task 6 / Phase 3 Task 3.4：讨论区验收补齐
 
 - 明确当前 Web 补完阶段不启动微信小程序 Phase 6，按计划映射补齐原 Task 6「讨论区」验收项。

@@ -12,6 +12,15 @@
   var isDragging = false;
   var dragStartX = 0;
   var dragStartY = 0;
+  var TIMELINE_CHART = {
+    width: 460,
+    height: 480,
+    plotLeft: 60,
+    plotRight: 400,
+    plotTop: 40,
+    plotBottom: 400,
+    xPadding: 18
+  };
 
   function escapeHtml(value) {
     if (window.htmlUtils && typeof window.htmlUtils.escapeHtml === 'function') {
@@ -39,6 +48,71 @@
     return Math.max(minValue, Math.min(maxValue, value));
   }
 
+  function formatCoord(value) {
+    return String(Math.round(value * 100) / 100);
+  }
+
+  function getZoomScale() {
+    return Math.pow(1.22, timelineZoom);
+  }
+
+  function mapRange(value, sourceMin, sourceMax, targetMin, targetMax) {
+    if (sourceMax === sourceMin) {
+      return (targetMin + targetMax) / 2;
+    }
+    return targetMin + ((value - sourceMin) / (sourceMax - sourceMin)) * (targetMax - targetMin);
+  }
+
+  function getTimelineViewBox() {
+    var scale = getZoomScale();
+    var viewW = TIMELINE_CHART.width / scale;
+    var viewH = TIMELINE_CHART.height / scale;
+    var viewX = (TIMELINE_CHART.width - viewW) / 2 - timelineOffsetX / scale;
+    var viewY = (TIMELINE_CHART.height - viewH) / 2 - timelineOffsetY / scale;
+    return [viewX, viewY, viewW, viewH].map(formatCoord).join(' ');
+  }
+
+  function getEventXRange(events) {
+    var minX = Infinity;
+    var maxX = -Infinity;
+    var validCount = 0;
+
+    events.forEach(function (eventItem) {
+      var x = Number(eventItem && eventItem.x);
+      if (isFinite(x)) {
+        minX = Math.min(minX, x);
+        maxX = Math.max(maxX, x);
+        validCount += 1;
+      }
+    });
+
+    if (validCount === events.length && maxX > minX) {
+      return { minX: minX, maxX: maxX, useIndex: false };
+    }
+
+    return { minX: 0, maxX: Math.max(events.length - 1, 1), useIndex: true };
+  }
+
+  function buildTimelinePoints(events) {
+    var range = getEventXRange(events);
+    var targetMin = TIMELINE_CHART.plotLeft + TIMELINE_CHART.xPadding;
+    var targetMax = TIMELINE_CHART.plotRight - TIMELINE_CHART.xPadding;
+    var targetCenter = (targetMin + targetMax) / 2;
+
+    return events.map(function (eventItem, index) {
+      var sourceX = range.useIndex ? index : safeNumber(eventItem.x, index);
+      var x = events.length === 1 ? targetCenter : mapRange(sourceX, range.minX, range.maxX, targetMin, targetMax);
+
+      return {
+        eventItem: eventItem,
+        x: x,
+        pol: clamp(safeNumber(eventItem.pol, TIMELINE_CHART.plotBottom), TIMELINE_CHART.plotTop, TIMELINE_CHART.plotBottom),
+        eco: clamp(safeNumber(eventItem.eco, TIMELINE_CHART.plotBottom), TIMELINE_CHART.plotTop, TIMELINE_CHART.plotBottom),
+        cul: clamp(safeNumber(eventItem.cul, TIMELINE_CHART.plotBottom), TIMELINE_CHART.plotTop, TIMELINE_CHART.plotBottom)
+      };
+    });
+  }
+
   function getCurrentDynasty() {
     return dynasties[curDynIdx] || dynasties[0];
   }
@@ -54,7 +128,7 @@
   function applyTimelineTransform() {
     var svg = document.querySelector('#coord-chart svg');
     if (!svg) return;
-    svg.style.transform = 'translate(' + timelineOffsetX + 'px,' + timelineOffsetY + 'px)';
+    svg.setAttribute('viewBox', getTimelineViewBox());
   }
 
   function resetTimelineView() {
@@ -170,12 +244,12 @@
   function renderTimeline() {
     var c = document.getElementById('coord-chart');
     var events = getVisibleEvents();
-    var pad;
-    var x0;
-    var x1;
-    var y0;
-    var y1;
-    var w;
+    var points;
+    var x0 = TIMELINE_CHART.plotLeft;
+    var x1 = TIMELINE_CHART.plotRight;
+    var y0 = TIMELINE_CHART.plotTop;
+    var y1 = TIMELINE_CHART.plotBottom;
+    var plotCenter = (x0 + x1) / 2;
     var s;
     var i;
 
@@ -188,40 +262,38 @@
       return;
     }
 
-    pad = timelineZoom * 20;
-    x0 = 60 - pad;
-    x1 = 400 + pad;
-    y0 = 40 - pad;
-    y1 = 400 + pad;
-    w = x1 - x0 + 40;
-    s = '<svg viewBox="0 0 ' + (w + 60) + ' 480" xmlns="http://www.w3.org/2000/svg" style="transition:transform .12s ease">';
-    s += '<rect x="30" y="20" width="' + (w + 20) + '" height="440" fill="#FFFBF0" rx="8"/>';
-    s += '<line x1="' + x0 + '" y1="' + y1 + '" x2="' + (x1 + 20) + '" y2="' + y1 + '" stroke="#5A3E1B" stroke-width="2"/>';
+    points = buildTimelinePoints(events);
+    s = '<svg viewBox="' + getTimelineViewBox() + '" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">';
+    s += '<rect x="30" y="20" width="410" height="440" fill="#FFFBF0" rx="8"/>';
+    s += '<line class="tl-axis-x" x1="' + x0 + '" y1="' + y1 + '" x2="' + (x1 + 20) + '" y2="' + y1 + '" stroke="#5A3E1B" stroke-width="2"/>';
     s += '<text x="' + (x1 + 10) + '" y="' + (y1 - 5) + '" font-size="10" fill="#C0392B" font-weight="700">政治集权度 →</text>';
-    s += '<line x1="' + x0 + '" y1="' + y1 + '" x2="' + x0 + '" y2="' + y0 + '" stroke="#5A3E1B" stroke-width="2"/>';
+    s += '<line class="tl-axis-y" x1="' + x0 + '" y1="' + y1 + '" x2="' + x0 + '" y2="' + y0 + '" stroke="#5A3E1B" stroke-width="2"/>';
     s += '<text x="' + (x0 - 25) + '" y="' + (y0 + 10) + '" font-size="10" fill="#27AE60" font-weight="700">经济↑</text>';
-    s += '<line x1="' + x0 + '" y1="' + (y1 - 80 + pad) + '" x2="' + (x1 + 20) + '" y2="' + (y0 + 40 - pad) + '" stroke="#8B6914" stroke-width="1.5" stroke-dasharray="6,3"/>';
-    s += '<text x="' + (x1 - 20) + '" y="' + (y0 + 30 - pad) + '" font-size="10" fill="#8B6914" font-weight="700">文化 ↗</text>';
-    s += '<text x="' + (x0 + (w) / 2) + '" y="' + (y1 + 25) + '" font-size="9" fill="#8A7A6A" text-anchor="middle">一定的政治经济决定一定的思想文化</text>';
+    s += '<line class="tl-culture-line" x1="' + x0 + '" y1="' + (y1 - 80) + '" x2="' + (x1 + 20) + '" y2="' + (y0 + 40) + '" stroke="#8B6914" stroke-width="1.5" stroke-dasharray="6,3"/>';
+    s += '<text x="' + (x1 - 20) + '" y="' + (y0 + 30) + '" font-size="10" fill="#8B6914" font-weight="700">文化 ↗</text>';
+    s += '<text x="' + plotCenter + '" y="' + (y1 + 25) + '" font-size="9" fill="#8A7A6A" text-anchor="middle">一定的政治经济决定一定的思想文化</text>';
 
-    for (i = 0; i < events.length - 1; i += 1) {
-      var a = events[i];
-      var b = events[i + 1];
+    for (i = 0; i < points.length - 1; i += 1) {
+      var aPoint = points[i];
+      var bPoint = points[i + 1];
+      var a = aPoint.eventItem;
+      var b = bPoint.eventItem;
       if (!a.conn || !b) continue;
-      s += '<line x1="' + safeNumber(a.x, 0) + '" y1="' + safeNumber(a.pol, 0) + '" x2="' + safeNumber(b.x, 0) + '" y2="' + safeNumber(b.pol, 0) + '" stroke="#C0392B" stroke-width="1" stroke-dasharray="5,3" opacity="0.4" class="tldash" data-i="' + i + '" data-dim="pol" style="cursor:pointer"/>';
-      s += '<line x1="' + safeNumber(a.x, 0) + '" y1="' + safeNumber(a.eco, 0) + '" x2="' + safeNumber(b.x, 0) + '" y2="' + safeNumber(b.eco, 0) + '" stroke="#27AE60" stroke-width="1" stroke-dasharray="5,3" opacity="0.4" class="tldash" data-i="' + i + '" data-dim="eco" style="cursor:pointer"/>';
-      s += '<line x1="' + safeNumber(a.x, 0) + '" y1="' + safeNumber(a.cul, 0) + '" x2="' + safeNumber(b.x, 0) + '" y2="' + safeNumber(b.cul, 0) + '" stroke="#8B6914" stroke-width="1" stroke-dasharray="5,3" opacity="0.4" class="tldash" data-i="' + i + '" data-dim="cul" style="cursor:pointer"/>';
+      s += '<line x1="' + formatCoord(aPoint.x) + '" y1="' + formatCoord(aPoint.pol) + '" x2="' + formatCoord(bPoint.x) + '" y2="' + formatCoord(bPoint.pol) + '" stroke="#C0392B" stroke-width="1" stroke-dasharray="5,3" opacity="0.4" class="tldash" data-i="' + i + '" data-dim="pol" style="cursor:pointer"/>';
+      s += '<line x1="' + formatCoord(aPoint.x) + '" y1="' + formatCoord(aPoint.eco) + '" x2="' + formatCoord(bPoint.x) + '" y2="' + formatCoord(bPoint.eco) + '" stroke="#27AE60" stroke-width="1" stroke-dasharray="5,3" opacity="0.4" class="tldash" data-i="' + i + '" data-dim="eco" style="cursor:pointer"/>';
+      s += '<line x1="' + formatCoord(aPoint.x) + '" y1="' + formatCoord(aPoint.cul) + '" x2="' + formatCoord(bPoint.x) + '" y2="' + formatCoord(bPoint.cul) + '" stroke="#8B6914" stroke-width="1" stroke-dasharray="5,3" opacity="0.4" class="tldash" data-i="' + i + '" data-dim="cul" style="cursor:pointer"/>';
     }
 
-    events.forEach(function (d, index) {
-      s += '<circle cx="' + safeNumber(d.x, 0) + '" cy="' + safeNumber(d.pol, 0) + '" r="6" fill="#C0392B" opacity="0.85" stroke="#fff" stroke-width="1" class="tlevt" data-i="' + index + '" style="cursor:pointer"/>';
-      s += '<text x="' + safeNumber(d.x, 0) + '" y="' + (safeNumber(d.pol, 0) - 10) + '" font-size="8" text-anchor="middle" fill="#C0392B" font-weight="700">' + escapeHtml(d.name) + '</text>';
-      s += '<text x="' + safeNumber(d.x, 0) + '" y="' + (safeNumber(d.pol, 0) - 20) + '" font-size="7" text-anchor="middle" fill="#8A7A6A">' + escapeHtml(d.year) + '</text>';
-      s += '<circle cx="' + safeNumber(d.x, 0) + '" cy="' + safeNumber(d.eco, 0) + '" r="5" fill="#27AE60" opacity="0.85" stroke="#fff" stroke-width="1"/>';
-      s += '<circle cx="' + safeNumber(d.x, 0) + '" cy="' + safeNumber(d.cul, 0) + '" r="4" fill="#8B6914" opacity="0.85" stroke="#fff" stroke-width="1"/>';
+    points.forEach(function (point, index) {
+      var d = point.eventItem;
+      s += '<circle cx="' + formatCoord(point.x) + '" cy="' + formatCoord(point.pol) + '" r="6" fill="#C0392B" opacity="0.85" stroke="#fff" stroke-width="1" class="tlevt" data-i="' + index + '" style="cursor:pointer"/>';
+      s += '<text x="' + formatCoord(point.x) + '" y="' + formatCoord(point.pol - 10) + '" font-size="8" text-anchor="middle" fill="#C0392B" font-weight="700">' + escapeHtml(d.name) + '</text>';
+      s += '<text x="' + formatCoord(point.x) + '" y="' + formatCoord(point.pol - 20) + '" font-size="7" text-anchor="middle" fill="#8A7A6A">' + escapeHtml(d.year) + '</text>';
+      s += '<circle cx="' + formatCoord(point.x) + '" cy="' + formatCoord(point.eco) + '" r="5" fill="#27AE60" opacity="0.85" stroke="#fff" stroke-width="1"/>';
+      s += '<circle cx="' + formatCoord(point.x) + '" cy="' + formatCoord(point.cul) + '" r="4" fill="#8B6914" opacity="0.85" stroke="#fff" stroke-width="1"/>';
     });
-    s += '<text x="' + (x0 + (w) / 2) + '" y="' + (y1 + 40) + '" font-size="8" fill="#8A7A6A" text-anchor="middle">🔴政治  🟢经济  🟤文化  |  从秦至清，政治集权逐步增强，经济与文化同步演进</text>';
-    s += '<text x="' + (x0 + (w) / 2) + '" y="' + (y1 + 53) + '" font-size="7" fill="#C0392B" text-anchor="middle" opacity="0.7">点按虚线上每段可查看事件间相互作用</text>';
+    s += '<text x="' + plotCenter + '" y="' + (y1 + 40) + '" font-size="8" fill="#8A7A6A" text-anchor="middle">🔴政治  🟢经济  🟤文化  |  从秦至清，政治集权逐步增强，经济与文化同步演进</text>';
+    s += '<text x="' + plotCenter + '" y="' + (y1 + 53) + '" font-size="7" fill="#C0392B" text-anchor="middle" opacity="0.7">点按虚线上每段可查看事件间相互作用</text>';
     s += '</svg>';
     c.innerHTML = s;
     applyTimelineTransform();
@@ -232,7 +304,7 @@
     renderTimeline();
     renderEventList();
     if (typeof window.showToast === 'function') {
-      window.showToast(dir > 0 ? '放大时间跨度：查看细节' : '缩小时间跨度：查看全景');
+      window.showToast(dir > 0 ? '放大时间轴：查看细节' : '缩小时间轴：查看全景');
     }
   }
 

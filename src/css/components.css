@@ -4,9 +4,9 @@
 .tc{padding:16px;overflow:auto}.dt{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .dtab{padding:6px 14px;border-radius:14px;border:1.5px solid #EDE8E0;background:#fff;color:#2C1810;font-size:12px;cursor:pointer;transition:all .2s;font-weight:500}
 .dtab.act{background:#2C1810;color:#fff;border-color:#2C1810;font-weight:600}
-.cc{background:#fff;border-radius:16px;padding:12px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.04);overflow:hidden;cursor:grab;transition:box-shadow .3s}
+.cc{background:#fff;border-radius:16px;padding:12px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.04);overflow:hidden;cursor:grab;transition:box-shadow .3s;touch-action:none}
 .cc:active{cursor:grabbing;box-shadow:0 4px 16px rgba(0,0,0,.08)}
-.cc svg{width:100%;min-width:350px;transition:transform .4s ease}
+.cc svg{display:block;width:100%;max-width:100%;min-width:0;height:auto}
 .cc.dragging svg{transition:none}
 /* 事件列表 */
 .evl{background:#fff;border-radius:16px;padding:12px 16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.04);max-height:300px;overflow-y:auto}

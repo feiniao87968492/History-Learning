@@ -8,6 +8,13 @@ const EVENTS = [
   { id: 'zhenguan', dynasty: 'suitang', name: '贞观之治', year: '627年', x: 220, pol: 250, eco: 240, cul: 210, description: '盛世治理。' }
 ];
 
+function getViewBoxNumbers() {
+  return document.querySelector('#coord-chart svg')
+    .getAttribute('viewBox')
+    .split(/\s+/)
+    .map(Number);
+}
+
 function mountTimelineDOM() {
   mountDOM(`
     <div id="dynasty-tabs">
@@ -49,6 +56,88 @@ describe('timeline module drag and zoom bounds', () => {
 
     for (var j = 0; j < 20; j += 1) window.timelineAPI.zoomTL(-1);
     expect(window.timelineAPI.getTimelineState().zoom).toBe(-3);
+  });
+
+  test('zoomTL uses intuitive viewBox semantics for zoom in and out', async () => {
+    await import('../src/js/timeline.js');
+    window.timelineAPI.setTimelineEvents(EVENTS);
+    window.timelineAPI.renderTimeline();
+
+    var initial = getViewBoxNumbers();
+
+    window.timelineAPI.zoomTL(1);
+    var zoomedIn = getViewBoxNumbers();
+    expect(zoomedIn[2]).toBeLessThan(initial[2]);
+    expect(zoomedIn[3]).toBeLessThan(initial[3]);
+    expect(window.showToast).toHaveBeenLastCalledWith('放大时间轴：查看细节');
+
+    window.timelineAPI.zoomTL(-1);
+    var backToInitial = getViewBoxNumbers();
+    expect(backToInitial[2]).toBeCloseTo(initial[2], 5);
+    expect(backToInitial[3]).toBeCloseTo(initial[3], 5);
+
+    window.timelineAPI.zoomTL(-1);
+    var zoomedOut = getViewBoxNumbers();
+    expect(zoomedOut[2]).toBeGreaterThan(initial[2]);
+    expect(zoomedOut[3]).toBeGreaterThan(initial[3]);
+    expect(window.showToast).toHaveBeenLastCalledWith('缩小时间轴：查看全景');
+  });
+
+  test('filtered dynasty events are spread across the chart width', async () => {
+    await import('../src/js/timeline.js');
+    window.timelineAPI.setDynasties(['qin', 'han', 'suitang']);
+    window.timelineAPI.setTimelineEvents(EVENTS);
+    window.timelineAPI.renderTimeline();
+
+    var nodes = Array.prototype.slice.call(document.querySelectorAll('#coord-chart .tlevt'));
+    var firstX = Number(nodes[0].getAttribute('cx'));
+    var secondX = Number(nodes[1].getAttribute('cx'));
+
+    expect(nodes).toHaveLength(2);
+    expect(firstX).toBeGreaterThanOrEqual(60);
+    expect(secondX).toBeLessThanOrEqual(400);
+    expect(secondX - firstX).toBeGreaterThan(200);
+  });
+
+  test('causal lines connect to normalized node positions', async () => {
+    await import('../src/js/timeline.js');
+    window.timelineAPI.setTimelineEvents(EVENTS);
+    window.timelineAPI.renderTimeline();
+
+    var nodes = Array.prototype.slice.call(document.querySelectorAll('#coord-chart .tlevt'));
+    var line = document.querySelector('#coord-chart .tldash[data-dim="pol"]');
+
+    expect(Number(line.getAttribute('x1'))).toBeCloseTo(Number(nodes[0].getAttribute('cx')), 5);
+    expect(Number(line.getAttribute('y1'))).toBeCloseTo(Number(nodes[0].getAttribute('cy')), 5);
+    expect(Number(line.getAttribute('x2'))).toBeCloseTo(Number(nodes[1].getAttribute('cx')), 5);
+    expect(Number(line.getAttribute('y2'))).toBeCloseTo(Number(nodes[1].getAttribute('cy')), 5);
+  });
+
+  test('zoom keeps background guide geometry stable in chart coordinates', async () => {
+    await import('../src/js/timeline.js');
+    window.timelineAPI.setTimelineEvents(EVENTS);
+    window.timelineAPI.renderTimeline();
+
+    var line = document.querySelector('#coord-chart .tl-culture-line');
+    var before = ['x1', 'y1', 'x2', 'y2'].map(function (attr) { return line.getAttribute(attr); }).join(',');
+
+    window.timelineAPI.zoomTL(1);
+
+    line = document.querySelector('#coord-chart .tl-culture-line');
+    var after = ['x1', 'y1', 'x2', 'y2'].map(function (attr) { return line.getAttribute(attr); }).join(',');
+    expect(after).toBe(before);
+  });
+
+  test('single visible dynasty event renders near the chart center', async () => {
+    await import('../src/js/timeline.js');
+    window.timelineAPI.setDynasties(['qin', 'han', 'suitang']);
+    window.timelineAPI.setTimelineEvents(EVENTS);
+
+    window.timelineAPI.selDyn('han', document.querySelectorAll('#dynasty-tabs .dtab')[1]);
+
+    var node = document.querySelector('#coord-chart .tlevt');
+    expect(Number(node.getAttribute('cx'))).toBeGreaterThan(210);
+    expect(Number(node.getAttribute('cx'))).toBeLessThan(250);
   });
 
   test('drag handlers clamp offsets so the chart cannot disappear', async () => {

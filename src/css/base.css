@@ -94,6 +94,7 @@ body{font-family:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;backgro
 
 /* 子页面 */
 .sub{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:420px;height:100vh;background:#FAF8F5;z-index:50;overflow-y:auto;display:none;flex-direction:column}
+#timeline-page.sub{max-width:720px}
 .sub.act{display:flex}.sh{background:#FAF8F5;padding:50px 16px 12px;display:flex;align-items:center;gap:12px;color:#2C1810;position:sticky;top:0;z-index:10;border-bottom:1px solid #EDE8E0}
 .sh .bk{background:#EDE8E0;border:none;color:#2C1810;font-size:16px;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .sh h2{font-size:17px;font-weight:700}
