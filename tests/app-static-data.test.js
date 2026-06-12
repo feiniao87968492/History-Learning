@@ -119,6 +119,18 @@ beforeEach(() => {
     renderTimeline: vi.fn(),
     renderEventList: vi.fn()
   };
+  window.peopleAPI = {
+    setPeopleData: vi.fn(),
+    renderPeopleGraph: vi.fn()
+  };
+  window.mindmapAPI = {
+    setMindmapData: vi.fn(),
+    renderAllMindmaps: vi.fn(),
+    swMind: vi.fn(),
+    openNode: vi.fn(),
+    saveNode: vi.fn(),
+    closeNodeNote: vi.fn()
+  };
   window.podcastAPI = { setPodcasts: vi.fn() };
   window.filmAPI = {
     setFilms: vi.fn(),
@@ -201,5 +213,29 @@ describe('app static content data wiring', () => {
     expect(document.querySelector('#discuss-page .pcard h4')?.textContent).toContain('科举制和高考');
     expect(document.querySelectorAll('#profile-page .mg')[0].textContent).toContain('学习记录');
     expect(document.querySelectorAll('#profile-page .mg')[1].textContent).toContain('问题反馈');
+  });
+
+  test('loads people and mindmap datasets into Phase 4 modules', async () => {
+    const people = { people: [{ id: 'wu-zetian', name: '武则天' }], relations: [] };
+    const mindmaps = { maps: { china: { id: 'china', nodes: [] } } };
+
+    global.fetch = vi.fn(async (path) => {
+      if (path.endsWith('nouns.json')) return { ok: true, json: async () => ({}) };
+      if (path.endsWith('timeline.json')) return { ok: true, json: async () => ({ dynasties: [], events: [] }) };
+      if (path.endsWith('people.json')) return { ok: true, json: async () => people };
+      if (path.endsWith('mindmaps.json')) return { ok: true, json: async () => mindmaps };
+      if (path.endsWith('podcasts.json')) return { ok: true, json: async () => [] };
+      if (path.endsWith('films.json')) return { ok: true, json: async () => [] };
+      if (path.endsWith('rankings.json')) return { ok: true, json: async () => ({ book: [], film: [], doc: [] }) };
+      return { ok: true, json: async () => [] };
+    });
+
+    await import('../src/js/app.js');
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(window.peopleAPI.setPeopleData).toHaveBeenCalledWith(people);
+    expect(window.peopleAPI.renderPeopleGraph).toHaveBeenCalled();
+    expect(window.mindmapAPI.setMindmapData).toHaveBeenCalledWith(mindmaps);
+    expect(window.mindmapAPI.renderAllMindmaps).toHaveBeenCalled();
   });
 });
