@@ -1,5 +1,12 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { mountDOM, resetGlobals } from './helpers/dom-test-utils.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const projectRoot = path.resolve(__dirname, '..');
 
 const MINDMAPS = {
   maps: {
@@ -125,5 +132,80 @@ describe('mindmap module', () => {
     expect(document.querySelector('#mm-china script')).toBeNull();
     expect(window.__mindXss).toBeUndefined();
     expect(document.getElementById('mm-china').innerHTML).toContain('&lt;script&gt;window.__mindXss = true&lt;/script&gt;');
+  });
+
+  test('index.html keeps mindmap preset containers empty for JSON-driven rendering', () => {
+    const html = fs.readFileSync(path.join(projectRoot, 'index.html'), 'utf8');
+
+    expect(html).toContain('<div id="mm-china" class="mc" style="position:relative;height:450px"></div>');
+    expect(html).toContain('<div id="mm-world" class="mc" style="display:none;position:relative;height:450px"></div>');
+    expect(html).not.toContain('onclick="openNode(\'中国通史\')"');
+    expect(html).not.toContain('onclick="openNode(\'世界史\')"');
+  });
+
+  test('exposes global compatibility functions for existing inline event calls', async () => {
+    await import('../src/js/mindmap.js');
+
+    expect(window.swMind).toBe(window.mindmapAPI.swMind);
+    expect(window.openNode).toBe(window.mindmapAPI.openNode);
+    expect(window.saveNode).toBe(window.mindmapAPI.saveNode);
+    expect(window.closeNodeNote).toBe(window.mindmapAPI.closeNodeNote);
+  });
+
+  test('closeNodeNote hides the note panel', async () => {
+    await import('../src/js/mindmap.js');
+    document.getElementById('node-note-panel').style.display = 'flex';
+
+    window.mindmapAPI.closeNodeNote();
+
+    expect(document.getElementById('node-note-panel').style.display).toBe('none');
+  });
+
+  test('renderAllMindmaps renders every configured preset map', async () => {
+    await import('../src/js/mindmap.js');
+    window.mindmapAPI.setMindmapData(MINDMAPS);
+
+    window.mindmapAPI.renderAllMindmaps();
+
+    expect(document.querySelectorAll('#mm-china .mn')).toHaveLength(3);
+    expect(document.querySelectorAll('#mm-world .mn')).toHaveLength(2);
+  });
+
+  test('renders empty state for missing map data', async () => {
+    await import('../src/js/mindmap.js');
+    window.mindmapAPI.setMindmapData({ maps: { china: { id: 'china', nodes: [] } } });
+
+    window.mindmapAPI.renderMindmap('china');
+
+    expect(document.getElementById('mm-china').textContent).toContain('暂无导图数据');
+  });
+
+  test('custom tab shows a disabled preview instead of a development toast', async () => {
+    await import('../src/js/mindmap.js');
+    window.mindmapAPI.setMindmapData(MINDMAPS);
+
+    window.mindmapAPI.swMind(document.querySelectorAll('#mindmap-tabs .mtab')[2], 'custom');
+
+    expect(document.querySelectorAll('#mindmap-tabs .mtab')[2].classList.contains('act')).toBe(true);
+    expect(document.getElementById('mm-custom').style.display).toBe('flex');
+    expect(document.getElementById('mm-custom').textContent).toContain('自定义导图编辑器将在后续版本开放');
+    expect(window.navigationAPI.showToast).not.toHaveBeenCalledWith(expect.stringContaining('开发中'));
+  });
+
+  test('escapes node ids and coordinates before writing HTML attributes', async () => {
+    await import('../src/js/mindmap.js');
+    window.mindmapAPI.setMindmapData({ maps: { china: { id: 'china', nodes: [
+      { id: 'evil" onclick="window.__mindIdXss=true', label: '安全标签', root: true, x: '10" onmouseover="window.__mindXXss=true', y: '20" onmouseover="window.__mindYXss=true' }
+    ] } } });
+
+    window.mindmapAPI.renderMindmap('china');
+
+    expect(document.getElementById('mm-china').querySelector('[onclick]')).toBeNull();
+    expect(document.getElementById('mm-china').innerHTML).not.toContain('window.__mindIdXss=true');
+    expect(document.getElementById('mm-china').innerHTML).not.toContain('window.__mindXXss=true');
+    expect(document.getElementById('mm-china').innerHTML).not.toContain('window.__mindYXss=true');
+    expect(window.__mindIdXss).toBeUndefined();
+    expect(window.__mindXXss).toBeUndefined();
+    expect(window.__mindYXss).toBeUndefined();
   });
 });

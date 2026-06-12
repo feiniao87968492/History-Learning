@@ -21,6 +21,16 @@
       .replace(/'/g, '&#39;');
   }
 
+  function safeNumber(value, fallbackValue) {
+    var num = Number(value);
+    return isFinite(num) ? num : fallbackValue;
+  }
+
+  function safeNodeToken(value, index) {
+    var text = value === null || typeof value === 'undefined' ? '' : String(value);
+    return /^[A-Za-z0-9_-]+$/.test(text) ? text : 'node-' + index;
+  }
+
   function showToast(message) {
     if (window.navigationAPI && typeof window.navigationAPI.showToast === 'function') {
       window.navigationAPI.showToast(message);
@@ -70,7 +80,7 @@
     nodes.forEach(function (node) {
       var parent = node.parent ? byId[node.parent] : null;
       if (!parent) return;
-      links += '<line x1="' + escapeHtml(parent.x + 35) + '" y1="' + escapeHtml(parent.y + 35) + '" x2="' + escapeHtml(node.x + 35) + '" y2="' + escapeHtml(node.y + 35) + '" stroke="#D4A843" stroke-width="2"/>';
+      links += '<line x1="' + (safeNumber(parent.x, 0) + 35) + '" y1="' + (safeNumber(parent.y, 0) + 35) + '" x2="' + (safeNumber(node.x, 0) + 35) + '" y2="' + (safeNumber(node.y, 0) + 35) + '" stroke="#D4A843" stroke-width="2"/>';
     });
 
     return '<svg style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none">' + links + '</svg>';
@@ -90,9 +100,10 @@
 
     nodes = map.nodes;
     html = renderLinks(nodes);
-    html += nodes.map(function (node) {
+    html += nodes.map(function (node, index) {
       var cls = node.root ? 'mn rt' : 'mn';
-      return '<div class="' + cls + '" data-mindmap-node="' + escapeHtml(node.id || '') + '" style="left:' + escapeHtml(node.x || 0) + 'px;top:' + escapeHtml(node.y || 0) + 'px">' + escapeHtml(node.label || '') + '</div>';
+      var token = safeNodeToken(node.id, index);
+      return '<div class="' + cls + '" data-mindmap-node="' + token + '" style="left:' + safeNumber(node.x, 0) + 'px;top:' + safeNumber(node.y, 0) + 'px">' + escapeHtml(node.label || '') + '</div>';
     }).join('');
 
     root.innerHTML = html;
