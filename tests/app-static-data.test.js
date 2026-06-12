@@ -155,11 +155,11 @@ beforeEach(() => {
 describe('app static content data wiring', () => {
   test('does not fetch quiz questions when quiz module is unavailable', async () => {
     global.fetch = vi.fn(async (path) => {
-      if (path.endsWith('nouns.json')) return { ok: true, json: async () => ({}) };
-      if (path.endsWith('timeline.json')) return { ok: true, json: async () => ({ dynasties: [], events: [] }) };
-      if (path.endsWith('podcasts.json')) return { ok: true, json: async () => [] };
-      if (path.endsWith('films.json')) return { ok: true, json: async () => [] };
-      if (path.endsWith('rankings.json')) return { ok: true, json: async () => ({ book: [], film: [], doc: [] }) };
+      if (path.indexOf('nouns.json') !== -1) return { ok: true, json: async () => ({}) };
+      if (path.indexOf('timeline.json') !== -1) return { ok: true, json: async () => ({ dynasties: [], events: [] }) };
+      if (path.indexOf('podcasts.json') !== -1) return { ok: true, json: async () => [] };
+      if (path.indexOf('films.json') !== -1) return { ok: true, json: async () => [] };
+      if (path.indexOf('rankings.json') !== -1) return { ok: true, json: async () => ({ book: [], film: [], doc: [] }) };
       return { ok: true, json: async () => [] };
     });
     delete window.quizAPI;
@@ -172,13 +172,13 @@ describe('app static content data wiring', () => {
 
   test('loads meme and feedback datasets and renders them into the shell containers', async () => {
     global.fetch = vi.fn(async (path) => {
-      if (path.endsWith('nouns.json')) return { ok: true, json: async () => ({}) };
-      if (path.endsWith('timeline.json')) return { ok: true, json: async () => ({ dynasties: [], events: [] }) };
-      if (path.endsWith('podcasts.json')) return { ok: true, json: async () => [] };
-      if (path.endsWith('films.json')) return { ok: true, json: async () => [] };
-      if (path.endsWith('rankings.json')) return { ok: true, json: async () => ({ book: [], film: [], doc: [] }) };
-      if (path.endsWith('memes.json')) return { ok: true, json: async () => MEMES };
-      if (path.endsWith('feedback-types.json')) return { ok: true, json: async () => FEEDBACK_TYPES };
+      if (path.indexOf('nouns.json') !== -1) return { ok: true, json: async () => ({}) };
+      if (path.indexOf('timeline.json') !== -1) return { ok: true, json: async () => ({ dynasties: [], events: [] }) };
+      if (path.indexOf('podcasts.json') !== -1) return { ok: true, json: async () => [] };
+      if (path.indexOf('films.json') !== -1) return { ok: true, json: async () => [] };
+      if (path.indexOf('rankings.json') !== -1) return { ok: true, json: async () => ({ book: [], film: [], doc: [] }) };
+      if (path.indexOf('memes.json') !== -1) return { ok: true, json: async () => MEMES };
+      if (path.indexOf('feedback-types.json') !== -1) return { ok: true, json: async () => FEEDBACK_TYPES };
       return { ok: true, json: async () => [] };
     });
 
@@ -192,16 +192,16 @@ describe('app static content data wiring', () => {
 
   test('loads hot articles, discussions, and profile menu datasets into their shell containers', async () => {
     global.fetch = vi.fn(async (path) => {
-      if (path.endsWith('nouns.json')) return { ok: true, json: async () => ({}) };
-      if (path.endsWith('timeline.json')) return { ok: true, json: async () => ({ dynasties: [], events: [] }) };
-      if (path.endsWith('podcasts.json')) return { ok: true, json: async () => [] };
-      if (path.endsWith('films.json')) return { ok: true, json: async () => [] };
-      if (path.endsWith('rankings.json')) return { ok: true, json: async () => ({ book: [], film: [], doc: [] }) };
-      if (path.endsWith('memes.json')) return { ok: true, json: async () => [] };
-      if (path.endsWith('feedback-types.json')) return { ok: true, json: async () => [] };
-      if (path.endsWith('discussions.json')) return { ok: true, json: async () => DISCUSSIONS };
-      if (path.endsWith('hot-articles.json')) return { ok: true, json: async () => HOT_ARTICLES };
-      if (path.endsWith('profile-menu.json')) return { ok: true, json: async () => PROFILE_MENU };
+      if (path.indexOf('nouns.json') !== -1) return { ok: true, json: async () => ({}) };
+      if (path.indexOf('timeline.json') !== -1) return { ok: true, json: async () => ({ dynasties: [], events: [] }) };
+      if (path.indexOf('podcasts.json') !== -1) return { ok: true, json: async () => [] };
+      if (path.indexOf('films.json') !== -1) return { ok: true, json: async () => [] };
+      if (path.indexOf('rankings.json') !== -1) return { ok: true, json: async () => ({ book: [], film: [], doc: [] }) };
+      if (path.indexOf('memes.json') !== -1) return { ok: true, json: async () => [] };
+      if (path.indexOf('feedback-types.json') !== -1) return { ok: true, json: async () => [] };
+      if (path.indexOf('discussions.json') !== -1) return { ok: true, json: async () => DISCUSSIONS };
+      if (path.indexOf('hot-articles.json') !== -1) return { ok: true, json: async () => HOT_ARTICLES };
+      if (path.indexOf('profile-menu.json') !== -1) return { ok: true, json: async () => PROFILE_MENU };
       return { ok: true, json: async () => [] };
     });
 
@@ -220,13 +220,13 @@ describe('app static content data wiring', () => {
     const mindmaps = { maps: { china: { id: 'china', nodes: [] } } };
 
     global.fetch = vi.fn(async (path) => {
-      if (path.endsWith('nouns.json')) return { ok: true, json: async () => ({}) };
-      if (path.endsWith('timeline.json')) return { ok: true, json: async () => ({ dynasties: [], events: [] }) };
-      if (path.endsWith('people.json')) return { ok: true, json: async () => people };
-      if (path.endsWith('mindmaps.json')) return { ok: true, json: async () => mindmaps };
-      if (path.endsWith('podcasts.json')) return { ok: true, json: async () => [] };
-      if (path.endsWith('films.json')) return { ok: true, json: async () => [] };
-      if (path.endsWith('rankings.json')) return { ok: true, json: async () => ({ book: [], film: [], doc: [] }) };
+      if (path.indexOf('nouns.json') !== -1) return { ok: true, json: async () => ({}) };
+      if (path.indexOf('timeline.json') !== -1) return { ok: true, json: async () => ({ dynasties: [], events: [] }) };
+      if (path.indexOf('people.json') !== -1) return { ok: true, json: async () => people };
+      if (path.indexOf('mindmaps.json') !== -1) return { ok: true, json: async () => mindmaps };
+      if (path.indexOf('podcasts.json') !== -1) return { ok: true, json: async () => [] };
+      if (path.indexOf('films.json') !== -1) return { ok: true, json: async () => [] };
+      if (path.indexOf('rankings.json') !== -1) return { ok: true, json: async () => ({ book: [], film: [], doc: [] }) };
       return { ok: true, json: async () => [] };
     });
 

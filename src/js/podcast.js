@@ -126,12 +126,23 @@
     clearInterval(plTimer);
   }
 
-  function onAudioError() {
+  function resetPlayingState() {
     isPlaying = false;
-    hasAudioSource = false;
     var playButton = document.getElementById('pl-playbtn');
     if (playButton) playButton.textContent = '▶';
     clearInterval(plTimer);
+  }
+
+  function pauseAudioIfNeeded() {
+    var audio = getAudioAPI();
+    if (audio && hasAudioSource && typeof audio.pause === 'function') {
+      audio.pause();
+    }
+  }
+
+  function onAudioError() {
+    resetPlayingState();
+    hasAudioSource = false;
     showToast('音频加载失败，请稍后重试');
   }
 
@@ -147,10 +158,12 @@
 
   function openPlayer(idx) {
     var d = podcastData[idx];
+    var audio;
     if (!d) return;
+    pauseAudioIfNeeded();
     curPodcast = idx;
     plCur = 0;
-    isPlaying = false;
+    resetPlayingState();
     hasAudioSource = false;
     bindAudioEvents();
     var colors = Array.isArray(d.colors) ? d.colors : [];
@@ -162,8 +175,12 @@
     document.getElementById('pl-cur').textContent = '00:00';
     document.getElementById('pl-prog').style.width = '0%';
     document.getElementById('pl-playbtn').textContent = '▶';
-    if (window.audioAPI && d.audioUrl) {
-      hasAudioSource = window.audioAPI.setSource(d.audioUrl);
+    audio = getAudioAPI();
+    if (audio && d.audioUrl) {
+      hasAudioSource = audio.setSource(d.audioUrl);
+      if (hasAudioSource && typeof audio.setPlaybackRate === 'function') {
+        audio.setPlaybackRate(plSpeed);
+      }
       if (!hasAudioSource) {
         onAudioError();
       }
@@ -173,20 +190,39 @@
   }
 
   function closePlayer() {
+    pauseAudioIfNeeded();
     document.getElementById('podcast-player').classList.remove('act');
-    isPlaying = false;
-    clearInterval(plTimer);
+    resetPlayingState();
+  }
+
+  function handlePlayRejected() {
+    pauseAudioIfNeeded();
+    resetPlayingState();
+    showToast('音频加载失败，请稍后重试');
   }
 
   function togglePlay() {
+    var audio = getAudioAPI();
+    var playResult;
     isPlaying = !isPlaying;
     document.getElementById('pl-playbtn').textContent = isPlaying ? '⏸️' : '▶';
 
-    if (hasAudioSource && window.audioAPI) {
+    if (hasAudioSource && audio) {
       if (isPlaying) {
-        window.audioAPI.play();
+        playResult = audio.play();
+        if (playResult === false) {
+          handlePlayRejected();
+          return;
+        }
+        if (playResult && typeof playResult.then === 'function') {
+          playResult.then(function (value) {
+            if (value === false) {
+              handlePlayRejected();
+            }
+          }, handlePlayRejected);
+        }
       } else {
-        window.audioAPI.pause();
+        audio.pause();
       }
       return;
     }
@@ -226,10 +262,14 @@
 
   function toggleSpeed() {
     var index = SPEEDS.indexOf(plSpeed);
+    var audio = getAudioAPI();
     plSpeed = SPEEDS[(index + 1) % SPEEDS.length];
     var speedButton = document.getElementById('pl-speed');
     if (speedButton) {
       speedButton.textContent = plSpeed.toFixed(plSpeed % 1 === 0 ? 1 : 2).replace(/0$/, '') + 'x';
+    }
+    if (audio && hasAudioSource && typeof audio.setPlaybackRate === 'function') {
+      audio.setPlaybackRate(plSpeed);
     }
     if (isPlaying && !hasAudioSource) {
       startPlayProgress();

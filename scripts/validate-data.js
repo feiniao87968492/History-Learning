@@ -8,6 +8,51 @@ var projectRoot = path.resolve(__dirname, '..');
 var dataDir = path.join(projectRoot, 'src', 'data');
 var results = [];
 
+var PHASE5_TARGETS = {
+  nouns: 50,
+  timeline: 40,
+  people: 30,
+  mediaPerType: 15,
+  questions: 30,
+  hotArticles: 10,
+  podcasts: 5
+};
+
+var PEOPLE_RELATION_TYPES = {
+  career: true,
+  family: true,
+  teacher: true,
+  friend: true,
+  political: true
+};
+
+var TIMELINE_DYNASTIES = {
+  qin: true,
+  han: true,
+  suitang: true,
+  song: true,
+  ming: true,
+  qing: true
+};
+
+var NOUN_CATEGORIES = {
+  制度: true,
+  经济: true,
+  改革: true,
+  交流: true,
+  思想: true,
+  文化: true,
+  事件: true,
+  军事: true
+};
+
+var DISCUSSION_CATEGORIES = {
+  view: true,
+  cold: true,
+  help: true,
+  resource: true
+};
+
 function addResult(level, file, message) {
   results.push({
     level: level,
@@ -55,42 +100,14 @@ function isBlank(value) {
   return value === null || typeof value === 'undefined' || String(value).trim() === '';
 }
 
-function validateNouns(data, fileName) {
-  var nounNames;
+function hasUnsafeHtml(value) {
+  return typeof value === 'string' && /<\s*\/?\s*(script|img|iframe|object|embed|svg|math)\b|on\w+\s*=|javascript:/i.test(value);
+}
 
-  if (!data || typeof data !== 'object' || Array.isArray(data)) {
-    addResult('ERROR', fileName, 'expected object map of noun entries');
-    return;
+function validateTextSafety(fileName, label, value) {
+  if (hasUnsafeHtml(value)) {
+    addResult('ERROR', fileName, label + ' contains unsafe HTML-like content');
   }
-
-  nounNames = Object.keys(data);
-
-  nounNames.forEach(function (nounName) {
-    var entry = data[nounName];
-
-    if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
-      addResult('ERROR', fileName, 'entry "' + nounName + '" must be an object');
-      return;
-    }
-
-    ['text', 'dynasty', 'category'].forEach(function (fieldName) {
-      if (isBlank(entry[fieldName])) {
-        addResult('ERROR', fileName, 'entry "' + nounName + '" missing field: ' + fieldName);
-      }
-    });
-
-    if (typeof entry.related !== 'undefined') {
-      if (!Array.isArray(entry.related)) {
-        addResult('ERROR', fileName, 'entry "' + nounName + '" field "related" must be an array');
-      } else {
-        entry.related.forEach(function (relatedName) {
-          if (!Object.prototype.hasOwnProperty.call(data, relatedName)) {
-            addResult('ERROR', fileName, 'entry "' + nounName + '" related target not found: ' + relatedName);
-          }
-        });
-      }
-    }
-  });
 }
 
 function isValidNumber(value) {
@@ -101,12 +118,117 @@ function inRange(value, min, max) {
   return value >= min && value <= max;
 }
 
+function addDuplicateError(fileName, kind, value) {
+  addResult('ERROR', fileName, 'duplicate ' + kind + ': ' + value);
+}
+
+function validateUniqueValue(fileName, seen, kind, value) {
+  if (isBlank(value)) {
+    return;
+  }
+
+  if (seen[value]) {
+    addDuplicateError(fileName, kind, value);
+  } else {
+    seen[value] = true;
+  }
+}
+
+function isValidUrl(value) {
+  try {
+    var parsed = new URL(value);
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+  } catch (error) {
+    return false;
+  }
+}
+
+function localAudioPathExists(audioUrl) {
+  var localPath;
+
+  if (isBlank(audioUrl)) {
+    return false;
+  }
+
+  if (/^https?:\/\//i.test(audioUrl)) {
+    return true;
+  }
+
+  localPath = String(audioUrl).replace(/^\.\//, '');
+  return fs.existsSync(path.join(projectRoot, localPath));
+}
+
+function validateNouns(data, fileName) {
+  var nounNames;
+
+  if (!data || typeof data !== 'object' || Array.isArray(data)) {
+    addResult('ERROR', fileName, 'expected object map of noun entries');
+    return;
+  }
+
+  nounNames = Object.keys(data);
+  if (fileName === 'nouns.json' && nounNames.length < PHASE5_TARGETS.nouns) {
+    addResult('ERROR', fileName, 'noun count must be at least ' + PHASE5_TARGETS.nouns + ' for Phase 5');
+  }
+
+  nounNames.forEach(function (nounName) {
+    var entry = data[nounName];
+
+    validateTextSafety(fileName, 'entry "' + nounName + '" name', nounName);
+
+    if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
+      addResult('ERROR', fileName, 'entry "' + nounName + '" must be an object');
+      return;
+    }
+
+    ['text', 'dynasty', 'category', 'map', 'year'].forEach(function (fieldName) {
+      if (isBlank(entry[fieldName])) {
+        addResult('ERROR', fileName, 'entry "' + nounName + '" missing field: ' + fieldName);
+      }
+      validateTextSafety(fileName, 'entry "' + nounName + '" field "' + fieldName + '"', entry[fieldName]);
+    });
+
+    if (!isBlank(entry.category) && !NOUN_CATEGORIES[entry.category]) {
+      addResult('ERROR', fileName, 'entry "' + nounName + '" unsupported category: ' + entry.category);
+    }
+
+    if (!Array.isArray(entry.related)) {
+      addResult('ERROR', fileName, 'entry "' + nounName + '" field "related" must be an array');
+      return;
+    }
+
+    entry.related.forEach(function (relatedName) {
+      validateTextSafety(fileName, 'entry "' + nounName + '" related target', relatedName);
+
+      if (!Object.prototype.hasOwnProperty.call(data, relatedName)) {
+        addResult('ERROR', fileName, 'entry "' + nounName + '" related target not found: ' + relatedName);
+        return;
+      }
+
+      if (!data[relatedName] || !Array.isArray(data[relatedName].related) || data[relatedName].related.indexOf(nounName) === -1) {
+        addResult('ERROR', fileName, 'entry "' + nounName + '" related target not reciprocal: ' + relatedName);
+      }
+    });
+  });
+}
+
 function validateTimeline(data, fileName) {
-  var dynastyCounts = {};
+  var ids = {};
+  var names = {};
 
   if (!data || typeof data !== 'object' || Array.isArray(data)) {
     addResult('ERROR', fileName, 'expected object with dynasties and events');
     return;
+  }
+
+  if (!Array.isArray(data.dynasties)) {
+    addResult('ERROR', fileName, 'missing dynasties array');
+  } else {
+    data.dynasties.forEach(function (dynasty) {
+      if (!TIMELINE_DYNASTIES[dynasty]) {
+        addResult('ERROR', fileName, 'unsupported timeline dynasty: ' + dynasty);
+      }
+    });
   }
 
   if (!Array.isArray(data.events)) {
@@ -114,10 +236,8 @@ function validateTimeline(data, fileName) {
     return;
   }
 
-  if (Array.isArray(data.dynasties)) {
-    data.dynasties.forEach(function (dynasty) {
-      dynastyCounts[dynasty] = 0;
-    });
+  if (fileName === 'timeline.json' && data.events.length < PHASE5_TARGETS.timeline) {
+    addResult('ERROR', fileName, 'timeline event count must be at least ' + PHASE5_TARGETS.timeline + ' for Phase 5');
   }
 
   data.events.forEach(function (eventItem, index) {
@@ -125,10 +245,14 @@ function validateTimeline(data, fileName) {
       if (isBlank(eventItem[fieldName])) {
         addResult('ERROR', fileName, 'events[' + index + '] missing field: ' + fieldName);
       }
+      validateTextSafety(fileName, 'events[' + index + '] field "' + fieldName + '"', eventItem[fieldName]);
     });
 
-    if (!isBlank(eventItem.dynasty) && Object.prototype.hasOwnProperty.call(dynastyCounts, eventItem.dynasty)) {
-      dynastyCounts[eventItem.dynasty] += 1;
+    validateUniqueValue(fileName, ids, 'timeline event id', eventItem.id);
+    validateUniqueValue(fileName, names, 'timeline event name', eventItem.name);
+
+    if (!isBlank(eventItem.dynasty) && !TIMELINE_DYNASTIES[eventItem.dynasty]) {
+      addResult('ERROR', fileName, 'events[' + index + '] unsupported dynasty: ' + eventItem.dynasty);
     }
 
     [
@@ -146,24 +270,14 @@ function validateTimeline(data, fileName) {
         addResult('ERROR', fileName, 'events[' + index + '] out of range field: ' + field.key);
       }
     });
+
+    if (eventItem.conn && typeof eventItem.conn === 'object') {
+      ['next', 'pol', 'eco', 'cul'].forEach(function (fieldName) {
+        validateTextSafety(fileName, 'events[' + index + '] conn "' + fieldName + '"', eventItem.conn[fieldName]);
+      });
+    }
   });
-
-  if (Array.isArray(data.dynasties)) {
-    data.dynasties.forEach(function (dynasty) {
-      if (dynastyCounts[dynasty] < 3 || dynastyCounts[dynasty] > 5) {
-        addResult('ERROR', fileName, 'dynasty ' + dynasty + ' must have 3-5 timeline events for Phase 4');
-      }
-    });
-  }
 }
-
-var PEOPLE_RELATION_TYPES = {
-  career: true,
-  family: true,
-  teacher: true,
-  friend: true,
-  political: true
-};
 
 function getUndirectedRelationKey(relation) {
   var source = relation && relation.source ? String(relation.source) : '';
@@ -183,8 +297,14 @@ function validatePeople(data, fileName) {
       return;
     }
 
+    ['id', 'name', 'dynasty', 'summary', 'evaluation'].forEach(function (fieldName) {
+      if (isBlank(person[fieldName])) {
+        addResult('ERROR', fileName, 'people[' + index + '] missing field: ' + fieldName);
+      }
+      validateTextSafety(fileName, 'people[' + index + '] field "' + fieldName + '"', person[fieldName]);
+    });
+
     if (isBlank(person.id)) {
-      addResult('ERROR', fileName, 'people[' + index + '] missing field: id');
       return;
     }
 
@@ -192,6 +312,14 @@ function validatePeople(data, fileName) {
       addResult('ERROR', fileName, 'duplicate person id: ' + person.id);
     } else {
       ids[person.id] = true;
+    }
+
+    if (!Array.isArray(person.yearTable) || !person.yearTable.length) {
+      addResult('ERROR', fileName, 'people[' + index + '] missing yearTable array');
+    } else {
+      person.yearTable.forEach(function (item) {
+        validateTextSafety(fileName, 'people[' + index + '] yearTable item', item);
+      });
     }
   }
 
@@ -203,8 +331,8 @@ function validatePeople(data, fileName) {
   if (data && typeof data === 'object' && Array.isArray(data.people)) {
     data.people.forEach(validatePerson);
 
-    if (fileName === 'people.json' && (data.people.length < 10 || data.people.length > 15)) {
-      addResult('ERROR', fileName, 'people seed count must be between 10 and 15 for Phase 4');
+    if (fileName === 'people.json' && data.people.length < PHASE5_TARGETS.people) {
+      addResult('ERROR', fileName, 'people count must be at least ' + PHASE5_TARGETS.people + ' for Phase 5');
     }
 
     if (data.defaultCenter && !ids[data.defaultCenter]) {
@@ -227,6 +355,7 @@ function validatePeople(data, fileName) {
         if (isBlank(relation[fieldName])) {
           addResult('ERROR', fileName, 'relations[' + index + '] missing field: ' + fieldName);
         }
+        validateTextSafety(fileName, 'relations[' + index + '] field "' + fieldName + '"', relation[fieldName]);
       });
 
       if (!isBlank(relation.type) && !PEOPLE_RELATION_TYPES[relation.type]) {
@@ -265,33 +394,148 @@ function validatePeople(data, fileName) {
 
 function validateQuestions(data, fileName) {
   var ids = {};
+  var questions = {};
 
   if (!Array.isArray(data)) {
     addResult('ERROR', fileName, 'expected array of questions');
     return;
   }
 
+  if (fileName === 'questions.json' && data.length < PHASE5_TARGETS.questions) {
+    addResult('ERROR', fileName, 'question count must be at least ' + PHASE5_TARGETS.questions + ' for Phase 5');
+  }
+
   data.forEach(function (item, index) {
-    if (isBlank(item.id)) {
-      addResult('ERROR', fileName, 'questions[' + index + '] missing field: id');
-    } else if (ids[item.id]) {
-      addResult('ERROR', fileName, 'duplicate question id: ' + item.id);
-    } else {
-      ids[item.id] = true;
-    }
+    var answerCount;
+
+    ['id', 'question', 'answer', 'explanation', 'topic', 'dynasty'].forEach(function (fieldName) {
+      if (isBlank(item[fieldName])) {
+        addResult('ERROR', fileName, 'questions[' + index + '] missing field: ' + fieldName);
+      }
+      validateTextSafety(fileName, 'questions[' + index + '] field "' + fieldName + '"', item[fieldName]);
+    });
+
+    validateUniqueValue(fileName, ids, 'question id', item.id);
+    validateUniqueValue(fileName, questions, 'question text', item.question);
 
     if (!Array.isArray(item.options) || !item.options.length) {
       addResult('ERROR', fileName, 'questions[' + index + '] missing options array');
       return;
     }
 
-    if (item.options.indexOf(item.answer) === -1) {
-      addResult('ERROR', fileName, 'questions[' + index + '] answer not found in options');
+    if (item.options.length !== 4) {
+      addResult('ERROR', fileName, 'questions[' + index + '] options must contain exactly 4 items');
+    }
+
+    item.options.forEach(function (option) {
+      validateTextSafety(fileName, 'questions[' + index + '] option', option);
+    });
+
+    answerCount = item.options.filter(function (option) {
+      return option === item.answer;
+    }).length;
+
+    if (answerCount !== 1) {
+      addResult('ERROR', fileName, 'questions[' + index + '] answer must appear exactly once in options');
+    }
+  });
+}
+
+function validateNonNegativeCount(fileName, label, value) {
+  var text;
+
+  if (isBlank(value)) {
+    addResult('ERROR', fileName, label + ' missing count');
+    return null;
+  }
+
+  text = String(value).trim();
+  if (!/^\d+$/.test(text)) {
+    addResult('ERROR', fileName, label + ' invalid count: ' + value);
+    return null;
+  }
+
+  return parseInt(text, 10);
+}
+
+function validateDiscussions(data, fileName) {
+  var ids = {};
+  var titles = {};
+
+  if (!Array.isArray(data)) {
+    addResult('ERROR', fileName, 'expected array of discussion posts');
+    return;
+  }
+
+  if (fileName === 'discussions.json' && (data.length < 2 || data.length > 3)) {
+    addResult('ERROR', fileName, 'discussion seed count must be between 2 and 3 for Task 3.4');
+  }
+
+  data.forEach(function (post, index) {
+    var commentCount;
+
+    if (!post || typeof post !== 'object' || Array.isArray(post)) {
+      addResult('ERROR', fileName, 'posts[' + index + '] must be an object');
+      return;
+    }
+
+    ['id', 'category', 'author', 'avatar', 'time', 'title', 'body', 'likes', 'comments', 'favorite'].forEach(function (fieldName) {
+      if (isBlank(post[fieldName])) {
+        addResult('ERROR', fileName, 'posts[' + index + '] missing field: ' + fieldName);
+      }
+      validateTextSafety(fileName, 'posts[' + index + '] field "' + fieldName + '"', post[fieldName]);
+    });
+
+    validateUniqueValue(fileName, ids, 'discussion post id', post.id);
+    validateUniqueValue(fileName, titles, 'discussion post title', post.title);
+
+    if (!isBlank(post.category) && !DISCUSSION_CATEGORIES[post.category]) {
+      addResult('ERROR', fileName, 'posts[' + index + '] unsupported category: ' + post.category);
+    }
+
+    validateNonNegativeCount(fileName, 'posts[' + index + '] likes', post.likes);
+    commentCount = validateNonNegativeCount(fileName, 'posts[' + index + '] comments', post.comments);
+
+    if (!Array.isArray(post.commentsList)) {
+      addResult('ERROR', fileName, 'posts[' + index + '] missing commentsList array');
+      return;
+    }
+
+    if (commentCount !== null && commentCount < post.commentsList.length) {
+      addResult('ERROR', fileName, 'posts[' + index + '] comments count is less than commentsList length');
+    }
+
+    post.commentsList.forEach(function (comment, commentIndex) {
+      if (!comment || typeof comment !== 'object' || Array.isArray(comment)) {
+        addResult('ERROR', fileName, 'posts[' + index + '].commentsList[' + commentIndex + '] must be an object');
+        return;
+      }
+
+      ['author', 'avatar', 'body'].forEach(function (fieldName) {
+        if (isBlank(comment[fieldName])) {
+          addResult('ERROR', fileName, 'posts[' + index + '].commentsList[' + commentIndex + '] missing field: ' + fieldName);
+        }
+        validateTextSafety(fileName, 'posts[' + index + '].commentsList[' + commentIndex + '] field "' + fieldName + '"', comment[fieldName]);
+      });
+    });
+
+    if (!isBlank(post.moreCommentsLabel)) {
+      validateTextSafety(fileName, 'posts[' + index + '] field "moreCommentsLabel"', post.moreCommentsLabel);
+    }
+
+    if (Array.isArray(post.tags)) {
+      post.tags.forEach(function (tag) {
+        validateTextSafety(fileName, 'posts[' + index + '] tag', tag);
+      });
     }
   });
 }
 
 function validateMediaList(fileName, data, requiredFields) {
+  var ids = {};
+  var titles = {};
+  var byType = {};
+
   if (!Array.isArray(data)) {
     addResult('ERROR', fileName, 'expected array');
     return;
@@ -302,6 +546,88 @@ function validateMediaList(fileName, data, requiredFields) {
       if (isBlank(item[fieldName])) {
         addResult('ERROR', fileName, 'entries[' + index + '] missing field: ' + fieldName);
       }
+      validateTextSafety(fileName, 'entries[' + index + '] field "' + fieldName + '"', item[fieldName]);
+    });
+
+    validateUniqueValue(fileName, ids, 'entry id', item.id);
+    validateUniqueValue(fileName, titles, 'entry title', item.title);
+
+    if (item.type) {
+      byType[item.type] = (byType[item.type] || 0) + 1;
+    }
+
+    if (Array.isArray(item.tags)) {
+      item.tags.forEach(function (tag) {
+        validateTextSafety(fileName, 'entries[' + index + '] tag', tag);
+      });
+    }
+  });
+
+  if (fileName === 'films.json') {
+    ['book', 'film', 'doc'].forEach(function (type) {
+      if ((byType[type] || 0) < PHASE5_TARGETS.mediaPerType) {
+        addResult('ERROR', fileName, 'type ' + type + ' count must be at least ' + PHASE5_TARGETS.mediaPerType + ' for Phase 5');
+      }
+    });
+  }
+
+  if (fileName === 'podcasts.json') {
+    if (data.length < PHASE5_TARGETS.podcasts) {
+      addResult('ERROR', fileName, 'podcast count must be at least ' + PHASE5_TARGETS.podcasts + ' for Phase 5');
+    }
+
+    data.forEach(function (item, index) {
+      if (isBlank(item.audioUrl)) {
+        addResult('ERROR', fileName, 'entries[' + index + '] missing field: audioUrl');
+      } else if (!localAudioPathExists(item.audioUrl)) {
+        addResult('ERROR', fileName, 'entries[' + index + '] audioUrl not reachable: ' + item.audioUrl);
+      }
+    });
+  }
+
+  if (fileName === 'hot-articles.json') {
+    if (data.length < PHASE5_TARGETS.hotArticles) {
+      addResult('ERROR', fileName, 'hot article count must be at least ' + PHASE5_TARGETS.hotArticles + ' for Phase 5');
+    }
+
+    data.forEach(function (item, index) {
+      if (isBlank(item.url) || !isValidUrl(item.url)) {
+        addResult('ERROR', fileName, 'entries[' + index + '] invalid url: ' + item.url);
+      }
+    });
+  }
+}
+
+function validateBooksData(data, fileName) {
+  if (!data || typeof data !== 'object' || Array.isArray(data)) {
+    addResult('ERROR', fileName, 'expected object with books films docs arrays');
+    return;
+  }
+
+  ['books', 'films', 'docs'].forEach(function (groupName) {
+    var list = data[groupName];
+    var ids = {};
+    var titles = {};
+
+    if (!Array.isArray(list)) {
+      addResult('ERROR', fileName, 'missing array: ' + groupName);
+      return;
+    }
+
+    if (list.length < PHASE5_TARGETS.mediaPerType) {
+      addResult('ERROR', fileName, 'group ' + groupName + ' count must be at least ' + PHASE5_TARGETS.mediaPerType + ' for Phase 5');
+    }
+
+    list.forEach(function (item, index) {
+      ['id', 'title', 'author', 'rating', 'summary'].forEach(function (fieldName) {
+        if (isBlank(item[fieldName])) {
+          addResult('ERROR', fileName, groupName + '[' + index + '] missing field: ' + fieldName);
+        }
+        validateTextSafety(fileName, groupName + '[' + index + '] field "' + fieldName + '"', item[fieldName]);
+      });
+
+      validateUniqueValue(fileName, ids, groupName + ' id', item.id);
+      validateUniqueValue(fileName, titles, groupName + ' title', item.title);
     });
   });
 }
@@ -323,17 +649,27 @@ function validateFileData(fileName, data) {
   }
 
   if (fileName === 'films.json') {
-    validateMediaList(fileName, data, ['id', 'title', 'type']);
+    validateMediaList(fileName, data, ['id', 'title', 'type', 'creator', 'year', 'description']);
+    return;
+  }
+
+  if (fileName === 'books.json') {
+    validateBooksData(data, fileName);
     return;
   }
 
   if (fileName === 'podcasts.json') {
-    validateMediaList(fileName, data, ['id', 'title']);
+    validateMediaList(fileName, data, ['id', 'title', 'category', 'dur', 'author', 'audioUrl']);
     return;
   }
 
   if (fileName === 'hot-articles.json') {
-    validateMediaList(fileName, data, ['title']);
+    validateMediaList(fileName, data, ['id', 'title', 'url']);
+    return;
+  }
+
+  if (fileName === 'discussions.json') {
+    validateDiscussions(data, fileName);
     return;
   }
 
@@ -358,28 +694,32 @@ function validateAllJsonFiles() {
   });
 
   if (files.indexOf('questions.json') === -1) {
-    addResult('WARN', 'questions.json', 'file not found, specialized checks skipped');
+    addResult('ERROR', 'questions.json', 'file not found for Phase 5');
   }
 }
 
-function validateTimelineDataForTest(data) {
+function withIsolatedResults(callback) {
   var previousResults = results;
   var snapshot;
   results = [];
-  validateTimeline(data, 'timeline.json');
+  callback();
   snapshot = results.slice();
   results = previousResults;
   return snapshot;
 }
 
+function validateFileDataForTest(fileName, data) {
+  return withIsolatedResults(function () {
+    validateFileData(fileName, data);
+  });
+}
+
+function validateTimelineDataForTest(data) {
+  return validateFileDataForTest('timeline.json', data);
+}
+
 function validatePeopleDataForTest(data) {
-  var previousResults = results;
-  var snapshot;
-  results = [];
-  validatePeople(data, 'people.json');
-  snapshot = results.slice();
-  results = previousResults;
-  return snapshot;
+  return validateFileDataForTest('people.json', data);
 }
 
 function main() {
@@ -394,4 +734,4 @@ if (!process.env.VITEST) {
   main();
 }
 
-export { validatePeopleDataForTest, validateTimelineDataForTest };
+export { validateFileDataForTest, validatePeopleDataForTest, validateTimelineDataForTest };

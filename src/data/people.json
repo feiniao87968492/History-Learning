@@ -2,114 +2,613 @@
   "defaultCenter": "wu-zetian",
   "people": [
     {
-      "id": "wu-zetian",
-      "name": "武则天",
-      "dynasty": "唐朝",
-      "summary": "中国历史上唯一正统女皇帝，改唐为周，重用酷吏与寒门官员并举。",
-      "yearTable": ["637年 生于利州", "655年 被立为皇后", "690年 建立武周", "705年 神龙政变后退位"],
-      "evaluation": "武则天打击关陇贵族集团，扩大科举取士，为开元盛世积累制度与人才基础；但酷吏政治也造成严重冤狱。"
-    },
-    {
-      "id": "li-zhi",
-      "name": "李治",
-      "dynasty": "唐朝",
-      "summary": "唐高宗，唐太宗第九子，在位前期延续贞观制度，史称永徽之治。",
-      "yearTable": ["628年 出生", "649年 即位", "655年 立武则天为皇后", "683年 去世"],
-      "evaluation": "李治在位时期唐朝版图扩展，但后期因身体原因逐渐让武则天参与政务。"
-    },
-    {
-      "id": "di-renjie",
-      "name": "狄仁杰",
-      "dynasty": "唐朝",
-      "summary": "武周时期名臣，以断案、公正和劝立李唐宗室著称。",
-      "yearTable": ["630年 出生", "696年 任宰相", "700年 去世"],
-      "evaluation": "狄仁杰在武周政治中保持士大夫立场，对恢复李唐皇统有关键影响。"
-    },
-    {
-      "id": "shangguan-waner",
-      "name": "上官婉儿",
-      "dynasty": "唐朝",
-      "summary": "唐代女官与文学家，长期掌管诏命文书。",
-      "yearTable": ["664年 出生", "696年前后 参与诏令起草", "710年 死于唐隆政变"],
-      "evaluation": "上官婉儿体现唐代宫廷政治与文学风气的交织。"
-    },
-    {
-      "id": "li-longji",
-      "name": "李隆基",
-      "dynasty": "唐朝",
-      "summary": "唐玄宗，开元年间整顿吏治并开创盛世，天宝后期引发安史之乱。",
-      "yearTable": ["685年 出生", "712年 即位", "713年 先天政变", "755年 安史之乱爆发"],
-      "evaluation": "李隆基前期励精图治，后期政治松弛，是盛唐转衰的核心人物。"
-    },
-    {
       "id": "qin-shihuang",
       "name": "秦始皇",
       "dynasty": "秦朝",
-      "summary": "秦王嬴政，统一六国后建立中国历史上第一个大一统中央集权王朝。",
-      "yearTable": ["前259年 出生", "前247年 即秦王位", "前221年 统一六国", "前210年 去世"],
-      "evaluation": "秦始皇建立皇帝制度、郡县制和统一文字度量衡，对中国制度史影响深远。"
+      "summary": "统一六国并建立皇帝制度和郡县制，是大一统中央集权国家的开创者。",
+      "yearTable": [
+        "前259年 出生",
+        "前247年 即秦王位",
+        "前221年 统一六国",
+        "前210年 去世"
+      ],
+      "evaluation": "秦始皇统一文字、度量衡和地方制度，对中国制度史影响深远；严刑峻法和大规模徭役也加速秦亡。"
     },
     {
       "id": "li-si",
       "name": "李斯",
       "dynasty": "秦朝",
-      "summary": "秦朝丞相，参与制定郡县制、统一文字等制度。",
-      "yearTable": ["前247年前后 入秦", "前221年 参与统一制度设计", "前208年 被赵高陷害处死"],
-      "evaluation": "李斯是秦制的重要设计者，但在沙丘之变中附和赵高，历史评价复杂。"
+      "summary": "秦朝丞相，参与统一制度设计和文字规范，是秦制的重要执行者。",
+      "yearTable": [
+        "前247年前后 入秦",
+        "前221年 参与统一制度设计",
+        "前208年 被赵高陷害处死"
+      ],
+      "evaluation": "李斯强化中央集权功绩显著，但沙丘之变中的选择使其历史评价复杂。"
     },
     {
       "id": "wang-jian",
       "name": "王翦",
       "dynasty": "秦朝",
-      "summary": "秦国名将，主持灭楚战争，是秦统一六国的重要军事人物。",
-      "yearTable": ["前236年 参与攻赵", "前224年 率军伐楚", "前223年 灭楚"],
-      "evaluation": "王翦谨慎持重，是战国末期最具代表性的军事统帅之一。"
+      "summary": "战国末秦国名将，主持灭楚等战争，是秦统一六国的重要军事人物。",
+      "yearTable": [
+        "前236年 参与攻赵",
+        "前224年 率军伐楚",
+        "前223年 灭楚"
+      ],
+      "evaluation": "王翦谨慎持重，体现秦国军功体系下职业将领的成熟。"
     },
     {
       "id": "fusu",
       "name": "扶苏",
       "dynasty": "秦朝",
       "summary": "秦始皇长子，因反对严刑峻法被派往北方监军，后被伪诏赐死。",
-      "yearTable": ["前213年前后 谏阻焚书坑儒", "前210年 被伪诏赐死"],
+      "yearTable": [
+        "前213年前后 谏阻焚书坑儒",
+        "前210年 被伪诏赐死"
+      ],
       "evaluation": "扶苏常被视为秦朝可能转向宽政的象征性人物。"
     },
     {
       "id": "han-wudi",
       "name": "汉武帝",
-      "dynasty": "汉朝",
-      "summary": "西汉皇帝刘彻，推行推恩令、独尊儒术，并大规模经营边疆。",
-      "yearTable": ["前156年 出生", "前141年 即位", "前127年 推恩令", "前87年 去世"],
+      "dynasty": "西汉",
+      "summary": "西汉皇帝刘彻，推行推恩令、独尊儒术并大规模经营边疆。",
+      "yearTable": [
+        "前156年 出生",
+        "前141年 即位",
+        "前127年 推恩令",
+        "前87年 去世"
+      ],
       "evaluation": "汉武帝强化中央集权并开拓疆域，但长期战争和财政压力也加重社会负担。"
     },
     {
       "id": "zhang-qian",
       "name": "张骞",
-      "dynasty": "汉朝",
-      "summary": "西汉外交家，两次出使西域，开通丝绸之路的重要先驱。",
-      "yearTable": ["前138年 首次出使西域", "前119年 再次出使西域", "前114年 去世"],
+      "dynasty": "西汉",
+      "summary": "西汉外交家，两次出使西域，是丝绸之路形成的重要先驱。",
+      "yearTable": [
+        "前138年 首次出使西域",
+        "前119年 再次出使西域",
+        "前114年 去世"
+      ],
       "evaluation": "张骞出使让中原王朝获得西域知识，推动欧亚交通与贸易。"
     },
     {
       "id": "dong-zhongshu",
       "name": "董仲舒",
-      "dynasty": "汉朝",
-      "summary": "西汉儒学家，提出天人感应与罢黜百家、独尊儒术的政治主张。",
-      "yearTable": ["前179年 出生", "前134年 对策贤良", "前104年 去世"],
-      "evaluation": "董仲舒推动儒学成为王朝意识形态，对中国政治文化影响深远。"
+      "dynasty": "西汉",
+      "summary": "西汉儒学家，提出天人感应与独尊儒术等政治主张。",
+      "yearTable": [
+        "前179年 出生",
+        "前134年 对策贤良",
+        "前104年 去世"
+      ],
+      "evaluation": "董仲舒推动儒学进入国家意识形态，对古代政治文化影响深远。"
+    },
+    {
+      "id": "sima-qian",
+      "name": "司马迁",
+      "dynasty": "西汉",
+      "summary": "西汉史学家，撰写《史记》，开创纪传体通史传统。",
+      "yearTable": [
+        "前145年前后 出生",
+        "前99年 因李陵案受刑",
+        "前91年前后 完成史记"
+      ],
+      "evaluation": "司马迁以究天人之际、通古今之变的史识影响后世史学。"
+    },
+    {
+      "id": "guangwu-di",
+      "name": "光武帝",
+      "dynasty": "东汉",
+      "summary": "东汉开国皇帝刘秀，结束新莽末年动荡，恢复汉室统治。",
+      "yearTable": [
+        "前5年 出生",
+        "25年 称帝",
+        "57年 去世"
+      ],
+      "evaluation": "光武帝重建中央秩序并注意休养生息，史称光武中兴。"
+    },
+    {
+      "id": "cao-cao",
+      "name": "曹操",
+      "dynasty": "东汉",
+      "summary": "东汉末年政治家、军事家和文学家，统一中国北方。",
+      "yearTable": [
+        "155年 出生",
+        "196年 迎汉献帝至许",
+        "208年 赤壁之战",
+        "220年 去世"
+      ],
+      "evaluation": "曹操在乱世中重建北方秩序，也开启魏晋政治格局。"
+    },
+    {
+      "id": "zhuge-liang",
+      "name": "诸葛亮",
+      "dynasty": "三国",
+      "summary": "蜀汉丞相，以隆中对、北伐和治蜀著称。",
+      "yearTable": [
+        "181年 出生",
+        "207年 提出隆中对",
+        "223年 辅政",
+        "234年 去世"
+      ],
+      "evaluation": "诸葛亮代表三国时期士人政治理想与蜀汉国家治理实践。"
+    },
+    {
+      "id": "sui-wendi",
+      "name": "隋文帝",
+      "dynasty": "隋朝",
+      "summary": "隋朝开国皇帝杨坚，结束南北分裂并推行制度整合。",
+      "yearTable": [
+        "541年 出生",
+        "581年 建隋",
+        "589年 统一南北",
+        "604年 去世"
+      ],
+      "evaluation": "隋文帝统一全国并整顿户籍、府兵和官制，为隋唐制度奠基。"
+    },
+    {
+      "id": "tang-taizong",
+      "name": "唐太宗",
+      "dynasty": "唐朝",
+      "summary": "唐朝第二位皇帝李世民，开创贞观之治。",
+      "yearTable": [
+        "598年 出生",
+        "626年 玄武门之变",
+        "627年 改元贞观",
+        "649年 去世"
+      ],
+      "evaluation": "唐太宗善于纳谏和用人，是中国古代治世君主的重要代表。"
+    },
+    {
+      "id": "wei-zheng",
+      "name": "魏征",
+      "dynasty": "唐朝",
+      "summary": "唐初名臣，以直言进谏和辅佐贞观政治著称。",
+      "yearTable": [
+        "580年 出生",
+        "627年 任谏议大夫",
+        "643年 去世"
+      ],
+      "evaluation": "魏征象征唐初较开放的君臣关系和谏诤传统。"
+    },
+    {
+      "id": "wu-zetian",
+      "name": "武则天",
+      "dynasty": "唐朝",
+      "summary": "中国历史上唯一正统女皇帝，改唐为周并重用酷吏与寒门官员。",
+      "yearTable": [
+        "637年 入宫",
+        "655年 被立为皇后",
+        "690年 建立武周",
+        "705年 退位"
+      ],
+      "evaluation": "武则天打击关陇贵族，扩大科举取士，但酷吏政治也造成严重冤狱。"
+    },
+    {
+      "id": "di-renjie",
+      "name": "狄仁杰",
+      "dynasty": "唐朝",
+      "summary": "武周时期名臣，以断案、公正和劝立李唐宗室著称。",
+      "yearTable": [
+        "630年 出生",
+        "696年 任宰相",
+        "700年 去世"
+      ],
+      "evaluation": "狄仁杰在武周政治中保持士大夫立场，对恢复李唐皇统有关键影响。"
+    },
+    {
+      "id": "li-bai",
+      "name": "李白",
+      "dynasty": "唐朝",
+      "summary": "盛唐诗人，以浪漫奔放诗风著称，被后世称为诗仙。",
+      "yearTable": [
+        "701年 出生",
+        "742年 入长安供奉翰林",
+        "762年 去世"
+      ],
+      "evaluation": "李白诗歌体现盛唐文化气象与个体精神张力。"
+    },
+    {
+      "id": "du-fu",
+      "name": "杜甫",
+      "dynasty": "唐朝",
+      "summary": "唐代诗人，经历安史之乱，被后世称为诗圣。",
+      "yearTable": [
+        "712年 出生",
+        "755年 经历安史之乱",
+        "770年 去世"
+      ],
+      "evaluation": "杜甫诗歌记录时代苦难，被称为诗史。"
+    },
+    {
+      "id": "zhao-kuangyin",
+      "name": "赵匡胤",
+      "dynasty": "北宋",
+      "summary": "宋朝开国皇帝，通过陈桥兵变建立北宋。",
+      "yearTable": [
+        "927年 出生",
+        "960年 建立宋朝",
+        "976年 去世"
+      ],
+      "evaluation": "赵匡胤加强中央集权，重塑宋代文武关系。"
+    },
+    {
+      "id": "wang-anshi",
+      "name": "王安石",
+      "dynasty": "北宋",
+      "summary": "北宋政治家、思想家，主持熙宁变法。",
+      "yearTable": [
+        "1021年 出生",
+        "1069年 主持变法",
+        "1086年 去世"
+      ],
+      "evaluation": "王安石变法体现宋代富国强兵的改革努力，也引发激烈党争。"
+    },
+    {
+      "id": "sima-guang",
+      "name": "司马光",
+      "dynasty": "北宋",
+      "summary": "北宋政治家和史学家，主持编纂《资治通鉴》。",
+      "yearTable": [
+        "1019年 出生",
+        "1065年 主持编纂资治通鉴",
+        "1086年 去世"
+      ],
+      "evaluation": "司马光是保守派代表，其史学成就深刻影响后世政治鉴戒。"
+    },
+    {
+      "id": "zhu-xi",
+      "name": "朱熹",
+      "dynasty": "南宋",
+      "summary": "南宋理学家，集理学之大成。",
+      "yearTable": [
+        "1130年 出生",
+        "1175年 鹅湖之会",
+        "1200年 去世"
+      ],
+      "evaluation": "朱熹整理四书章句，理学成为后世教育和科举的重要基础。"
+    },
+    {
+      "id": "genghis-khan",
+      "name": "成吉思汗",
+      "dynasty": "蒙古",
+      "summary": "蒙古帝国创建者，统一蒙古诸部并发动大规模征服。",
+      "yearTable": [
+        "1162年前后 出生",
+        "1206年 建立蒙古国",
+        "1227年 去世"
+      ],
+      "evaluation": "成吉思汗重塑欧亚大陆政治格局，对元朝建立具有前提意义。"
+    },
+    {
+      "id": "kublai-khan",
+      "name": "忽必烈",
+      "dynasty": "元朝",
+      "summary": "元朝建立者，定都大都并完成对南宋统一战争。",
+      "yearTable": [
+        "1215年 出生",
+        "1260年 即汗位",
+        "1271年 建元",
+        "1294年 去世"
+      ],
+      "evaluation": "忽必烈建立元朝，推动行省制等制度定型。"
+    },
+    {
+      "id": "zhu-yuanzhang",
+      "name": "朱元璋",
+      "dynasty": "明朝",
+      "summary": "明朝开国皇帝，废丞相、整顿户籍和赋役制度。",
+      "yearTable": [
+        "1328年 出生",
+        "1368年 建立明朝",
+        "1380年 废相",
+        "1398年 去世"
+      ],
+      "evaluation": "朱元璋强化皇权和基层控制，奠定明代政治结构。"
+    },
+    {
+      "id": "zheng-he",
+      "name": "郑和",
+      "dynasty": "明朝",
+      "summary": "明代航海家，率船队七下西洋。",
+      "yearTable": [
+        "1371年 出生",
+        "1405年 首次下西洋",
+        "1433年前后 去世"
+      ],
+      "evaluation": "郑和航海展示明初国力并加强中国与印度洋世界联系。"
+    },
+    {
+      "id": "zhang-juzheng",
+      "name": "张居正",
+      "dynasty": "明朝",
+      "summary": "明代政治家，万历初年主持改革。",
+      "yearTable": [
+        "1525年 出生",
+        "1572年 入阁主政",
+        "1581年 推行一条鞭法",
+        "1582年 去世"
+      ],
+      "evaluation": "张居正改革提高财政效率，是晚明重要制度调整。"
+    },
+    {
+      "id": "kangxi",
+      "name": "康熙帝",
+      "dynasty": "清朝",
+      "summary": "清朝皇帝玄烨，平定三藩、收复台湾并处理边疆事务。",
+      "yearTable": [
+        "1654年 出生",
+        "1661年 即位",
+        "1681年 平定三藩",
+        "1722年 去世"
+      ],
+      "evaluation": "康熙帝巩固清朝统治，推动多民族国家秩序稳定。"
+    },
+    {
+      "id": "yongzheng",
+      "name": "雍正帝",
+      "dynasty": "清朝",
+      "summary": "清朝皇帝胤禛，推行摊丁入亩、整顿吏治并设军机处。",
+      "yearTable": [
+        "1678年 出生",
+        "1722年 即位",
+        "1729年 设军机处",
+        "1735年 去世"
+      ],
+      "evaluation": "雍正帝强化财政和中枢效率，使清代皇权进一步集中。"
+    },
+    {
+      "id": "lin-zexu",
+      "name": "林则徐",
+      "dynasty": "清朝",
+      "summary": "清代官员，主持虎门销烟，是近代禁烟运动代表人物。",
+      "yearTable": [
+        "1785年 出生",
+        "1839年 虎门销烟",
+        "1850年 去世"
+      ],
+      "evaluation": "林则徐的禁烟行动直接关联鸦片战争，也体现近代危机意识。"
+    },
+    {
+      "id": "zeng-guofan",
+      "name": "曾国藩",
+      "dynasty": "清朝",
+      "summary": "晚清湘军领袖和洋务派代表人物。",
+      "yearTable": [
+        "1811年 出生",
+        "1853年 创建湘军",
+        "1864年 攻克天京",
+        "1872年 去世"
+      ],
+      "evaluation": "曾国藩镇压太平天国并推动洋务事业，代表晚清地方督抚力量上升。"
+    },
+    {
+      "id": "sun-yat-sen",
+      "name": "孙中山",
+      "dynasty": "近代",
+      "summary": "中国近代民主革命先行者，倡导三民主义并推动辛亥革命。",
+      "yearTable": [
+        "1866年 出生",
+        "1905年 创建同盟会",
+        "1912年 就任临时大总统",
+        "1925年 去世"
+      ],
+      "evaluation": "孙中山推动共和革命，是近代中国政治转型的关键人物。"
     }
   ],
   "relations": [
-    { "source": "wu-zetian", "target": "li-zhi", "type": "family", "label": "夫妻", "description": "武则天为唐高宗李治皇后，二人共同影响高宗后期政局。" },
-    { "source": "wu-zetian", "target": "di-renjie", "type": "career", "label": "君臣", "description": "武则天重用狄仁杰处理政务，狄仁杰也劝其延续李唐继承。" },
-    { "source": "wu-zetian", "target": "shangguan-waner", "type": "teacher", "label": "主从", "description": "上官婉儿受武则天赏识，长期参与诏令文书。" },
-    { "source": "wu-zetian", "target": "li-longji", "type": "political", "label": "政治遗产", "description": "武周政治与唐中宗、睿宗时期斗争，构成李隆基崛起的背景。" },
-    { "source": "li-zhi", "target": "li-longji", "type": "family", "label": "祖孙", "description": "李隆基是李治之孙，其统治继承并重塑盛唐制度。" },
-    { "source": "qin-shihuang", "target": "li-si", "type": "career", "label": "君臣", "description": "李斯辅佐秦始皇统一制度，推动文字、度量衡与行政体系标准化。" },
-    { "source": "qin-shihuang", "target": "wang-jian", "type": "career", "label": "君将", "description": "王翦率军灭楚，是秦统一军事进程中的关键将领。" },
-    { "source": "qin-shihuang", "target": "fusu", "type": "family", "label": "父子", "description": "扶苏为秦始皇长子，因政见与继承问题成为秦末政治焦点。" },
-    { "source": "li-si", "target": "fusu", "type": "political", "label": "沙丘之变", "description": "李斯参与赵高篡改遗诏，导致扶苏被赐死。" },
-    { "source": "han-wudi", "target": "zhang-qian", "type": "career", "label": "君臣", "description": "汉武帝派张骞出使西域，为西汉经营西域创造条件。" },
-    { "source": "han-wudi", "target": "dong-zhongshu", "type": "career", "label": "思想政策", "description": "董仲舒的儒学政治主张契合汉武帝强化中央集权的需要。" },
-    { "source": "zhang-qian", "target": "dong-zhongshu", "type": "political", "label": "时代同构", "description": "对外开拓与意识形态整合共同构成汉武帝时代的重要特征。" }
+    {
+      "source": "qin-shihuang",
+      "target": "li-si",
+      "type": "career",
+      "label": "君臣",
+      "description": "李斯辅佐秦始皇统一制度和文字，推动秦制落地。"
+    },
+    {
+      "source": "qin-shihuang",
+      "target": "wang-jian",
+      "type": "career",
+      "label": "君将",
+      "description": "王翦率军灭楚，是秦统一军事进程中的关键将领。"
+    },
+    {
+      "source": "qin-shihuang",
+      "target": "fusu",
+      "type": "family",
+      "label": "父子",
+      "description": "扶苏为秦始皇长子，继承问题影响秦末政局。"
+    },
+    {
+      "source": "han-wudi",
+      "target": "zhang-qian",
+      "type": "career",
+      "label": "君臣",
+      "description": "汉武帝派张骞出使西域，为经营西域创造条件。"
+    },
+    {
+      "source": "han-wudi",
+      "target": "dong-zhongshu",
+      "type": "career",
+      "label": "思想政策",
+      "description": "董仲舒儒学主张契合汉武帝强化中央集权需要。"
+    },
+    {
+      "source": "dong-zhongshu",
+      "target": "sima-qian",
+      "type": "political",
+      "label": "时代同人",
+      "description": "二人同处西汉思想与史学转型时代。"
+    },
+    {
+      "source": "cao-cao",
+      "target": "zhuge-liang",
+      "type": "political",
+      "label": "敌对阵营",
+      "description": "曹操与诸葛亮分别代表魏蜀政治军事集团。"
+    },
+    {
+      "source": "sui-wendi",
+      "target": "tang-taizong",
+      "type": "political",
+      "label": "制度承继",
+      "description": "唐代继承并调整隋代统一后形成的制度框架。"
+    },
+    {
+      "source": "tang-taizong",
+      "target": "wei-zheng",
+      "type": "career",
+      "label": "君臣",
+      "description": "魏征直言进谏，成为贞观政治的重要象征。"
+    },
+    {
+      "source": "wu-zetian",
+      "target": "di-renjie",
+      "type": "career",
+      "label": "君臣",
+      "description": "武则天重用狄仁杰处理政务，狄仁杰也维护李唐继承。"
+    },
+    {
+      "source": "tang-taizong",
+      "target": "wu-zetian",
+      "type": "family",
+      "label": "翁媳",
+      "description": "武则天曾为唐太宗才人，后成为唐高宗皇后。"
+    },
+    {
+      "source": "li-bai",
+      "target": "du-fu",
+      "type": "friend",
+      "label": "诗友",
+      "description": "李白与杜甫相识相交，代表盛唐诗歌不同风格。"
+    },
+    {
+      "source": "du-fu",
+      "target": "tang-taizong",
+      "type": "political",
+      "label": "历史记忆",
+      "description": "杜甫诗中常以唐初治世作为政治理想参照。"
+    },
+    {
+      "source": "zhao-kuangyin",
+      "target": "wang-anshi",
+      "type": "political",
+      "label": "制度背景",
+      "description": "宋初中央集权与财政结构构成王安石变法背景。"
+    },
+    {
+      "source": "wang-anshi",
+      "target": "sima-guang",
+      "type": "political",
+      "label": "新旧党争",
+      "description": "王安石与司马光分别代表北宋变法派和反变法派。"
+    },
+    {
+      "source": "sima-guang",
+      "target": "zhu-xi",
+      "type": "teacher",
+      "label": "学术影响",
+      "description": "司马光史学与宋代理学共同影响后世士人教育。"
+    },
+    {
+      "source": "genghis-khan",
+      "target": "kublai-khan",
+      "type": "family",
+      "label": "祖孙",
+      "description": "忽必烈是成吉思汗之孙，并建立元朝。"
+    },
+    {
+      "source": "kublai-khan",
+      "target": "zhu-yuanzhang",
+      "type": "political",
+      "label": "王朝更替",
+      "description": "朱元璋建立明朝，终结元朝在中原统治。"
+    },
+    {
+      "source": "zhu-yuanzhang",
+      "target": "zheng-he",
+      "type": "political",
+      "label": "明初背景",
+      "description": "郑和航海发生在朱元璋奠定的明初国家体系之后。"
+    },
+    {
+      "source": "zhu-yuanzhang",
+      "target": "zhang-juzheng",
+      "type": "political",
+      "label": "制度延续",
+      "description": "张居正改革面对的是朱元璋以来明代制度积累的问题。"
+    },
+    {
+      "source": "kangxi",
+      "target": "yongzheng",
+      "type": "family",
+      "label": "父子",
+      "description": "雍正帝继承康熙帝之后继续强化清朝治理。"
+    },
+    {
+      "source": "yongzheng",
+      "target": "zhang-juzheng",
+      "type": "political",
+      "label": "财政改革比较",
+      "description": "二人均以整顿财政和吏治著称。"
+    },
+    {
+      "source": "kangxi",
+      "target": "kublai-khan",
+      "type": "political",
+      "label": "多民族治理",
+      "description": "元清均面对广阔疆域和多民族治理问题。"
+    },
+    {
+      "source": "lin-zexu",
+      "target": "zeng-guofan",
+      "type": "political",
+      "label": "晚清经世",
+      "description": "二人代表晚清危机下的经世与自强取向。"
+    },
+    {
+      "source": "zeng-guofan",
+      "target": "sun-yat-sen",
+      "type": "political",
+      "label": "近代转型",
+      "description": "曾国藩代表晚清自强路径，孙中山代表共和革命路径。"
+    },
+    {
+      "source": "lin-zexu",
+      "target": "sun-yat-sen",
+      "type": "political",
+      "label": "救亡线索",
+      "description": "从禁烟抗英到共和革命，体现近代中国救亡路径演变。"
+    },
+    {
+      "source": "zhu-xi",
+      "target": "dong-zhongshu",
+      "type": "teacher",
+      "label": "儒学传统",
+      "description": "董仲舒推动儒学官学化，朱熹重构宋代新儒学体系。"
+    },
+    {
+      "source": "sima-qian",
+      "target": "sima-guang",
+      "type": "teacher",
+      "label": "史学传统",
+      "description": "司马迁纪传体通史与司马光编年体通鉴共同构成史学典范。"
+    },
+    {
+      "source": "zheng-he",
+      "target": "zhang-qian",
+      "type": "political",
+      "label": "中外交流",
+      "description": "张骞与郑和分别代表陆上和海上对外交流高峰。"
+    },
+    {
+      "source": "wang-jian",
+      "target": "cao-cao",
+      "type": "career",
+      "label": "军事传统",
+      "description": "二人分别体现战国秦军和东汉末军事组织能力。"
+    }
   ]
 }

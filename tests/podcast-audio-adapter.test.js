@@ -12,6 +12,7 @@ function mountPodcastDOM() {
     <div id="pl-dur"></div>
     <div id="pl-cur"></div>
     <div id="pl-prog"></div>
+    <button id="pl-speed">1.0x</button>
     <button id="pl-playbtn">▶</button>
     <div id="pl-bar" style="width: 100px;"></div>
     <div id="pl-timer"></div>
@@ -29,6 +30,7 @@ function installAudioAPI() {
     play: vi.fn(function () { return 'play-result'; }),
     pause: vi.fn(function () { return true; }),
     seek: vi.fn(function () { return true; }),
+    setPlaybackRate: vi.fn(function () { return true; }),
     onTimeUpdate: vi.fn(function () { return true; }),
     onEnded: vi.fn(function () { return true; }),
     onError: vi.fn(function () { return true; }),
@@ -90,6 +92,35 @@ describe('podcast audio adapter wiring', () => {
 
     expect(window.audioAPI.seek).toHaveBeenCalledWith(30);
     expect(document.getElementById('pl-cur').textContent).toBe('00:30');
+  });
+
+  test('toggleSpeed delegates playback rate to audioAPI for active audio', async () => {
+    installAudioAPI();
+    await import('../src/js/podcast.js');
+
+    window.podcastAPI.setPodcasts([
+      { title: '贞观之治', author: 'AI历史助手', icon: '🏛️', colors: ['#111', '#222'], dur: 60, audioUrl: './assets/audio/zhenguan.mp3' }
+    ]);
+    window.podcastAPI.openPlayer(0);
+    window.podcastAPI.toggleSpeed();
+
+    expect(window.audioAPI.setPlaybackRate).toHaveBeenLastCalledWith(1.25);
+  });
+
+  test('closePlayer pauses active audio and resets playing state', async () => {
+    installAudioAPI();
+    await import('../src/js/podcast.js');
+
+    window.podcastAPI.setPodcasts([
+      { title: '贞观之治', author: 'AI历史助手', icon: '🏛️', colors: ['#111', '#222'], dur: 60, audioUrl: './assets/audio/zhenguan.mp3' }
+    ]);
+    window.podcastAPI.openPlayer(0);
+    window.podcastAPI.togglePlay();
+    window.podcastAPI.closePlayer();
+
+    expect(window.audioAPI.pause).toHaveBeenCalledTimes(1);
+    expect(document.getElementById('pl-playbtn').textContent).toBe('▶');
+    expect(document.getElementById('podcast-player').classList.contains('act')).toBe(false);
   });
 
   test('keeps simulated progress behavior when no audioUrl is present', async () => {

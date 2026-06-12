@@ -4,47 +4,89 @@
     "title": "贞观之治：盛世背后的智慧",
     "category": "suitang",
     "categoryLabel": "隋唐",
-    "dur": 1680,
+    "dur": 5,
     "icon": "🏛️",
-    "colors": ["#5A3E1B", "#8B6914"],
+    "colors": [
+      "#5A3E1B",
+      "#8B6914"
+    ],
     "author": "AI历史助手 制作",
-    "audioUrl": "./assets/audio/podcast-zhenguan.mp3",
-    "listens": "2.3万人收听"
+    "audioUrl": "./assets/audio/coming-soon.wav",
+    "listens": "音频预览占位"
   },
   {
     "id": "podcast-shangyang",
     "title": "商鞅变法：战国变局的破局者",
     "category": "qin",
     "categoryLabel": "先秦",
-    "dur": 1320,
+    "dur": 5,
     "icon": "⚔️",
-    "colors": ["#C0392B", "#E74C3C"],
+    "colors": [
+      "#C0392B",
+      "#E74C3C"
+    ],
     "author": "AI历史助手 制作",
-    "audioUrl": "./assets/audio/podcast-shangyang.mp3",
-    "listens": "1.8万人收听"
+    "audioUrl": "./assets/audio/coming-soon.wav",
+    "listens": "音频预览占位"
   },
   {
     "id": "podcast-zhangqian",
     "title": "张骞通西域：丝绸之路的诞生",
     "category": "han",
     "categoryLabel": "秦汉",
-    "dur": 1500,
+    "dur": 5,
     "icon": "🐫",
-    "colors": ["#2980B9", "#3498DB"],
+    "colors": [
+      "#2980B9",
+      "#3498DB"
+    ],
     "author": "AI历史助手 制作",
-    "audioUrl": "./assets/audio/podcast-zhangqian.mp3",
-    "listens": "1.5万人收听"
+    "audioUrl": "./assets/audio/coming-soon.wav",
+    "listens": "音频预览占位"
+  },
+  {
+    "id": "podcast-song-economy",
+    "title": "宋代经济：纸币、城市与海贸",
+    "category": "song",
+    "categoryLabel": "宋元",
+    "dur": 5,
+    "icon": "💰",
+    "colors": [
+      "#16A085",
+      "#27AE60"
+    ],
+    "author": "AI历史助手 制作",
+    "audioUrl": "./assets/audio/coming-soon.wav",
+    "listens": "音频预览占位"
   },
   {
     "id": "podcast-wanli",
     "title": "万历十五年：帝国黄昏的序曲",
     "category": "mingqing",
     "categoryLabel": "明清",
-    "dur": 1800,
+    "dur": 5,
     "icon": "👑",
-    "colors": ["#2C3E50", "#34495E"],
+    "colors": [
+      "#2C3E50",
+      "#34495E"
+    ],
     "author": "AI历史助手 制作",
-    "audioUrl": "./assets/audio/podcast-wanli.mp3",
-    "listens": "2.1万人收听"
+    "audioUrl": "./assets/audio/coming-soon.wav",
+    "listens": "音频预览占位"
+  },
+  {
+    "id": "podcast-wusi",
+    "title": "五四运动：近代思想的转折",
+    "category": "modern",
+    "categoryLabel": "近代",
+    "dur": 5,
+    "icon": "🕯️",
+    "colors": [
+      "#7F8C8D",
+      "#95A5A6"
+    ],
+    "author": "AI历史助手 制作（音频预览）",
+    "audioUrl": "./assets/audio/coming-soon.wav",
+    "listens": "音频预览占位"
   }
 ]

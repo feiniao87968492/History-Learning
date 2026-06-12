@@ -1,7 +1,7 @@
 (function () {
   var STORAGE_KEY = 'xds_discussions';
   var discussions = [];
-  var expandedPostIds = {};
+  var expandedPostIds = Object.create(null);
   var activeCategory = 'all';
   var postTags = [];
   var tagCategoryMap = {
@@ -93,6 +93,23 @@
         return discussions[i];
       }
     }
+    return null;
+  }
+
+  function getPostCard(postId) {
+    var root = getListRoot();
+    var cards;
+    var i;
+
+    if (!root) return null;
+
+    cards = root.querySelectorAll('.pcard[data-post-id]');
+    for (i = 0; i < cards.length; i += 1) {
+      if (cards[i].getAttribute('data-post-id') === String(postId)) {
+        return cards[i];
+      }
+    }
+
     return null;
   }
 
@@ -188,6 +205,8 @@
 
   function setInitialDiscussions(list) {
     var stored = getStoredDiscussions();
+    expandedPostIds = Object.create(null);
+    activeCategory = 'all';
     discussions = cloneList(Array.isArray(stored) ? stored : list);
     renderDiscussions();
   }
@@ -207,10 +226,25 @@
   }
 
   function toggleComments(postId) {
-    if (!findPost(postId)) return;
+    var card;
+    var list;
+    var key = String(postId);
 
-    expandedPostIds[postId] = !expandedPostIds[postId];
-    renderDiscussions();
+    if (!findPost(key)) return;
+
+    card = getPostCard(key);
+    if (!card) return;
+
+    list = card.querySelector('.cmt-list');
+    if (!list) return;
+
+    if (expandedPostIds[key]) {
+      delete expandedPostIds[key];
+      list.style.display = 'none';
+    } else {
+      expandedPostIds[key] = true;
+      list.style.display = 'block';
+    }
   }
 
   function openPost() {
@@ -324,7 +358,8 @@
   }
 
   function addCommentFromInput(postId) {
-    var input = document.querySelector('[data-comment-input="' + postId + '"]');
+    var card = getPostCard(postId);
+    var input = card ? card.querySelector('[data-comment-input]') : null;
     var value = input ? input.value : '';
     return addComment(postId, value);
   }

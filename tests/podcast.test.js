@@ -64,6 +64,7 @@ function installAudioAPI(options) {
     play: vi.fn(function () { return opts.playResult !== false; }),
     pause: vi.fn(function () { return true; }),
     seek: vi.fn(function () { return true; }),
+    setPlaybackRate: vi.fn(function () { return true; }),
     onTimeUpdate: vi.fn(function (handler) { handlers.timeupdate = handler; return true; }),
     onEnded: vi.fn(function (handler) { handlers.ended = handler; return true; }),
     onError: vi.fn(function (handler) { handlers.error = handler; return true; }),
@@ -95,16 +96,17 @@ beforeEach(() => {
 });
 
 describe('podcast seed data', () => {
-  test('provides 2-4 first-round podcast seed items', () => {
+  test('provides 5+ Phase 5 podcast items with reachable local audio', () => {
     const data = JSON.parse(readFileSync(resolve(process.cwd(), 'src/data/podcasts.json'), 'utf8'));
 
-    expect(data.length).toBeGreaterThanOrEqual(2);
-    expect(data.length).toBeLessThanOrEqual(4);
+    expect(data.length).toBeGreaterThanOrEqual(5);
     data.forEach(function (item) {
       expect(item.id).toBeTruthy();
       expect(item.title).toBeTruthy();
       expect(item.category).toBeTruthy();
       expect(item.dur).toBeGreaterThan(0);
+      expect(item.audioUrl).toBeTruthy();
+      expect(readFileSync(resolve(process.cwd(), item.audioUrl.replace(/^\.\//, ''))).length).toBeGreaterThan(0);
     });
   });
 });
@@ -162,26 +164,47 @@ describe('podcast player via audioAPI', () => {
     expect(document.getElementById('pl-cur').textContent).toBe('14:00');
   });
 
-  test('toggleSpeed cycles speed button text', async () => {
-    await import('../src/js/podcast.js');
-    window.podcastAPI.setPodcasts(PODCASTS);
-
-    window.podcastAPI.toggleSpeed();
-    expect(document.getElementById('pl-speed').textContent).toBe('1.25x');
-    window.podcastAPI.toggleSpeed();
-    expect(document.getElementById('pl-speed').textContent).toBe('1.5x');
-  });
-
-  test('setTimer closes the player and shows toast when timer fires', async () => {
+  test('toggleSpeed cycles speed button text and delegates playback rate', async () => {
+    installAudioAPI();
     await import('../src/js/podcast.js');
     window.podcastAPI.setPodcasts(PODCASTS);
     window.podcastAPI.openPlayer(0);
 
+    window.podcastAPI.toggleSpeed();
+    expect(document.getElementById('pl-speed').textContent).toBe('1.25x');
+    expect(window.audioAPI.setPlaybackRate).toHaveBeenLastCalledWith(1.25);
+    window.podcastAPI.toggleSpeed();
+    expect(document.getElementById('pl-speed').textContent).toBe('1.5x');
+    expect(window.audioAPI.setPlaybackRate).toHaveBeenLastCalledWith(1.5);
+  });
+
+  test('setTimer pauses audio, closes the player and shows toast when timer fires', async () => {
+    installAudioAPI();
+    await import('../src/js/podcast.js');
+    window.podcastAPI.setPodcasts(PODCASTS);
+    window.podcastAPI.openPlayer(0);
+    window.podcastAPI.togglePlay();
+
     window.podcastAPI.setTimer(15);
     vi.advanceTimersByTime(15 * 60000);
 
+    expect(window.audioAPI.pause).toHaveBeenCalled();
     expect(document.getElementById('podcast-player').classList.contains('act')).toBe(false);
     expect(window.navigationAPI.showToast).toHaveBeenCalledWith('定时关闭已触发');
+  });
+
+  test('rejected play promise shows toast and resets UI state', async () => {
+    installAudioAPI();
+    window.audioAPI.play = vi.fn(function () { return Promise.reject(new Error('blocked')); });
+    await import('../src/js/podcast.js');
+    window.podcastAPI.setPodcasts(PODCASTS);
+    window.podcastAPI.openPlayer(0);
+
+    window.podcastAPI.togglePlay();
+    await Promise.resolve();
+
+    expect(window.navigationAPI.showToast).toHaveBeenCalledWith('音频加载失败，请稍后重试');
+    expect(document.getElementById('pl-playbtn').textContent).toBe('▶');
   });
 
   test('shows toast when audio source loading fails or audioAPI reports error', async () => {

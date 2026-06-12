@@ -58,16 +58,16 @@ function mountHotDOM() {
 
 function installFetchMock(articles) {
   global.fetch = vi.fn(async (path) => {
-    if (path.endsWith('nouns.json')) return { ok: true, json: async () => ({}) };
-    if (path.endsWith('timeline.json')) return { ok: true, json: async () => ({ dynasties: [], events: [] }) };
-    if (path.endsWith('podcasts.json')) return { ok: true, json: async () => [] };
-    if (path.endsWith('films.json')) return { ok: true, json: async () => [] };
-    if (path.endsWith('rankings.json')) return { ok: true, json: async () => ({ book: [], film: [], doc: [] }) };
-    if (path.endsWith('memes.json')) return { ok: true, json: async () => [] };
-    if (path.endsWith('feedback-types.json')) return { ok: true, json: async () => [] };
-    if (path.endsWith('hot-articles.json')) return { ok: true, json: async () => articles };
-    if (path.endsWith('discussions.json')) return { ok: true, json: async () => [] };
-    if (path.endsWith('profile-menu.json')) return { ok: true, json: async () => ({ study: [], settings: [] }) };
+    if (path.indexOf('nouns.json') !== -1) return { ok: true, json: async () => ({}) };
+    if (path.indexOf('timeline.json') !== -1) return { ok: true, json: async () => ({ dynasties: [], events: [] }) };
+    if (path.indexOf('podcasts.json') !== -1) return { ok: true, json: async () => [] };
+    if (path.indexOf('films.json') !== -1) return { ok: true, json: async () => [] };
+    if (path.indexOf('rankings.json') !== -1) return { ok: true, json: async () => ({ book: [], film: [], doc: [] }) };
+    if (path.indexOf('memes.json') !== -1) return { ok: true, json: async () => [] };
+    if (path.indexOf('feedback-types.json') !== -1) return { ok: true, json: async () => [] };
+    if (path.indexOf('hot-articles.json') !== -1) return { ok: true, json: async () => articles };
+    if (path.indexOf('discussions.json') !== -1) return { ok: true, json: async () => [] };
+    if (path.indexOf('profile-menu.json') !== -1) return { ok: true, json: async () => ({ study: [], settings: [] }) };
     return { ok: true, json: async () => [] };
   });
 }

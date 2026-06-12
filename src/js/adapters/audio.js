@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
   var audio = new window.Audio();
 
   function setSource(src) {
@@ -16,7 +16,16 @@
 
   function play() {
     try {
-      return audio.play();
+      var playResult = audio.play();
+      if (playResult && typeof playResult.then === 'function') {
+        return playResult.then(function () {
+          return true;
+        }, function (error) {
+          console.error('audioAdapter.play failed:', error);
+          return false;
+        });
+      }
+      return playResult;
     } catch (error) {
       console.error('audioAdapter.play failed:', error);
       return false;
@@ -43,6 +52,20 @@
       return true;
     } catch (error) {
       console.error('audioAdapter.seek failed:', error);
+      return false;
+    }
+  }
+
+  function setPlaybackRate(rate) {
+    try {
+      var nextRate = Number(rate);
+      if (!isFinite(nextRate) || nextRate <= 0) {
+        nextRate = 1;
+      }
+      audio.playbackRate = nextRate;
+      return true;
+    } catch (error) {
+      console.error('audioAdapter.setPlaybackRate failed:', error);
       return false;
     }
   }
@@ -81,6 +104,10 @@
     return audio.duration || 0;
   }
 
+  function getPlaybackRate() {
+    return audio.playbackRate || 1;
+  }
+
   function isPaused() {
     return audio.paused;
   }
@@ -90,11 +117,13 @@
     play: play,
     pause: pause,
     seek: seek,
+    setPlaybackRate: setPlaybackRate,
     onTimeUpdate: onTimeUpdate,
     onEnded: onEnded,
     onError: onError,
     getCurrentTime: getCurrentTime,
     getDuration: getDuration,
+    getPlaybackRate: getPlaybackRate,
     isPaused: isPaused
   };
 })();

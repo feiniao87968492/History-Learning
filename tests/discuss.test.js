@@ -137,13 +137,13 @@ async function importDiscuss() {
 
 function installAppFetchMock(discussions) {
   global.fetch = vi.fn(async function (path) {
-    if (path.endsWith('nouns.json')) return { ok: true, json: async function () { return {}; } };
-    if (path.endsWith('timeline.json')) return { ok: true, json: async function () { return { dynasties: [], events: [] }; } };
-    if (path.endsWith('podcasts.json')) return { ok: true, json: async function () { return []; } };
-    if (path.endsWith('films.json')) return { ok: true, json: async function () { return []; } };
-    if (path.endsWith('rankings.json')) return { ok: true, json: async function () { return { book: [], film: [], doc: [] }; } };
-    if (path.endsWith('discussions.json')) return { ok: true, json: async function () { return discussions; } };
-    if (path.endsWith('profile-menu.json')) return { ok: true, json: async function () { return { study: [], settings: [] }; } };
+    if (path.indexOf('nouns.json') !== -1) return { ok: true, json: async function () { return {}; } };
+    if (path.indexOf('timeline.json') !== -1) return { ok: true, json: async function () { return { dynasties: [], events: [] }; } };
+    if (path.indexOf('podcasts.json') !== -1) return { ok: true, json: async function () { return []; } };
+    if (path.indexOf('films.json') !== -1) return { ok: true, json: async function () { return []; } };
+    if (path.indexOf('rankings.json') !== -1) return { ok: true, json: async function () { return { book: [], film: [], doc: [] }; } };
+    if (path.indexOf('discussions.json') !== -1) return { ok: true, json: async function () { return discussions; } };
+    if (path.indexOf('profile-menu.json') !== -1) return { ok: true, json: async function () { return { study: [], settings: [] }; } };
     return { ok: true, json: async function () { return []; } };
   });
 }
@@ -172,8 +172,8 @@ describe('discussion module', () => {
   test('index shell keeps discussion posts data-driven', () => {
     var html = readFileSync(resolve(process.cwd(), 'index.html'), 'utf8');
     var sectionMatch = html.match(/<div id="discuss-page" class="page">([\s\S]*?)<!-- 发布弹窗 -->/);
-    var discussScriptIndex = html.indexOf('<script src="./src/js/discuss.js"></script>');
-    var appScriptIndex = html.indexOf('<script src="./src/js/app.js"></script>');
+    var discussScriptIndex = html.indexOf('./src/js/discuss.js');
+    var appScriptIndex = html.indexOf('./src/js/app.js');
 
     expect(sectionMatch).not.toBeNull();
     expect(sectionMatch[1]).toContain('id="discussion-list"');
@@ -288,6 +288,47 @@ describe('discussion module', () => {
     expect(document.querySelector('[data-post-id="post-wangmang"] .cmt-list').style.display).toBe('none');
     expect(document.querySelector('[data-post-id="post-help-liangzhou"] .cmt-list').style.display).toBe('block');
     expect(document.querySelector('[data-post-id="post-resource-map"] .cmt-list').style.display).toBe('none');
+  });
+
+  test('toggleComments ignores missing cards without changing saved expanded state', async () => {
+    var api = await importDiscuss();
+    var targetCard;
+    api.setInitialDiscussions(DISCUSSIONS);
+    api.toggleComments('post-keju-neijuan');
+    targetCard = document.querySelector('[data-post-id="post-keju-neijuan"]');
+
+    expect(targetCard.querySelector('.cmt-list').style.display).toBe('block');
+
+    targetCard.remove();
+    api.toggleComments('post-keju-neijuan');
+    api.renderDiscussions();
+
+    expect(document.querySelector('[data-post-id="post-keju-neijuan"] .cmt-list').style.display).toBe('block');
+  });
+
+  test('comment input lookup handles unusual post ids without selector interpolation', async () => {
+    var api = await importDiscuss();
+    api.setInitialDiscussions([
+      {
+        id: 'post.special"id\\demo',
+        category: 'help',
+        author: '边塞新手',
+        avatar: '🙋',
+        time: '刚刚',
+        title: '特殊 ID 讨论帖',
+        body: '用于验证评论输入定位。',
+        likes: '0',
+        comments: '0',
+        favorite: '收藏',
+        commentsList: []
+      }
+    ]);
+
+    document.querySelector('[data-comment-input]').value = '特殊 ID 评论';
+    expect(api.addCommentFromInput('post.special"id\\demo')).toBe(true);
+
+    expect(document.querySelector('[data-post-id] .cmt-list').style.display).toBe('block');
+    expect(document.getElementById('discussion-list').textContent).toContain('特殊 ID 评论');
   });
 
   test('expanded comments stay expanded after filtering and re-rendering', async () => {

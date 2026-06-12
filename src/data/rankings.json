@@ -3,41 +3,121 @@
     {
       "id": "book-zi-zhi-tong-jian",
       "title": "资治通鉴",
-      "subtitle": "司马光 编纂",
+      "subtitle": "司马光 编纂 北宋",
       "score": "9.4",
       "rank": 1,
       "icon": "📜"
     },
     {
+      "id": "book-guoshi-dagang",
+      "title": "国史大纲",
+      "subtitle": "钱穆 著 1940年",
+      "score": "9.2",
+      "rank": 2,
+      "icon": "📘"
+    },
+    {
+      "id": "book-suitang-zhidu",
+      "title": "隋唐制度渊源略论稿",
+      "subtitle": "陈寅恪 著 1940年",
+      "score": "9.2",
+      "rank": 3,
+      "icon": "📙"
+    },
+    {
       "id": "book-mingchao-neixieshi",
       "title": "明朝那些事儿",
-      "subtitle": "当年明月 著",
+      "subtitle": "当年明月 著 2006年起",
       "score": "9.1",
-      "rank": 2,
+      "rank": 4,
       "icon": "📖"
+    },
+    {
+      "id": "book-lidai-zhengzhi-deshi",
+      "title": "中国历代政治得失",
+      "subtitle": "钱穆 著 1952年",
+      "score": "9.1",
+      "rank": 5,
+      "icon": "📗"
+    },
+    {
+      "id": "book-tangdai-zhengzhishi",
+      "title": "唐代政治史述论稿",
+      "subtitle": "陈寅恪 著 1944年",
+      "score": "9.1",
+      "rank": 6,
+      "icon": "📙"
+    },
+    {
+      "id": "book-tianchao-bengkui",
+      "title": "天朝的崩溃",
+      "subtitle": "茅海建 著 1995年",
+      "score": "9.1",
+      "rank": 7,
+      "icon": "📕"
     },
     {
       "id": "book-wanli-shiwu-nian",
       "title": "万历十五年",
-      "subtitle": "黄仁宇 著",
+      "subtitle": "黄仁宇 著 1981年",
       "score": "9.0",
-      "rank": 3,
+      "rank": 8,
       "icon": "📖"
     },
     {
-      "id": "book-jiangcheng",
+      "id": "book-soulstealers",
       "title": "叫魂：1768年中国妖术大恐慌",
-      "subtitle": "孔飞力 著",
+      "subtitle": "孔飞力 著 1990年",
       "score": "9.0",
-      "rank": 4,
+      "rank": 9,
       "icon": "📚"
+    },
+    {
+      "id": "book-qinhan-history",
+      "title": "秦汉史",
+      "subtitle": "吕思勉 著 20世纪",
+      "score": "8.8",
+      "rank": 10,
+      "icon": "📘"
+    },
+    {
+      "id": "book-china-modern-history",
+      "title": "中国近代史",
+      "subtitle": "蒋廷黻 著 1938年",
+      "score": "8.8",
+      "rank": 11,
+      "icon": "📕"
+    },
+    {
+      "id": "book-cambridge-late-qing",
+      "title": "剑桥中国晚清史",
+      "subtitle": "费正清、刘广京 编 1978年",
+      "score": "8.7",
+      "rank": 12,
+      "icon": "📚"
+    },
+    {
+      "id": "book-harvard-china",
+      "title": "哈佛中国史",
+      "subtitle": "卜正民 等 著 2010年起",
+      "score": "8.5",
+      "rank": 13,
+      "icon": "📚"
+    },
+    {
+      "id": "book-song-reform",
+      "title": "宋代中国的改革",
+      "subtitle": "刘子健 著 20世纪",
+      "score": "8.4",
+      "rank": 14,
+      "icon": "📗"
     },
     {
       "id": "book-zhongguo-da-lishi",
       "title": "中国大历史",
-      "subtitle": "黄仁宇 著",
+      "subtitle": "黄仁宇 著 1997年",
       "score": "8.3",
-      "rank": 5,
+      "rank": 15,
       "icon": "📖"
     }
   ],
@@ -45,49 +125,129 @@
     {
       "id": "film-da-ming-wang-chao-1566",
       "title": "大明王朝1566",
-      "subtitle": "张黎导演 2007",
+      "subtitle": "张黎 导演 2007年",
       "score": "9.7",
       "rank": 1,
       "icon": "🎬"
     },
     {
+      "id": "film-zouxiang-gonghe",
+      "title": "走向共和",
+      "subtitle": "张黎 导演 2003年",
+      "score": "9.6",
+      "rank": 2,
+      "icon": "🎬"
+    },
+    {
+      "id": "film-sanguo-yanyi",
+      "title": "三国演义",
+      "subtitle": "王扶林 总导演 1994年",
+      "score": "9.6",
+      "rank": 3,
+      "icon": "📺"
+    },
+    {
       "id": "film-yongzheng-wangchao",
       "title": "雍正王朝",
-      "subtitle": "胡玫导演 1999",
+      "subtitle": "胡玫 导演 1999年",
       "score": "9.4",
-      "rank": 2,
+      "rank": 4,
       "icon": "🎞️"
     },
     {
       "id": "film-last-emperor",
       "title": "末代皇帝",
-      "subtitle": "贝纳尔多·贝托鲁奇 1987",
+      "subtitle": "贝纳尔多·贝托鲁奇 导演 1987年",
       "score": "9.3",
-      "rank": 3,
+      "rank": 5,
       "icon": "🎬"
+    },
+    {
+      "id": "film-daqin-liebian",
+      "title": "大秦帝国之裂变",
+      "subtitle": "黄健中、延艺 导演 2009年",
+      "score": "9.3",
+      "rank": 6,
+      "icon": "🎬"
+    },
+    {
+      "id": "film-daqin-zongheng",
+      "title": "大秦帝国之纵横",
+      "subtitle": "丁黑 导演 2013年",
+      "score": "9.3",
+      "rank": 7,
+      "icon": "🎬"
+    },
+    {
+      "id": "film-juexing-niandai",
+      "title": "觉醒年代",
+      "subtitle": "张永新 导演 2021年",
+      "score": "9.3",
+      "rank": 8,
+      "icon": "📺"
     },
     {
       "id": "film-kangxi-wangchao",
       "title": "康熙王朝",
-      "subtitle": "陈家林导演 2001",
+      "subtitle": "陈家林 导演 2001年",
       "score": "9.2",
-      "rank": 4,
+      "rank": 9,
       "icon": "🎥"
+    },
+    {
+      "id": "film-hanwu-dadi",
+      "title": "汉武大帝",
+      "subtitle": "胡玫 导演 2005年",
+      "score": "9.2",
+      "rank": 10,
+      "icon": "🎞️"
+    },
+    {
+      "id": "film-zhenguan-zhizhi",
+      "title": "贞观之治",
+      "subtitle": "张建亚 导演 2006年",
+      "score": "9.2",
+      "rank": 11,
+      "icon": "🎬"
     },
     {
       "id": "film-changan-shier-shichen",
       "title": "长安十二时辰",
-      "subtitle": "曹盾导演 2019",
+      "subtitle": "曹盾 导演 2019年",
       "score": "8.1",
-      "rank": 5,
+      "rank": 12,
       "icon": "🎭"
+    },
+    {
+      "id": "film-qin-song",
+      "title": "秦颂",
+      "subtitle": "周晓文 导演 1996年",
+      "score": "7.8",
+      "rank": 13,
+      "icon": "🎞️"
+    },
+    {
+      "id": "film-ypzz",
+      "title": "鸦片战争",
+      "subtitle": "谢晋 导演 1997年",
+      "score": "7.6",
+      "rank": 14,
+      "icon": "🎞️"
+    },
+    {
+      "id": "film-xinhai-geming",
+      "title": "辛亥革命",
+      "subtitle": "张黎、成龙 导演 2011年",
+      "score": "6.5",
+      "rank": 15,
+      "icon": "🎬"
     }
   ],
   "doc": [
     {
       "id": "doc-hexi-zoulang",
       "title": "河西走廊",
-      "subtitle": "央视纪录片 2015",
+      "subtitle": "央视纪录片 2015年 · 10集",
       "score": "9.7",
       "rank": 1,
       "icon": "📺"
@@ -95,7 +255,7 @@
     {
       "id": "doc-xuan-zang-road",
       "title": "玄奘之路",
-      "subtitle": "央视纪录片 2011",
+      "subtitle": "央视纪录片 2011年 · 12集",
       "score": "9.5",
       "rank": 2,
       "icon": "🧭"
@@ -103,26 +263,106 @@
     {
       "id": "doc-if-national-treasures-could-talk",
       "title": "如果国宝会说话",
-      "subtitle": "央视纪录片 2018",
+      "subtitle": "央视纪录片 2018年起",
       "score": "9.4",
       "rank": 3,
       "icon": "🏺"
     },
     {
+      "id": "doc-masters-in-forbidden-city",
+      "title": "我在故宫修文物",
+      "subtitle": "央视纪录片 2016年 · 3集",
+      "score": "9.4",
+      "rank": 4,
+      "icon": "🔧"
+    },
+    {
+      "id": "doc-gugong-100",
+      "title": "故宫100",
+      "subtitle": "央视纪录片 2012年 · 100集",
+      "score": "9.3",
+      "rank": 5,
+      "icon": "🏯"
+    },
+    {
       "id": "doc-zhongguo-tongshi",
       "title": "中国通史",
-      "subtitle": "央视纪录片 2013",
+      "subtitle": "央视纪录片 2013年 · 100集",
       "score": "9.2",
-      "rank": 4,
+      "rank": 6,
       "icon": "📺"
     },
     {
       "id": "doc-da-guo-jue-qi",
       "title": "大国崛起",
-      "subtitle": "央视纪录片 2006",
+      "subtitle": "央视纪录片 2006年 · 12集",
       "score": "9.2",
-      "rank": 5,
+      "rank": 7,
       "icon": "📺"
+    },
+    {
+      "id": "doc-fuhuo-juntuan",
+      "title": "复活的军团",
+      "subtitle": "央视纪录片 2004年",
+      "score": "9.0",
+      "rank": 8,
+      "icon": "⚔️"
+    },
+    {
+      "id": "doc-diling",
+      "title": "帝陵",
+      "subtitle": "陕西广电纪录片 2015年 · 11集",
+      "score": "8.9",
+      "rank": 9,
+      "icon": "⛰️"
+    },
+    {
+      "id": "doc-dunhuang",
+      "title": "敦煌",
+      "subtitle": "央视纪录片 2010年 · 10集",
+      "score": "8.9",
+      "rank": 10,
+      "icon": "🕌"
+    },
+    {
+      "id": "doc-qin-han",
+      "title": "从秦始皇到汉武帝",
+      "subtitle": "央视纪录片 2016年 · 6集",
+      "score": "8.8",
+      "rank": 11,
+      "icon": "📺"
+    },
+    {
+      "id": "doc-yuanmingyuan",
+      "title": "圆明园",
+      "subtitle": "金铁木 导演 2006年",
+      "score": "8.7",
+      "rank": 12,
+      "icon": "🏛️"
+    },
+    {
+      "id": "doc-daminggong",
+      "title": "大明宫",
+      "subtitle": "金铁木 导演 2009年",
+      "score": "8.7",
+      "rank": 13,
+      "icon": "🏯"
+    },
+    {
+      "id": "doc-chu-state",
+      "title": "楚国八百年",
+      "subtitle": "央视纪录片 2014年 · 8集",
+      "score": "8.6",
+      "rank": 14,
+      "icon": "🏺"
+    },
+    {
+      "id": "doc-history-turning-points",
+      "title": "历史的拐点",
+      "subtitle": "央视纪录片 2016年",
+      "score": "8.4",
+      "rank": 15,
+      "icon": "🔎"
     }
   ]
 }

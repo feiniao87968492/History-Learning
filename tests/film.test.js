@@ -119,19 +119,16 @@ beforeEach(() => {
 });
 
 describe('film seed data', () => {
-  test('provides 5-8 first-round seed items per content type', () => {
+  test('provides 15+ Phase 5 items per content type', () => {
     const data = JSON.parse(readFileSync(resolve(process.cwd(), 'src/data/films.json'), 'utf8'));
     const byType = data.reduce(function (acc, item) {
       acc[item.type] = (acc[item.type] || 0) + 1;
       return acc;
     }, {});
 
-    expect(byType.book).toBeGreaterThanOrEqual(5);
-    expect(byType.book).toBeLessThanOrEqual(8);
-    expect(byType.film).toBeGreaterThanOrEqual(5);
-    expect(byType.film).toBeLessThanOrEqual(8);
-    expect(byType.doc).toBeGreaterThanOrEqual(5);
-    expect(byType.doc).toBeLessThanOrEqual(8);
+    expect(byType.book).toBeGreaterThanOrEqual(15);
+    expect(byType.film).toBeGreaterThanOrEqual(15);
+    expect(byType.doc).toBeGreaterThanOrEqual(15);
   });
 
   test('ranking seed data is sorted by score descending in every category', () => {
@@ -228,16 +225,20 @@ describe('app wiring for film module', () => {
     };
 
     global.fetch = vi.fn(async (path) => {
-      if (path.endsWith('nouns.json')) return { ok: true, json: async () => ({}) };
-      if (path.endsWith('timeline.json')) return { ok: true, json: async () => ({ dynasties: [], events: [] }) };
-      if (path.endsWith('podcasts.json')) return { ok: true, json: async () => [] };
-      if (path.endsWith('films.json')) return { ok: true, json: async () => FILMS };
-      if (path.endsWith('rankings.json')) return { ok: true, json: async () => RANKINGS };
-      if (path.endsWith('memes.json')) return { ok: true, json: async () => [] };
-      if (path.endsWith('people.json')) return { ok: true, json: async () => ({ defaultCenter: '武则天', defaultGroup: 'career', centers: {} }) };
-      if (path.endsWith('discussions.json')) return { ok: true, json: async () => [] };
-      if (path.endsWith('science-tools.json')) return { ok: true, json: async () => [] };
-      if (path.endsWith('feedback-types.json')) return { ok: true, json: async () => [] };
+      if (path.indexOf('nouns.json') !== -1) return { ok: true, json: async () => ({}) };
+      if (path.indexOf('timeline.json') !== -1) return { ok: true, json: async () => ({ dynasties: [], events: [] }) };
+      if (path.indexOf('podcasts.json') !== -1) return { ok: true, json: async () => [] };
+      if (path.indexOf('films.json') !== -1) return { ok: true, json: async () => FILMS };
+      if (path.indexOf('rankings.json') !== -1) return { ok: true, json: async () => RANKINGS };
+      if (path.indexOf('memes.json') !== -1) return { ok: true, json: async () => [] };
+      if (path.indexOf('people.json') !== -1) return { ok: true, json: async () => ({ defaultCenter: '武则天', defaultGroup: 'career', centers: {} }) };
+      if (path.indexOf('mindmaps.json') !== -1) return { ok: true, json: async () => ({ maps: {} }) };
+      if (path.indexOf('questions.json') !== -1) return { ok: true, json: async () => [] };
+      if (path.indexOf('discussions.json') !== -1) return { ok: true, json: async () => [] };
+      if (path.indexOf('hot-articles.json') !== -1) return { ok: true, json: async () => [] };
+      if (path.indexOf('profile-menu.json') !== -1) return { ok: true, json: async () => ({ study: [], settings: [] }) };
+      if (path.indexOf('science-tools.json') !== -1) return { ok: true, json: async () => [] };
+      if (path.indexOf('feedback-types.json') !== -1) return { ok: true, json: async () => [] };
       throw new Error('Unexpected fetch: ' + path);
     });
 

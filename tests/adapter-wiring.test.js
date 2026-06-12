@@ -89,9 +89,9 @@ describe('adapter wiring', () => {
   test('app data loading prefers dataLoaderAPI when present', async () => {
     mountAppShell();
     var loadJSON = vi.fn(async function (path, fallback) {
-      if (path.endsWith('nouns.json')) return { adapterNoun: { text: 'from adapter' } };
-      if (path.endsWith('timeline.json')) return { dynasties: ['qin'], events: [] };
-      if (path.endsWith('podcasts.json')) return [{ title: 'adapter podcast' }];
+      if (path.indexOf('nouns.json') !== -1) return { adapterNoun: { text: 'from adapter' } };
+      if (path.indexOf('timeline.json') !== -1) return { dynasties: ['qin'], events: [] };
+      if (path.indexOf('podcasts.json') !== -1) return [{ title: 'adapter podcast' }];
       return fallback;
     });
     window.dataLoaderAPI = { loadJSON: loadJSON };
@@ -102,9 +102,9 @@ describe('adapter wiring', () => {
     await import('../src/js/app.js');
     await new Promise(function (resolvePromise) { setTimeout(resolvePromise, 0); });
 
-    expect(loadJSON).toHaveBeenCalledWith('./src/data/nouns.json', {});
-    expect(loadJSON).toHaveBeenCalledWith('./src/data/timeline.json', { dynasties: [], events: [] });
-    expect(loadJSON).toHaveBeenCalledWith('./src/data/podcasts.json', []);
+    expect(loadJSON).toHaveBeenCalledWith('./src/data/nouns.json?v=20260612-phase4-fix1', {});
+    expect(loadJSON).toHaveBeenCalledWith('./src/data/timeline.json?v=20260612-phase4-fix1', { dynasties: [], events: [] });
+    expect(loadJSON).toHaveBeenCalledWith('./src/data/podcasts.json?v=20260612-phase4-fix1', []);
     expect(global.fetch).not.toHaveBeenCalled();
     expect(window.nounAPI.setNounData).toHaveBeenCalledWith({ adapterNoun: { text: 'from adapter' } });
     expect(window.timelineAPI.setDynasties).toHaveBeenCalledWith(['qin']);
@@ -114,18 +114,18 @@ describe('adapter wiring', () => {
   test('app data loading falls back to fetch when dataLoaderAPI is absent', async () => {
     mountAppShell();
     global.fetch = vi.fn(async function (path) {
-      if (path.endsWith('nouns.json')) return { ok: true, json: async function () { return {}; } };
-      if (path.endsWith('timeline.json')) return { ok: true, json: async function () { return { dynasties: [], events: [] }; } };
-      if (path.endsWith('podcasts.json')) return { ok: true, json: async function () { return []; } };
+      if (path.indexOf('nouns.json') !== -1) return { ok: true, json: async function () { return {}; } };
+      if (path.indexOf('timeline.json') !== -1) return { ok: true, json: async function () { return { dynasties: [], events: [] }; } };
+      if (path.indexOf('podcasts.json') !== -1) return { ok: true, json: async function () { return []; } };
       return { ok: true, json: async function () { return []; } };
     });
 
     await import('../src/js/app.js');
     await new Promise(function (resolvePromise) { setTimeout(resolvePromise, 0); });
 
-    expect(global.fetch).toHaveBeenCalledWith('./src/data/nouns.json');
-    expect(global.fetch).toHaveBeenCalledWith('./src/data/timeline.json');
-    expect(global.fetch).toHaveBeenCalledWith('./src/data/podcasts.json');
+    expect(global.fetch).toHaveBeenCalledWith('./src/data/nouns.json?v=20260612-phase4-fix1');
+    expect(global.fetch).toHaveBeenCalledWith('./src/data/timeline.json?v=20260612-phase4-fix1');
+    expect(global.fetch).toHaveBeenCalledWith('./src/data/podcasts.json?v=20260612-phase4-fix1');
   });
 
   test('index loads adapters before business modules', () => {

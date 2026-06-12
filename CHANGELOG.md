@@ -2,6 +2,39 @@
 
 ## 2026-06-12
 
+### Task 6 / Phase 3 Task 3.4：讨论区验收补齐
+
+- 明确当前 Web 补完阶段不启动微信小程序 Phase 6，按计划映射补齐原 Task 6「讨论区」验收项。
+- `toggleComments(postId)` 改为先按 `data-post-id` 精确定位目标卡片与 `.cmt-list`，只切换目标帖子评论区，并用 `expandedPostIds` 维护重渲染后的展开状态。
+- 评论输入定位改为从目标帖子卡片内查找 `[data-comment-input]`，避免将外部 JSON 的帖子 ID 直接拼入 `querySelector` 选择器。
+- `scripts/validate-data.js` 新增 `discussions.json` 专项校验：首轮 2-3 条种子、必填字段、唯一 ID / 标题、分类白名单、非负整数字符串计数、评论数组、评论计数一致性与 XSS 风险文本。
+- 扩展 `tests/discuss.test.js` 与 `tests/validate-data.test.js`，覆盖缺失卡片不误改展开状态、特殊 ID 评论定位、讨论区数据校验错误路径与畸形计数字符串。
+
+#### 验证
+
+- `git diff --check`：通过。
+- `node scripts/validate-data.js`：通过，`15 OK`、`0 WARN`、`0 ERROR`。
+- `npx vitest run tests/discuss.test.js tests/validate-data.test.js tests/app-static-data.test.js tests/adapter-wiring.test.js tests/cache-busting.test.js --environment jsdom`：通过，`5` 个测试文件、`34` 项测试通过。
+- `npx vitest run --environment jsdom`：通过，`28` 个测试文件、`201` 项测试通过。
+
+### Phase 5：内容扩充与质量检查
+
+- 将名词解释扩充至 `51` 条，并保持 `related` 相关词互相引用、朝代 / 分类 / 年份 / 地图字段完整。
+- 将时间轴扩充至 `42` 个事件，覆盖秦、汉、隋唐、宋、明、清六个阶段，并保留事件详情与因果线渲染字段。
+- 将人物关系图扩充至 `32` 位人物与 `30` 条关系，继续使用 `people` / `relations` 图结构。
+- 将影视书目扩充至书籍 / 影视 / 纪录片各 `15` 条，并同步更新 `books.json` 与排行榜数据。
+- 将选择题扩充至 `30` 道，将热点文章扩充至 `10` 条，将播客扩充至 `6` 条，覆盖近代分类。
+- 新增本地 5 秒预览音频 `assets/audio/coming-soon.wav`，并校验播客音频 URL 可达。
+- 扩展 `scripts/validate-data.js` 的 Phase 5 校验：数量目标、唯一 ID / 标题、相关词互链、人物关系合法性、题目选项、热点 URL 与播客音频文件可达性。
+- 强化音频 adapter 与播客播放器：支持播放倍速委托、关闭 / 定时关闭时暂停真实音频、播放 Promise 失败时恢复暂停 UI 并提示。
+- 更新 Phase 5 相关测试，覆盖扩充后的数量目标、校验规则、倍速委托、关闭暂停、定时暂停、播放失败降级和 cache-busting mock 兼容。
+
+#### 验证
+
+- `node scripts/validate-data.js`：通过，`15 OK`、`0 WARN`、`0 ERROR`。
+- `npx vitest run tests/adapters/audio.test.js tests/podcast.test.js tests/podcast-audio-adapter.test.js tests/noun.test.js tests/film.test.js tests/validate-data.test.js tests/app-static-data.test.js tests/cache-busting.test.js tests/adapter-wiring.test.js --environment jsdom`：通过，`14` 个测试文件、`76` 项测试通过。
+- `npx vitest run --environment jsdom`：通过，`28` 个测试文件、`197` 项测试通过（已通过 `vitest.config.js` 排除 `.claude/**` worktree 测试副本）。
+
 ### Phase 4 最终验收补齐
 
 - 移除人物关系图残留内联实现，避免覆盖 `peopleAPI` 模块函数。

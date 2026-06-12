@@ -10,10 +10,14 @@ function createMockAudioClass(options) {
     this.currentTime = 0;
     this.duration = 120;
     this.paused = true;
+    this.playbackRate = 1;
     this.load = vi.fn();
     this.play = vi.fn(() => {
       if (opts.playThrows) {
         throw new Error('play blocked');
+      }
+      if (opts.playRejects) {
+        return Promise.reject(new Error('play rejected'));
       }
       this.paused = false;
       return 'play-result';
@@ -62,11 +66,13 @@ describe('audio adapter', () => {
       play: expect.any(Function),
       pause: expect.any(Function),
       seek: expect.any(Function),
+      setPlaybackRate: expect.any(Function),
       onTimeUpdate: expect.any(Function),
       onEnded: expect.any(Function),
       onError: expect.any(Function),
       getCurrentTime: expect.any(Function),
       getDuration: expect.any(Function),
+      getPlaybackRate: expect.any(Function),
       isPaused: expect.any(Function)
     });
   });
@@ -117,6 +123,19 @@ describe('audio adapter', () => {
     expect(MockAudio.instances[0].currentTime).toBe(0);
   });
 
+  test('sets and reads playback rate through the underlying audio object', async () => {
+    var MockAudio = installMockAudio();
+
+    await import('../../src/js/adapters/audio.js');
+
+    expect(window.audioAPI.setPlaybackRate(1.5)).toBe(true);
+    expect(MockAudio.instances[0].playbackRate).toBe(1.5);
+    expect(window.audioAPI.getPlaybackRate()).toBe(1.5);
+
+    expect(window.audioAPI.setPlaybackRate('bad')).toBe(true);
+    expect(MockAudio.instances[0].playbackRate).toBe(1);
+  });
+
   test('returns duration from the underlying audio object', async () => {
     var MockAudio = installMockAudio();
 
@@ -165,6 +184,18 @@ describe('audio adapter', () => {
     await import('../../src/js/adapters/audio.js');
 
     expect(window.audioAPI.play()).toBe(false);
+    expect(errorSpy).toHaveBeenCalledWith('audioAdapter.play failed:', expect.any(Error));
+
+    errorSpy.mockRestore();
+  });
+
+  test('logs and resolves false when play promise rejects', async () => {
+    installMockAudio({ playRejects: true });
+    var errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    await import('../../src/js/adapters/audio.js');
+
+    await expect(window.audioAPI.play()).resolves.toBe(false);
     expect(errorSpy).toHaveBeenCalledWith('audioAdapter.play failed:', expect.any(Error));
 
     errorSpy.mockRestore();

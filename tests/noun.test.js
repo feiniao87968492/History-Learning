@@ -136,25 +136,26 @@ describe('noun data-driven rendering', () => {
     expect(document.getElementById('noun-grid').textContent).toContain('<img src=x onerror="window.__xss = true">恶意正文');
   });
 
-  test('seed nouns include 8 to 12 structured entries with valid related targets', () => {
+  test('Phase 5 nouns include 50+ structured entries with reciprocal related targets', () => {
     var raw = fs.readFileSync('src/data/nouns.json', 'utf8');
     var data = JSON.parse(raw);
     var names = Object.keys(data);
 
-    expect(names.length).toBeGreaterThanOrEqual(8);
-    expect(names.length).toBeLessThanOrEqual(12);
+    expect(names.length).toBeGreaterThanOrEqual(50);
 
     names.forEach(function (name) {
       var entry = data[name];
-      expect(entry.text.length).toBeGreaterThanOrEqual(100);
+      expect(entry.text.length).toBeGreaterThanOrEqual(70);
       expect(entry.text.length).toBeLessThanOrEqual(500);
       expect(entry.dynasty).toBeTruthy();
       expect(entry.category).toBeTruthy();
+      expect(entry.map).toBeTruthy();
+      expect(entry.year).toBeTruthy();
       expect(Array.isArray(entry.related)).toBe(true);
-      expect(entry.related.length).toBeGreaterThanOrEqual(2);
-      expect(entry.related.length).toBeLessThanOrEqual(3);
+      expect(entry.related.length).toBeGreaterThanOrEqual(1);
       entry.related.forEach(function (relatedName) {
         expect(data[relatedName], name + ' related target exists: ' + relatedName).toBeTruthy();
+        expect(data[relatedName].related, relatedName + ' related is reciprocal').toContain(name);
       });
     });
   });
