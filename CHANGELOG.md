@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## 2026-06-12
+
+### Phase 4 Task 4.1：时间轴 Demo
+
+- 更新 `src/js/timeline.js`，时间轴缩放边界改为 `-3` 到 `3`，连续放大 / 缩小会被稳定夹取在边界内。
+- 新增 `timelineOffsetX` / `timelineOffsetY` 状态和拖拽边界，鼠标与触摸拖动均会限制在安全范围，避免图表完全拖出视口。
+- 切换朝代时自动重置缩放与拖拽偏移，保持不同朝代视图状态可预期。
+- 时间轴渲染支持按当前朝代过滤带 `dynasty` 字段的事件；无事件时展示 `暂无时间轴事件` / `暂无事件数据` 空态。
+- 保留节点详情与因果虚线点击能力，JSON 字段进入 SVG 文本前继续转义。
+- 新增 `tests/timeline.test.js`，覆盖缩放边界、鼠标拖拽边界、触摸拖拽边界、切换朝代重置状态和空事件边界。
+
+#### 验证
+
+- `npx vitest run tests/timeline.test.js --environment jsdom`：通过，`5` 项测试通过。
+- `npx vitest run tests/timeline.test.js tests/adapter-wiring.test.js tests/app-static-data.test.js --environment jsdom`：通过，`3` 个测试文件、`14` 项测试通过。
+- `node scripts/validate-data.js`：`14 OK`、`1 WARN`、`0 ERROR`；剩余 WARN 为 `people.json` 仍使用 centers 结构。
+
 ## 2026-06-11
 
 ### Phase 3 Task 3.4：讨论区
