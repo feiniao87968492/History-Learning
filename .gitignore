@@ -44,3 +44,10 @@ build/
 # Temporary files
 *.tmp
 *.swp
+
+# Claude Code local session artifacts
+.claude/
+
+# macOS archive metadata
+__MACOSX/
+._*

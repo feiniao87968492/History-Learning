@@ -52,6 +52,8 @@
       window.closeSub = window.navigationAPI.closeSub;
     }
 
+    window.filterHot = filterHot;
+
     if (window.nounAPI) {
       window.openNounDet = window.nounAPI.openNounDet;
       window.closeNounDet = window.nounAPI.closeNounDet;
@@ -81,6 +83,7 @@
       window.closePlayer = window.podcastAPI.closePlayer;
       window.togglePlay = window.podcastAPI.togglePlay;
       window.seekPodcast = window.podcastAPI.seekPodcast;
+      window.toggleSpeed = window.podcastAPI.toggleSpeed;
       window.setTimer = window.podcastAPI.setTimer;
       window.showTimer = window.podcastAPI.showTimer;
       window.prevPodcast = window.podcastAPI.prevPodcast;
@@ -101,6 +104,45 @@
       window.togAI = window.aiAssistantAPI.togAI;
       window.aiAsk = window.aiAssistantAPI.aiAsk;
       window.aiSend = window.aiAssistantAPI.aiSend;
+    }
+
+    if (window.quizAPI) {
+      window.startQuiz = window.quizAPI.startQuiz;
+      window.selectQuizAnswer = window.quizAPI.selectQuizAnswer;
+      window.nextQuizQuestion = window.quizAPI.nextQuizQuestion;
+      window.renderWrongQuestions = window.quizAPI.renderWrongQuestions;
+      window.retryWrongQuestion = window.quizAPI.retryWrongQuestion;
+      window.markWrongQuestionMastered = window.quizAPI.markWrongQuestionMastered;
+    }
+
+    if (window.checkinAPI) {
+      window.openCheckin = window.checkinAPI.openCheckin;
+      window.closeCheckin = window.checkinAPI.closeCheckin;
+      window.doCheckin = window.checkinAPI.doCheckin;
+      window.renderCheckinCalendar = window.checkinAPI.renderCheckinCalendar;
+      window.updateCheckinStats = window.checkinAPI.updateCheckinStats;
+    }
+
+    if (window.learningStatsAPI) {
+      window.updateLearningStats = window.learningStatsAPI.updateProfileStats;
+    }
+
+    if (window.reviewAPI) {
+      window.renderReviewZone = window.reviewAPI.renderReviewZone;
+      window.filterReviewRange = window.reviewAPI.filterReviewRange;
+      window.openReviewNoun = window.reviewAPI.openReviewNoun;
+      window.retryReviewQuestion = window.reviewAPI.retryReviewQuestion;
+    }
+
+    if (window.discussAPI) {
+      window.filterDiscuss = window.discussAPI.filterDiscuss;
+      window.toggleComments = window.discussAPI.toggleComments;
+      window.openPost = window.discussAPI.openPost;
+      window.closePost = window.discussAPI.closePost;
+      window.togglePostTag = window.discussAPI.togglePostTag;
+      window.submitPost = window.discussAPI.submitPost;
+      window.addComment = window.discussAPI.addComment;
+      window.addCommentFromInput = window.discussAPI.addCommentFromInput;
     }
   }
 
@@ -157,16 +199,22 @@
     var root = document.getElementById('hot-articles');
     if (!root || !Array.isArray(articles)) return;
 
+    if (!articles.length) {
+      root.innerHTML = '<div style="text-align:center;padding:24px;color:#B5ADA5">暂无热点文章</div>';
+      return;
+    }
+
     root.innerHTML = articles.map(function (item) {
       var meta = Array.isArray(item.meta) ? item.meta.join(' ') : (item.meta || '');
+      var articleId = item.id || '';
       if (item.kind === 'headline') {
-        return '<div class="hl" data-dynasty="' + escapeHtml(item.dynasty || '') + '">' +
+        return '<div class="hl" data-article-id="' + escapeHtml(articleId) + '" data-dynasty="' + escapeHtml(item.dynasty || '') + '">' +
           '<div class="hl-img" style="background:' + escapeHtml(item.background || '#C9A96E') + '">' + escapeHtml(item.icon || '') + '</div>' +
           '<div class="inf"><div style="margin-bottom:6px"><span class="tg ' + escapeHtml(item.tagClass || 'hot') + '">' + escapeHtml(item.tag || '') + '</span><span style="font-size:12px;color:#8A8279">' + escapeHtml(item.label || '') + '</span></div>' +
           '<h3>' + escapeHtml(item.title || '') + '</h3><div class="ad"><span>' + escapeHtml(meta) + '</span></div></div></div>';
       }
 
-      return '<div class="hi" data-dynasty="' + escapeHtml(item.dynasty || '') + '">' +
+      return '<div class="hi" data-article-id="' + escapeHtml(articleId) + '" data-dynasty="' + escapeHtml(item.dynasty || '') + '">' +
         '<div class="hi-img" style="background:' + escapeHtml(item.background || '#D4C0A0') + '">' + escapeHtml(item.icon || '') + '</div>' +
         '<div class="tx"><h4>' + escapeHtml(item.title || '') + '</h4><div class="meta">' + escapeHtml(meta) + '</div><div class="lk">' + escapeHtml(item.cta || '🔗 阅读原文') + '</div></div></div>';
     }).join('');
@@ -178,12 +226,34 @@
     });
   }
 
+  function filterHot(dynasty, button) {
+    document.querySelectorAll('#hot-tabs .htab').forEach(function (tab) {
+      tab.classList.remove('act');
+    });
+
+    if (button) {
+      button.classList.add('act');
+    }
+
+    document.querySelectorAll('#hot-articles .hl, #hot-articles .hi').forEach(function (card) {
+      card.style.display = (dynasty === 'all' || card.getAttribute('data-dynasty') === dynasty) ? 'block' : 'none';
+    });
+  }
+
   function renderDiscussions(discussions) {
-    var root = document.querySelector('#discuss-page .dp');
-    if (!root || !Array.isArray(discussions)) return;
+    var root;
+    if (!Array.isArray(discussions)) return;
+
+    if (window.discussAPI && typeof window.discussAPI.setInitialDiscussions === 'function') {
+      window.discussAPI.setInitialDiscussions(discussions);
+      return;
+    }
+
+    root = document.getElementById('discussion-list') || document.querySelector('#discuss-page .dp');
+    if (!root) return;
 
     root.innerHTML = discussions.map(function (item) {
-      return '<div class="pcard" data-discuss-cat="' + escapeHtml(item.category || '') + '">' +
+      return '<div class="pcard" data-post-id="' + escapeHtml(item.id || '') + '" data-discuss-cat="' + escapeHtml(item.category || '') + '">' +
         '<div class="pa"><div class="pav">' + escapeHtml(item.avatar || '') + '</div><div><div class="nm">' + escapeHtml(item.author || '') + '</div><div class="ti">' + escapeHtml(item.time || '') + '</div></div></div>' +
         '<div class="pc"><h4>' + escapeHtml(item.title || '') + '</h4><p>' + escapeHtml(item.body || '') + '</p></div>' +
         '<div class="pact"><span>❤️ ' + escapeHtml(item.likes || '0') + '</span><span>💬 ' + escapeHtml(item.comments || '0') + '</span><span>⭐ ' + escapeHtml(item.favorite || '收藏') + '</span></div>' +
@@ -220,6 +290,11 @@
     var podcasts = await loadJSON('./src/data/podcasts.json', []);
     if (window.podcastAPI) window.podcastAPI.setPodcasts(podcasts);
 
+    if (window.quizAPI) {
+      var questions = await loadJSON('./src/data/questions.json', []);
+      window.quizAPI.setQuestions(questions);
+    }
+
     var films = await loadJSON('./src/data/films.json', []);
     var rankings = await loadJSON('./src/data/rankings.json', { book: [], film: [], doc: [] });
     if (window.filmAPI) {
@@ -244,6 +319,10 @@
     }
     if (document.querySelector('#profile-page .mg')) {
       renderProfileMenu(await loadJSON('./src/data/profile-menu.json', { study: [], settings: [] }));
+    }
+
+    if (window.learningStatsAPI && typeof window.learningStatsAPI.updateProfileStats === 'function') {
+      window.learningStatsAPI.updateProfileStats();
     }
   }
 

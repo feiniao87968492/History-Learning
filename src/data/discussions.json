@@ -1,0 +1,45 @@
+[
+  {
+    "id": "post-keju-neijuan",
+    "category": "view",
+    "author": "长安一片月",
+    "avatar": "🧑",
+    "time": "5小时前",
+    "title": "科举制和高考，跨越千年的「内卷」",
+    "body": "从隋唐到明清，科举从“取士”变成“困士”。八股文把思维框死。回头看看今天的高考，感觉历史的车轮又在重复转动。",
+    "likes": "986",
+    "comments": "392",
+    "favorite": "收藏",
+    "commentsList": [
+      { "author": "历史小白", "avatar": "🧒", "body": "真的，我看到八股文就想到现在的高考作文..." },
+      { "author": "教书匠", "avatar": "🧓", "body": "科举是阶层跃升，高考也是，本质没变。" }
+    ],
+    "moreCommentsLabel": "展开全部 390 条评论"
+  },
+  {
+    "id": "post-zhangjuzheng",
+    "category": "view",
+    "author": "史海拾贝",
+    "avatar": "👩",
+    "time": "2小时前",
+    "title": "如果张居正多活十年，明朝会怎样？",
+    "body": "一条鞭法改革初见成效，国库充盈，边防稳固。但张居正一死，万历立刻翻脸，所有改革付诸东流。",
+    "likes": "534",
+    "comments": "189",
+    "favorite": "收藏",
+    "commentsList": []
+  },
+  {
+    "id": "post-wangmang",
+    "category": "cold",
+    "author": "故纸堆里的人",
+    "avatar": "🧔",
+    "time": "8小时前",
+    "title": "历史课本里被一笔带过的“小事”",
+    "body": "王莽改制在课本上就几行字，但细看他的改革措施——盐铁、土地国有、计划经济，简直是穿越者...",
+    "likes": "103",
+    "comments": "28",
+    "favorite": "收藏",
+    "commentsList": []
+  }
+]

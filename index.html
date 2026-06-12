@@ -51,64 +51,7 @@
 <button class="htab" onclick="filterHot('mingqing',this)">明清</button>
 <button class="htab" onclick="filterHot('modern',this)">近代</button>
 </div>
-<div class="ha" id="hot-articles">
-<div class="hl" onclick="openExternalLink('https://mp.weixin.qq.com')" data-dynasty="qinhan">
-<div class="hl-img">📜</div>
-<div class="inf">
-<div style="margin-bottom:6px"><span class="tg hot">热门</span><span style="font-size:12px;color:#8A8279">贞观之治</span></div>
-<h3>唐太宗李世民在位期间的清明政治局面，以"贞观"为年号（627-649年）。轻徭薄赋、休养生息、虚心纳谏，奠定了"大唐盛世"的根基。</h3>
-<div class="ad"><span>📖 2.3k 阅读</span><span>❤️ 892 收藏</span><span>💬 视频解读</span><span>🗺️ 思维导图</span></div>
-</div>
-</div>
-<div class="hl" onclick="openExternalLink('https://mp.weixin.qq.com')" data-dynasty="suitang">
-<div class="hl-img" style="background:#E8D5B0;">🏜️</div>
-<div class="inf">
-<div style="margin-bottom:6px"><span class="tg sys">制度</span><span style="font-size:12px;color:#8A8279">科举制</span></div>
-<h3>隋朝创立的分科考试选拔官员的制度，打破门阀垄断，使寒门子弟得以入仕，影响了中国社会结构近1300年。</h3>
-<div class="ad"><span>📖 1.6k 阅读</span><span>❤️ 467 收藏</span><span>💬 视频解读</span><span>🗺️ 思维导图</span></div>
-</div>
-</div>
-<div class="hl" onclick="openExternalLink('https://mp.weixin.qq.com')" data-dynasty="qinhan">
-<div class="hl-img" style="background:#EDE8E0;">⚔️</div>
-<div class="inf">
-<div style="margin-bottom:6px"><span class="tg hot">热门</span><span style="font-size:12px;color:#8A8279">秦始皇</span></div>
-<h3>秦始皇统一六国，废分封行郡县，书同文车同轨，开创中国大一统格局，影响延续至今。</h3>
-<div class="ad"><span>📖 3.1k 阅读</span><span>❤️ 1.2k 收藏</span><span>💬 视频解读</span></div>
-</div>
-</div>
-<div class="hi" onclick="openExternalLink('https://mp.weixin.qq.com')" data-dynasty="song">
-<div class="hi-img" style="background:#D4C0A0;">🏯</div>
-<div class="tx">
-<h4>宋朝：被误解的"弱宋"实为经济革命</h4>
-<div class="meta">💰 经济史 · 10分钟阅读</div>
-<div class="lk">🔗 阅读原文</div>
-</div>
-</div>
-<div class="hi" onclick="openExternalLink('https://mp.weixin.qq.com')" data-dynasty="mingqing">
-<div class="hi-img" style="background:#C0A890;">📘</div>
-<div class="tx">
-<h4>万历十五年：大风起于青萍之末</h4>
-<div class="meta">📚 历史书评 · 12分钟阅读</div>
-<div class="lk">🔗 阅读原文</div>
-</div>
-</div>
-<div class="hi" onclick="openExternalLink('https://mp.weixin.qq.com')" data-dynasty="modern">
-<div class="hi-img" style="background:#B0C4DE;">🌊</div>
-<div class="tx">
-<h4>大运河：一部流动的政治经济学</h4>
-<div class="meta">🚢 经济史 · 15分钟阅读</div>
-<div class="lk">🔗 阅读原文</div>
-</div>
-</div>
-<div class="hi" onclick="openExternalLink('https://mp.weixin.qq.com')" data-dynasty="modern">
-<div class="hi-img" style="background:#F5F0E8;">🔥</div>
-<div class="tx">
-<h4>鸦片战争：天朝上国的幻梦破碎时</h4>
-<div class="meta">💣 近代史 · 8分钟阅读</div>
-<div class="lk">🔗 阅读原文</div>
-</div>
-</div>
-</div>
+<div class="ha" id="hot-articles"></div>
 </div>
 
 <!-- ===== 名词解释 ===== -->
@@ -117,17 +60,13 @@
 <div class="sb" style="padding:10px 16px">
 <input type="text" id="noun-search-input" placeholder="🔍 搜索名词（如：商鞅变法、科举制...）" oninput="searchNouns()">
 </div>
-<div class="nc" id="noun-grid">
-<div class="ncard" onclick="openNounDet('商鞅变法')"><div class="nmeta"><span class="tg hot" style="font-size:10px">战国·秦</span><div class="nact"><button class="nfav" onclick="event.stopPropagation();togNounFav(this,'商鞅变法')">☆</button><button class="nshr" onclick="event.stopPropagation();shareNoun('商鞅变法')">↗</button></div></div><h4>商鞅变法</h4><p>战国时期秦国通过变法实现富国强兵的改革运动</p></div>
-<div class="ncard" onclick="openNounDet('军机处')"><div class="nmeta"><span class="tg sys" style="font-size:10px;background:#7EBDA6">清朝</span><div class="nact"><button class="nfav" onclick="event.stopPropagation();togNounFav(this,'军机处')">☆</button><button class="nshr" onclick="event.stopPropagation();shareNoun('军机处')">↗</button></div></div><h4>军机处</h4><p>清朝雍正设立的中枢决策机构，标志君主集权达到顶峰</p></div>
-<div class="ncard" onclick="openNounDet('科举制')"><div class="nmeta"><span class="tg hot" style="font-size:10px">隋唐-清</span><div class="nact"><button class="nfav" onclick="event.stopPropagation();togNounFav(this,'科举制')">☆</button><button class="nshr" onclick="event.stopPropagation();shareNoun('科举制')">↗</button></div></div><h4>科举制</h4><p>隋唐至清末的选官制度，打破门阀对政治的垄断</p></div>
-<div class="ncard" onclick="openNounDet('靖难之役')"><div class="nmeta"><span class="tg hot" style="font-size:10px">明朝</span><div class="nact"><button class="nfav" onclick="event.stopPropagation();togNounFav(this,'靖难之役')">☆</button><button class="nshr" onclick="event.stopPropagation();shareNoun('靖难之役')">↗</button></div></div><h4>靖难之役</h4><p>明成祖朱棣起兵夺取建文帝皇位的战争</p></div>
-</div>
+<div class="nc" id="noun-grid"></div>
 </div>
 <div id="noun-detail" class="nd">
 <div class="dh"><button class="bk" onclick="closeNounDet()">←</button><h2 id="nd-title">名词详情</h2></div>
 <div class="db">
 <div class="vp"><div class="pb">▶</div></div>
+<div style="padding:0 16px 8px" id="nd-meta"></div>
 <div class="sec"><h3>详细解释</h3><p id="nd-text"></p></div>
 <div class="sec"><h3>相关地图</h3><div class="mp">🗺️ 相关历史地图加载中...</div></div>
 <div class="sec"><h3>相关名词</h3><div class="nrtags" id="nd-related"></div></div>
@@ -203,12 +142,15 @@
 <div id="science-page" class="sub">
 <div class="sh"><button class="bk" onclick="closeSub('home-page')">←</button><h2>学的是史</h2></div>
 <div class="sg">
-<button class="scard" onclick="showToast('挖空练习功能开发中')"><span class="ic">✏️</span><h4>挖空练习</h4><p>历年真题挖空训练</p></button>
-<button class="scard" onclick="showToast('笔记上传功能开发中')"><span class="ic">📤</span><h4>笔记上传</h4><p>上传分享学习笔记</p></button>
+<button class="scard" onclick="startQuiz()"><span class="ic">📝</span><h4>真题演练</h4><p>基础选择题训练</p></button>
+<button class="scard" onclick="renderWrongQuestions()"><span class="ic">📌</span><h4>错题集</h4><p>回顾未掌握题目</p></button>
 <button class="scard" onclick="showToast('联机PK功能开发中')"><span class="ic">⚔️</span><h4>联机PK</h4><p>和全国考生实时对战</p></button>
-<button class="scard" onclick="showToast('复习专区加载中')"><span class="ic">📚</span><h4>复习专区</h4><p>高频考点专项突破</p></button>
+<button class="scard" onclick="renderReviewZone()"><span class="ic">📚</span><h4>复习专区</h4><p>已学名词与错题复习</p></button>
 <button class="scard" onclick="openSub('mindmap-page')"><span class="ic">🧠</span><h4>思维导图</h4><p>知识导图·笔记标注</p></button>
 </div>
+<div id="quiz-panel"></div>
+<div id="wrong-question-panel"></div>
+<div id="review-zone-panel"></div>
 </div>
 
 <!-- ===== 思维导图 ===== -->
@@ -305,33 +247,7 @@
 <button class="pctab" onclick="filterPodcast('mingqing',this)">明清</button>
 <button class="pctab" onclick="filterPodcast('modern',this)">近代</button>
 </div>
-<div class="pclist" id="podcast-list">
-<div class="pccard" data-cat="suitang" onclick="openPlayer(0)">
-<div class="pcicon" style="background:linear-gradient(135deg,#5A3E1B,#8B6914)">🏛️</div>
-<div class="pctxt"><h4>贞观之治：盛世背后的智慧</h4><div class="pcinfo">隋唐 · 28分钟 · 2.3万人收听</div></div>
-<div class="pcplay">▶</div>
-</div>
-<div class="pccard" data-cat="qin" onclick="openPlayer(1)">
-<div class="pcicon" style="background:linear-gradient(135deg,#C0392B,#E74C3C)">⚔️</div>
-<div class="pctxt"><h4>商鞅变法：战国变局的破局者</h4><div class="pcinfo">战国 · 22分钟 · 1.8万人收听</div></div>
-<div class="pcplay">▶</div>
-</div>
-<div class="pccard" data-cat="han" onclick="openPlayer(2)">
-<div class="pcicon" style="background:linear-gradient(135deg,#2980B9,#3498DB)">🐴</div>
-<div class="pctxt"><h4>张骞通西域：丝绸之路的诞生</h4><div class="pcinfo">西汉 · 25分钟 · 1.5万人收听</div></div>
-<div class="pcplay">▶</div>
-</div>
-<div class="pccard" data-cat="mingqing" onclick="openPlayer(3)">
-<div class="pcicon" style="background:linear-gradient(135deg,#2C3E50,#34495E)">👑</div>
-<div class="pctxt"><h4>万历十五年：帝国黄昏的序曲</h4><div class="pcinfo">明朝 · 30分钟 · 2.1万人收听</div></div>
-<div class="pcplay">▶</div>
-</div>
-<div class="pccard" data-cat="modern" onclick="openPlayer(4)">
-<div class="pcicon" style="background:linear-gradient(135deg,#8E44AD,#9B59B6)">💣</div>
-<div class="pctxt"><h4>鸦片战争：天朝上国的幻梦破碎</h4><div class="pcinfo">近代 · 26分钟 · 3.4万人收听</div></div>
-<div class="pcplay">▶</div>
-</div>
-</div>
+<div class="pclist" id="podcast-list"></div>
 </div>
 
 <!-- 播客播放器 -->
@@ -346,7 +262,7 @@
 <span id="pl-cur">00:00</span><span id="pl-dur">28:00</span>
 </div>
 <div class="plbtns">
-<button class="plbtn" onclick="showToast('倍速切换')" id="pl-speed">1.0x</button>
+<button class="plbtn" onclick="toggleSpeed()" id="pl-speed">1.0x</button>
 <button class="plbtn" onclick="prevPodcast()">⏮</button>
 <button class="plbtn" id="pl-playbtn" onclick="togglePlay()">▶</button>
 <button class="plbtn" onclick="nextPodcast()">⏭</button>
@@ -404,33 +320,14 @@
 <div style="display:flex;gap:16px;padding:0 16px 12px;font-size:12px;color:#8A8279">
 <span>🔥 1.2k 讨论</span><span>⭐ 486 收藏</span>
 </div>
-<div class="htabs" style="padding:0 16px 12px;display:flex;gap:8px;overflow-x:auto">
+<div class="htabs" id="discuss-tabs" style="padding:0 16px 12px;display:flex;gap:8px;overflow-x:auto">
 <button class="htab act" onclick="filterDiscuss('all',this)">全部</button>
 <button class="htab" onclick="filterDiscuss('view',this)">史观</button>
 <button class="htab" onclick="filterDiscuss('cold',this)">冷知识</button>
 <button class="htab" onclick="filterDiscuss('help',this)">求助</button>
 <button class="htab" onclick="filterDiscuss('resource',this)">资源</button>
 </div>
-<div class="pcard">
-<div class="pa"><div class="pav">🧑</div><div><div class="nm">长安一片月</div><div class="ti">5小时前</div></div></div>
-<div class="pc"><h4>科举制和高考，跨越千年的「内卷」</h4><p>从隋唐到明清，科举从"取士"变成"困士"。八股文把思维框死。回头看看今天的高考，感觉历史的车轮又在重复转动。</p></div>
-<div class="pact"><span>❤️ 986</span><span onclick="toggleComments(this)">💬 392</span><span>⭐ 收藏</span></div>
-<div class="cmt-list" style="display:none;padding:8px 0 0;border-top:1px solid #EDE8E0;margin-top:8px">
-<div class="cmt-item" style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px"><div style="width:24px;height:24px;background:#EDE8E0;border-radius:50%;font-size:12px;display:flex;align-items:center;justify-content:center">🧒</div><div style="flex:1"><div style="font-size:11px;font-weight:600;color:#2C1810">历史小白</div><div style="font-size:11px;color:#2C1810;line-height:1.5">真的，我看到八股文就想到现在的高考作文...</div></div></div>
-<div class="cmt-item" style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px"><div style="width:24px;height:24px;background:#EDE8E0;border-radius:50%;font-size:12px;display:flex;align-items:center;justify-content:center">🧓</div><div style="flex:1"><div style="font-size:11px;font-weight:600;color:#2C1810">教书匠</div><div style="font-size:11px;color:#2C1810;line-height:1.5">科举是阶层跃升，高考也是，本质没变。</div></div></div>
-<div style="font-size:10px;color:#C9A96E;cursor:pointer;padding:4px 0" onclick="showToast('展开更多评论')">展开全部 390 条评论</div>
-</div>
-</div>
-<div class="pcard">
-<div class="pa"><div class="pav">👩</div><div><div class="nm">史海拾贝</div><div class="ti">2小时前</div></div></div>
-<div class="pc"><h4>如果张居正多活十年，明朝会怎样？</h4><p>一条鞭法改革初见成效，国库充盈，边防稳固。但张居正一死，万历立刻翻脸，所有改革付诸东流。</p></div>
-<div class="pact"><span>❤️ 534</span><span>💬 189</span><span>⭐ 收藏</span></div>
-</div>
-<div class="pcard">
-<div class="pa"><div class="pav">🧔</div><div><div class="nm">故纸堆里的人</div><div class="ti">8小时前</div></div></div>
-<div class="pc"><h4>历史课本里被一笔带过的"小事"</h4><p>王莽改制在课本上就几行字，但细看他的改革措施——盐铁、土地国有、计划经济，简直是穿越者...</p></div>
-<div class="pact"><span>❤️ 103</span><span>💬 28</span><span>⭐ 收藏</span></div>
-</div>
+<div id="discussion-list"></div>
 </div>
 <button class="fab" onclick="openPost()">＋</button>
 </div>
@@ -568,10 +465,15 @@
 <script src="./src/js/storage.js"></script>
 <script src="./src/js/navigation.js"></script>
 <script src="./src/js/favorites.js"></script>
+<script src="./src/js/learning-stats.js"></script>
 <script src="./src/js/noun.js"></script>
 <script src="./src/js/timeline.js"></script>
 <script src="./src/js/podcast.js"></script>
 <script src="./src/js/ai-assistant.js"></script>
+<script src="./src/js/quiz.js"></script>
+<script src="./src/js/checkin.js"></script>
+<script src="./src/js/review.js"></script>
+<script src="./src/js/discuss.js"></script>
 <script src="./src/js/app.js"></script>
 <script>
 function openExternalLink(url) {
@@ -867,96 +769,15 @@ function closeFeatDet(e){if(e.target===document.getElementById('feat-detail-over
 
 // ===== AI助手拖动 已迁移到 src/js/ai-assistant.js =====
 
-// ===== 讨论区功能 =====
-function openPost(){document.getElementById('post-overlay').classList.add('act')}
-function closePost(e){if(e.target===document.getElementById('post-overlay'))document.getElementById('post-overlay').classList.remove('act')}
-var postTags=[];
-function togglePostTag(btn,tag){
-  btn.classList.toggle('act');
-  if(btn.classList.contains('act')){postTags.push(tag)}else{postTags=postTags.filter(function(t){return t!==tag})}
-}
-function submitPost(){
-  var t=document.getElementById('post-title').value.trim();
-  var b=document.getElementById('post-body').value.trim();
-  if(!t){showToast('请输入帖子标题');return}
-  if(!b){showToast('请输入帖子内容');return}
-  document.getElementById('post-overlay').classList.remove('act');
-  document.getElementById('post-title').value='';
-  document.getElementById('post-body').value='';
-  document.querySelectorAll('#post-overlay .ft').forEach(function(ft){ft.classList.remove('act')});
-  postTags=[];
-  showToast('帖子发布成功！');
-}
-function toggleComments(span){
-  var card=span.closest('.pcard');
-  var list=card.querySelector('.cmt-list');
-  if(list){list.style.display=list.style.display==='none'?'block':'none'}
-}
-function filterDiscuss(cat,btn){
-  document.querySelectorAll('#discuss-page .htabs .htab').forEach(function(t){t.classList.remove('act')});
-  btn.classList.add('act');
-}
+// ===== 讨论区功能 已迁移到 src/js/discuss.js，并通过 app.js 暴露为兼容全局函数 =====
 
-// ===== 打卡签到 =====
-function openCheckin(){
-  document.getElementById('checkin-panel').classList.add('act');
-  renderCheckinCalendar();
-}
-function closeCheckin(){document.getElementById('checkin-panel').classList.remove('act')}
-function doCheckin(){
-  var today=new Date().toISOString().slice(0,10);
-  var checkins=getStoredJSONCompat('checkins',{});
-  if(checkins[today]){showToast('今日已打卡，明天继续加油！');return}
-  checkins[today]=true;
-  setStoredJSONCompat('checkins',checkins);
-  document.getElementById('checkin-btn').textContent='✅ 已打卡';
-  document.getElementById('checkin-btn').classList.add('done');
-  updateCheckinStats();
-  showToast('打卡成功！连续学习，历史达人就是你！');
-}
-function renderCheckinCalendar(){
-  var now=new Date(),y=now.getFullYear(),m=now.getMonth();
-  var firstDay=new Date(y,m,1).getDay(),daysInMonth=new Date(y,m+1,0).getDate();
-  var checkins=getStoredJSONCompat('checkins',{});
-  var h='<div class="ckrow head"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div><div class="ckrow">';
-  for(var i=0;i<firstDay;i++)h+='<div></div>';
-  for(var d=1;d<=daysInMonth;d++){
-    var ds=y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-    var cls='ckcell';
-    if(checkins[ds])cls+=' done';
-    if(d===now.getDate())cls+=' today';
-    h+='<div class="'+cls+'">'+d+'</div>';
-    if((firstDay+d)%7===0)h+='</div><div class="ckrow">';
-  }
-  h+='</div>';
-  document.getElementById('checkin-calendar').innerHTML=h;
-  updateCheckinStats();
-}
-function updateCheckinStats(){
-  var checkins=getStoredJSONCompat('checkins',{});
-  var keys=Object.keys(checkins);
-  var total=keys.length;
-  var today=new Date().toISOString().slice(0,10);
-  var done=!!checkins[today];
-  if(document.getElementById('ck-total'))document.getElementById('ck-total').textContent=total;
-  if(document.getElementById('stat-days'))document.getElementById('stat-days').textContent=total;
-  if(document.getElementById('stat-streak'))document.getElementById('stat-streak').textContent=calcStreak(checkins);
-  if(document.getElementById('ck-streak'))document.getElementById('ck-streak').textContent=calcStreak(checkins);
-  var monthCount=keys.filter(function(k){return k.slice(0,7)===today.slice(0,7)}).length;
-  if(document.getElementById('ck-month'))document.getElementById('ck-month').textContent=monthCount;
-  if(done){
-    document.getElementById('checkin-btn').textContent='✅ 已打卡';
-    document.getElementById('checkin-btn').classList.add('done');
-  }
-}
-function calcStreak(checkins){
-  var d=new Date(),s=0;
-  while(true){
-    var ds=d.toISOString().slice(0,10);
-    if(checkins[ds]){s++;d.setDate(d.getDate()-1)}else break;
-  }
-  return s;
-}
+// ===== 打卡签到 已迁移到 src/js/checkin.js，并通过 app.js 暴露为兼容全局函数 =====
+function openCheckin(){if(window.checkinAPI&&window.checkinAPI.openCheckin)return window.checkinAPI.openCheckin()}
+function closeCheckin(){if(window.checkinAPI&&window.checkinAPI.closeCheckin)return window.checkinAPI.closeCheckin()}
+function doCheckin(){if(window.checkinAPI&&window.checkinAPI.doCheckin)return window.checkinAPI.doCheckin()}
+function renderCheckinCalendar(){if(window.checkinAPI&&window.checkinAPI.renderCheckinCalendar)return window.checkinAPI.renderCheckinCalendar()}
+function updateCheckinStats(){if(window.checkinAPI&&window.checkinAPI.updateCheckinStats)return window.checkinAPI.updateCheckinStats()}
+function calcStreak(checkins){return window.checkinAPI&&window.checkinAPI.calcStreak?window.checkinAPI.calcStreak(checkins):0}
 
 // ===== 初始化：renderTimeline / renderEventList / renderRel / updateCheckinStats 已由 app.js 统一调度 =====
 </script>

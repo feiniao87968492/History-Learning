@@ -1,0 +1,7 @@
+[
+  { "id": "fill-blank", "icon": "✏️", "title": "挖空练习", "description": "历年真题挖空训练", "action": "toast", "message": "挖空练习功能开发中" },
+  { "id": "note-upload", "icon": "📤", "title": "笔记上传", "description": "上传分享学习笔记", "action": "toast", "message": "笔记上传功能开发中" },
+  { "id": "battle", "icon": "⚔️", "title": "联机PK", "description": "和全国考生实时对战", "action": "toast", "message": "联机PK功能开发中" },
+  { "id": "review-zone", "icon": "📚", "title": "复习专区", "description": "高频考点专项突破", "action": "toast", "message": "复习专区加载中" },
+  { "id": "mindmap", "icon": "🧠", "title": "思维导图", "description": "知识导图·笔记标注", "action": "openSub", "target": "mindmap-page" }
+]

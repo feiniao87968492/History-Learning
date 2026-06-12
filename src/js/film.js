@@ -197,16 +197,18 @@
     var target = document.getElementById('rnk-list');
     if (!target) return;
 
-    var list = rankings[type] || [];
+    var list = (rankings[type] || []).slice().sort(function (a, b) {
+      return Number(b.score || 0) - Number(a.score || 0);
+    });
     if (!list.length) {
       target.innerHTML = '<div class="wlempty">暂无榜单内容</div>';
       return;
     }
 
-    target.innerHTML = list.map(function (item) {
+    target.innerHTML = list.map(function (item, index) {
       return '' +
         '<div class="rnkitem">' +
-          '<div class="rnkidx">' + escapeHtml(item.rank) + '</div>' +
+          '<div class="rnkidx">' + escapeHtml(index + 1) + '</div>' +
           '<div class="rnkimg" style="background:#EDE8E0">' + escapeHtml(item.icon || '📖') + '</div>' +
           '<div class="rnkname">' +
             '<h5>' + escapeHtml(item.title || '') + '</h5>' +

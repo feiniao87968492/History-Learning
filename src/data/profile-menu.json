@@ -1,0 +1,11 @@
+{
+  "study": [
+    { "id": "study-record", "icon": "📊", "label": "学习记录", "action": "toast", "message": "学习记录开发中" },
+    { "id": "favorites", "icon": "📌", "label": "收藏/错题本", "action": "toast", "message": "收藏/错题本开发中" },
+    { "id": "points", "icon": "🎁", "label": "积分兑换", "action": "toast", "message": "积分兑换开发中" }
+  ],
+  "settings": [
+    { "id": "feedback", "icon": "💬", "label": "问题反馈", "action": "openFB" },
+    { "id": "settings", "icon": "⚙️", "label": "设置与账号", "action": "toast", "message": "设置页面开发中" }
+  ]
+}

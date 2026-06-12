@@ -1,0 +1,128 @@
+{
+  "book": [
+    {
+      "id": "book-zi-zhi-tong-jian",
+      "title": "资治通鉴",
+      "subtitle": "司马光 编纂",
+      "score": "9.4",
+      "rank": 1,
+      "icon": "📜"
+    },
+    {
+      "id": "book-mingchao-neixieshi",
+      "title": "明朝那些事儿",
+      "subtitle": "当年明月 著",
+      "score": "9.1",
+      "rank": 2,
+      "icon": "📖"
+    },
+    {
+      "id": "book-wanli-shiwu-nian",
+      "title": "万历十五年",
+      "subtitle": "黄仁宇 著",
+      "score": "9.0",
+      "rank": 3,
+      "icon": "📖"
+    },
+    {
+      "id": "book-jiangcheng",
+      "title": "叫魂：1768年中国妖术大恐慌",
+      "subtitle": "孔飞力 著",
+      "score": "9.0",
+      "rank": 4,
+      "icon": "📚"
+    },
+    {
+      "id": "book-zhongguo-da-lishi",
+      "title": "中国大历史",
+      "subtitle": "黄仁宇 著",
+      "score": "8.3",
+      "rank": 5,
+      "icon": "📖"
+    }
+  ],
+  "film": [
+    {
+      "id": "film-da-ming-wang-chao-1566",
+      "title": "大明王朝1566",
+      "subtitle": "张黎导演 2007",
+      "score": "9.7",
+      "rank": 1,
+      "icon": "🎬"
+    },
+    {
+      "id": "film-yongzheng-wangchao",
+      "title": "雍正王朝",
+      "subtitle": "胡玫导演 1999",
+      "score": "9.4",
+      "rank": 2,
+      "icon": "🎞️"
+    },
+    {
+      "id": "film-last-emperor",
+      "title": "末代皇帝",
+      "subtitle": "贝纳尔多·贝托鲁奇 1987",
+      "score": "9.3",
+      "rank": 3,
+      "icon": "🎬"
+    },
+    {
+      "id": "film-kangxi-wangchao",
+      "title": "康熙王朝",
+      "subtitle": "陈家林导演 2001",
+      "score": "9.2",
+      "rank": 4,
+      "icon": "🎥"
+    },
+    {
+      "id": "film-changan-shier-shichen",
+      "title": "长安十二时辰",
+      "subtitle": "曹盾导演 2019",
+      "score": "8.1",
+      "rank": 5,
+      "icon": "🎭"
+    }
+  ],
+  "doc": [
+    {
+      "id": "doc-hexi-zoulang",
+      "title": "河西走廊",
+      "subtitle": "央视纪录片 2015",
+      "score": "9.7",
+      "rank": 1,
+      "icon": "📺"
+    },
+    {
+      "id": "doc-xuan-zang-road",
+      "title": "玄奘之路",
+      "subtitle": "央视纪录片 2011",
+      "score": "9.5",
+      "rank": 2,
+      "icon": "🧭"
+    },
+    {
+      "id": "doc-if-national-treasures-could-talk",
+      "title": "如果国宝会说话",
+      "subtitle": "央视纪录片 2018",
+      "score": "9.4",
+      "rank": 3,
+      "icon": "🏺"
+    },
+    {
+      "id": "doc-zhongguo-tongshi",
+      "title": "中国通史",
+      "subtitle": "央视纪录片 2013",
+      "score": "9.2",
+      "rank": 4,
+      "icon": "📺"
+    },
+    {
+      "id": "doc-da-guo-jue-qi",
+      "title": "大国崛起",
+      "subtitle": "央视纪录片 2006",
+      "score": "9.2",
+      "rank": 5,
+      "icon": "📺"
+    }
+  ]
+}

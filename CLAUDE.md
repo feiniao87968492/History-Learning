@@ -39,9 +39,9 @@ src/
 │   ├── checkin.js      # 打卡签到
 │   ├── favorites.js    # 收藏管理
 │   ├── film.js         # 影视书目 + 待看栏
-│   └── adapters/       # 平台适配层（Phase 1 构建中）
+│   └── adapters/       # 平台适配层
 └── data/
-    ├── nouns.json      # 名词数据（当前 4 条，目标 50+）
+    ├── nouns.json      # 名词数据（当前 10 条，目标 50+）
     ├── timeline.json   # 时间轴事件（当前 13 条，目标 40+）
     ├── people.json     # 人物数据（待从 index.html 迁移）
     ├── films.json      # 影视书目数据
@@ -66,7 +66,7 @@ src/
 
 ## 当前阶段与约束
 
-详见 `docs/superpowers/plans/2026-06-10-history-learning-phase1-plan-v2.md`。
+详见 `TASKS/2026-06-10-history-learning-phase1-plan-v2.md`。
 
 ### 核心规则
 
@@ -78,7 +78,7 @@ src/
 6. **每个 Task 同步完成测试，不可集中到最后。**
 7. **已完成：正常显示入口；不做：隐藏入口；预告：按钮置灰。** 禁止保留"点击后弹开发中"的伪入口。
 
-### Adapter 层（Phase 1 构建中）
+### Adapter 层（Phase 1 已完成）
 
 ```
 src/js/adapters/
@@ -90,6 +90,14 @@ src/js/adapters/
 ```
 
 未来迁移小程序时只替换 adapter 实现，不重写业务逻辑。
+
+### 当前进度（2026-06-11）
+
+- 当前工作分支：`phase1-storage-adapter`。
+- 已完成并提交：Phase 1 Task 1.1–1.6，adapter 层与现有模块接线已完成。
+- 正在推进：Phase 2 Task 2.1 `名词解释种子数据与数据驱动渲染`。
+- 已完成本地实现：`src/data/nouns.json` 扩充为 10 条结构化种子数据，`src/js/noun.js` 从 JSON 渲染卡片与详情，`index.html` 删除硬编码名词卡片。
+- 下一步：Phase 2 Task 2.2 `名词收藏与标记已学`，在 `src/js/noun.js` 中通过 storage adapter 持久化收藏/已学状态。
 
 ## 本地运行
 

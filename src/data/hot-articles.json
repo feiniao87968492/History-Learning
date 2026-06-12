@@ -1,0 +1,85 @@
+[
+  {
+    "id": "hot-zhenguan",
+    "kind": "headline",
+    "dynasty": "qinhan",
+    "icon": "📜",
+    "background": "#C9A96E",
+    "tag": "热门",
+    "tagClass": "hot",
+    "label": "贞观之治",
+    "title": "唐太宗李世民在位期间的清明政治局面，以\"贞观\"为年号（627-649年）。轻徭薄赋、休养生息、虚心纳谏，奠定了\"大唐盛世\"的根基。",
+    "meta": ["📖 2.3k 阅读", "❤️ 892 收藏", "💬 视频解读", "🗺️ 思维导图"],
+    "url": "https://mp.weixin.qq.com"
+  },
+  {
+    "id": "hot-keju",
+    "kind": "headline",
+    "dynasty": "suitang",
+    "icon": "🏜️",
+    "background": "#E8D5B0",
+    "tag": "制度",
+    "tagClass": "sys",
+    "label": "科举制",
+    "title": "隋朝创立的分科考试选拔官员的制度，打破门阀垄断，使寒门子弟得以入仕，影响了中国社会结构近1300年。",
+    "meta": ["📖 1.6k 阅读", "❤️ 467 收藏", "💬 视频解读", "🗺️ 思维导图"],
+    "url": "https://mp.weixin.qq.com"
+  },
+  {
+    "id": "hot-qinshihuang",
+    "kind": "headline",
+    "dynasty": "qinhan",
+    "icon": "⚔️",
+    "background": "#EDE8E0",
+    "tag": "热门",
+    "tagClass": "hot",
+    "label": "秦始皇",
+    "title": "秦始皇统一六国，废分封行郡县，书同文车同轨，开创中国大一统格局，影响延续至今。",
+    "meta": ["📖 3.1k 阅读", "❤️ 1.2k 收藏", "💬 视频解读"],
+    "url": "https://mp.weixin.qq.com"
+  },
+  {
+    "id": "hot-song-economy",
+    "kind": "item",
+    "dynasty": "song",
+    "icon": "🏯",
+    "background": "#D4C0A0",
+    "title": "宋朝：被误解的\"弱宋\"实为经济革命",
+    "meta": "💰 经济史 · 10分钟阅读",
+    "cta": "🔗 阅读原文",
+    "url": "https://mp.weixin.qq.com"
+  },
+  {
+    "id": "hot-wanli",
+    "kind": "item",
+    "dynasty": "mingqing",
+    "icon": "📘",
+    "background": "#C0A890",
+    "title": "万历十五年：大风起于青萍之末",
+    "meta": "📚 历史书评 · 12分钟阅读",
+    "cta": "🔗 阅读原文",
+    "url": "https://mp.weixin.qq.com"
+  },
+  {
+    "id": "hot-grand-canal",
+    "kind": "item",
+    "dynasty": "modern",
+    "icon": "🌊",
+    "background": "#B0C4DE",
+    "title": "大运河：一部流动的政治经济学",
+    "meta": "🚢 经济史 · 15分钟阅读",
+    "cta": "🔗 阅读原文",
+    "url": "https://mp.weixin.qq.com"
+  },
+  {
+    "id": "hot-opium-war",
+    "kind": "item",
+    "dynasty": "modern",
+    "icon": "🔥",
+    "background": "#F5F0E8",
+    "title": "鸦片战争：天朝上国的幻梦破碎时",
+    "meta": "💣 近代史 · 8分钟阅读",
+    "cta": "🔗 阅读原文",
+    "url": "https://mp.weixin.qq.com"
+  }
+]

@@ -1,7 +1,9 @@
 (function () {
+  var CHECKIN_KEY = 'xds_checkins';
+
   function getCheckins() {
     if (window.storageAPI && window.storageAPI.getStoredJSON) {
-      return window.storageAPI.getStoredJSON('checkins', {});
+      return window.storageAPI.getStoredJSON(CHECKIN_KEY, {});
     }
 
     console.error('getCheckins failed:', new Error('storageAPI unavailable'));
@@ -10,11 +12,17 @@
 
   function setCheckins(checkins) {
     if (window.storageAPI && window.storageAPI.setStoredJSON) {
-      return window.storageAPI.setStoredJSON('checkins', checkins);
+      return window.storageAPI.setStoredJSON(CHECKIN_KEY, checkins);
     }
 
     console.error('setCheckins failed:', new Error('storageAPI unavailable'));
     return false;
+  }
+
+  function recordLearningEvent(type, sourceId) {
+    if (window.learningStatsAPI && typeof window.learningStatsAPI.recordLearningEvent === 'function') {
+      window.learningStatsAPI.recordLearningEvent(type, sourceId);
+    }
   }
 
   function openCheckin() {
@@ -61,15 +69,20 @@
       totalEl.textContent = String(total);
     }
 
-    var statDaysEl = document.getElementById('stat-days');
-    if (statDaysEl) {
-      statDaysEl.textContent = String(total);
-    }
-
     var streak = calcStreak(checkins);
-    var statStreakEl = document.getElementById('stat-streak');
-    if (statStreakEl) {
-      statStreakEl.textContent = String(streak);
+
+    if (window.learningStatsAPI && typeof window.learningStatsAPI.updateProfileStats === 'function') {
+      window.learningStatsAPI.updateProfileStats();
+    } else {
+      var statDaysEl = document.getElementById('stat-days');
+      if (statDaysEl) {
+        statDaysEl.textContent = String(total);
+      }
+
+      var statStreakEl = document.getElementById('stat-streak');
+      if (statStreakEl) {
+        statStreakEl.textContent = String(streak);
+      }
     }
 
     var ckStreakEl = document.getElementById('ck-streak');
@@ -90,8 +103,19 @@
       if (button) {
         button.textContent = '✅ 已打卡';
         button.classList.add('done');
+        button.disabled = true;
       }
     }
+  }
+
+  function getCheckinToast(streak) {
+    if (streak >= 7) {
+      return '打卡成功！连续 7 天学习，已经形成习惯啦！';
+    }
+    if (streak >= 3) {
+      return '打卡成功！连续 3 天学习，保持节奏！';
+    }
+    return '打卡成功！连续学习，历史达人就是你！';
   }
 
   function renderCheckinCalendar() {
@@ -145,17 +169,19 @@
 
     checkins[today] = true;
     setCheckins(checkins);
+    recordLearningEvent('checkin', today);
 
     var button = document.getElementById('checkin-btn');
     if (button) {
       button.textContent = '✅ 已打卡';
       button.classList.add('done');
+      button.disabled = true;
     }
 
     updateCheckinStats();
 
     if (window.navigationAPI && window.navigationAPI.showToast) {
-      window.navigationAPI.showToast('打卡成功！连续学习，历史达人就是你！');
+      window.navigationAPI.showToast(getCheckinToast(calcStreak(checkins)));
     }
   }
 
@@ -165,6 +191,9 @@
     doCheckin: doCheckin,
     renderCheckinCalendar: renderCheckinCalendar,
     updateCheckinStats: updateCheckinStats,
-    calcStreak: calcStreak
+    calcStreak: calcStreak,
+    getCheckins: getCheckins,
+    setCheckins: setCheckins,
+    getCheckinToast: getCheckinToast
   };
 })();

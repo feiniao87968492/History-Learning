@@ -8,6 +8,7 @@
   var timerID = null;
   var hasAudioSource = false;
   var audioEventsBound = false;
+  var SPEEDS = [1.0, 1.25, 1.5, 2.0];
 
   function getAudioAPI() {
     return window.audioAPI || null;
@@ -20,11 +21,75 @@
 
   function setPodcasts(list) {
     podcastData = Array.isArray(list) ? list : [];
+    renderPodcastList();
+  }
+
+  function escapeHtml(value) {
+    if (window.htmlUtils && typeof window.htmlUtils.escapeHtml === 'function') {
+      return window.htmlUtils.escapeHtml(value);
+    }
+
+    if (value === null || typeof value === 'undefined') {
+      return '';
+    }
+
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/\"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function sanitizeColor(value, fallbackValue) {
+    var text = value == null ? '' : String(value);
+    if (/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(text) || /^(rgb|rgba|hsl|hsla)\(/.test(text)) {
+      return text;
+    }
+    return fallbackValue;
+  }
+
+  function showToast(message) {
+    if (window.navigationAPI && typeof window.navigationAPI.showToast === 'function') {
+      window.navigationAPI.showToast(message);
+    } else if (typeof window.showToast === 'function') {
+      window.showToast(message);
+    }
   }
 
   function fmtTime(s) {
     var m = Math.floor(s / 60), ss = s % 60;
     return (m < 10 ? '0' : '') + m + ':' + (ss < 10 ? '0' : '') + ss;
+  }
+
+  function renderPodcastList() {
+    var list = document.getElementById('podcast-list');
+    if (!list) return;
+
+    if (!podcastData.length) {
+      list.innerHTML = '<div style="text-align:center;padding:24px;color:#B5ADA5">暂无播客内容</div>';
+      return;
+    }
+
+    list.innerHTML = podcastData.map(function (item, index) {
+      var colors = Array.isArray(item.colors) ? item.colors : [];
+      var colorA = sanitizeColor(colors[0], '#5A3E1B');
+      var colorB = sanitizeColor(colors[1], '#8B6914');
+      var label = item.categoryLabel || item.category || '';
+      var info = [label, fmtTime(item.dur || 0), item.listens].filter(Boolean).map(escapeHtml).join(' · ');
+
+      return '<div class="pccard" data-podcast-id="' + escapeHtml(item.id || '') + '" data-cat="' + escapeHtml(item.category || '') + '">' +
+        '<div class="pcicon" style="background:linear-gradient(135deg,' + colorA + ',' + colorB + ')">' + escapeHtml(item.icon || '') + '</div>' +
+        '<div class="pctxt"><h4>' + escapeHtml(item.title || '') + '</h4><div class="pcinfo">' + info + '</div></div>' +
+        '<div class="pcplay">▶</div>' +
+      '</div>';
+    }).join('');
+
+    list.querySelectorAll('.pccard').forEach(function (card, index) {
+      card.onclick = function () {
+        openPlayer(index);
+      };
+    });
   }
 
   function filterPodcast(cat, btn) {
@@ -67,9 +132,7 @@
     var playButton = document.getElementById('pl-playbtn');
     if (playButton) playButton.textContent = '▶';
     clearInterval(plTimer);
-    if (window.navigationAPI && window.navigationAPI.showToast) {
-      window.navigationAPI.showToast('音频加载失败，请稍后重试');
-    }
+    showToast('音频加载失败，请稍后重试');
   }
 
   function bindAudioEvents() {
@@ -90,8 +153,9 @@
     isPlaying = false;
     hasAudioSource = false;
     bindAudioEvents();
+    var colors = Array.isArray(d.colors) ? d.colors : [];
     document.getElementById('pl-icon').textContent = d.icon;
-    document.getElementById('pl-icon').style.background = 'linear-gradient(' + d.colors[0] + ',' + d.colors[1] + ')';
+    document.getElementById('pl-icon').style.background = 'linear-gradient(' + sanitizeColor(colors[0], '#5A3E1B') + ',' + sanitizeColor(colors[1], '#8B6914') + ')';
     document.getElementById('pl-title').textContent = d.title;
     document.getElementById('pl-author').textContent = d.author;
     document.getElementById('pl-dur').textContent = fmtTime(d.dur);
@@ -100,6 +164,9 @@
     document.getElementById('pl-playbtn').textContent = '▶';
     if (window.audioAPI && d.audioUrl) {
       hasAudioSource = window.audioAPI.setSource(d.audioUrl);
+      if (!hasAudioSource) {
+        onAudioError();
+      }
     }
     document.getElementById('podcast-player').classList.add('act');
     startPlayProgress();
@@ -157,13 +224,26 @@
     document.getElementById('pl-cur').textContent = fmtTime(plCur);
   }
 
+  function toggleSpeed() {
+    var index = SPEEDS.indexOf(plSpeed);
+    plSpeed = SPEEDS[(index + 1) % SPEEDS.length];
+    var speedButton = document.getElementById('pl-speed');
+    if (speedButton) {
+      speedButton.textContent = plSpeed.toFixed(plSpeed % 1 === 0 ? 1 : 2).replace(/0$/, '') + 'x';
+    }
+    if (isPlaying && !hasAudioSource) {
+      startPlayProgress();
+    }
+    return plSpeed;
+  }
+
   function setTimer(n) {
     clearTimeout(timerID);
     if (n > 0) {
-      timerID = setTimeout(function () { closePlayer(); window.showToast('定时关闭已触发'); }, n * 60000);
-      window.showToast('将在' + n + '分钟后关闭播放');
+      timerID = setTimeout(function () { closePlayer(); showToast('定时关闭已触发'); }, n * 60000);
+      showToast('将在' + n + '分钟后关闭播放');
     } else {
-      window.showToast('已取消定时关闭');
+      showToast('已取消定时关闭');
     }
     document.getElementById('pl-timer').style.display = 'none';
   }
@@ -179,12 +259,14 @@
   window.podcastAPI = {
     setPodcasts: setPodcasts,
     fmtTime: fmtTime,
+    renderPodcastList: renderPodcastList,
     filterPodcast: filterPodcast,
     openPlayer: openPlayer,
     closePlayer: closePlayer,
     togglePlay: togglePlay,
     startPlayProgress: startPlayProgress,
     seekPodcast: seekPodcast,
+    toggleSpeed: toggleSpeed,
     setTimer: setTimer,
     showTimer: showTimer,
     prevPodcast: prevPodcast,

@@ -1,0 +1,13 @@
+{
+  "name": "history-learning",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run --environment jsdom",
+    "test:watch": "vitest --environment jsdom"
+  },
+  "devDependencies": {
+    "jsdom": "^26.1.0",
+    "vitest": "^3.2.4"
+  }
+}
