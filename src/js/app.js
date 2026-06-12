@@ -291,10 +291,10 @@
   }
 
   async function initializeData() {
-    var nouns = await loadJSON('./src/data/nouns.json?v=20260612-phase4-fix1', {});
+    var nouns = await loadJSON('./src/data/nouns.json?v=20260612-timeline-fix2', {});
     if (window.nounAPI) window.nounAPI.setNounData(nouns);
 
-    var timeline = await loadJSON('./src/data/timeline.json?v=20260612-phase4-fix1', { dynasties: [], events: [] });
+    var timeline = await loadJSON('./src/data/timeline.json?v=20260612-timeline-fix2', { dynasties: [], events: [] });
     if (window.timelineAPI) {
       window.timelineAPI.setDynasties(timeline.dynasties);
       window.timelineAPI.setTimelineEvents(timeline.events);
@@ -303,27 +303,27 @@
     }
 
     if (window.peopleAPI) {
-      var people = await loadJSON('./src/data/people.json?v=20260612-phase4-fix1', { people: [], relations: [] });
+      var people = await loadJSON('./src/data/people.json?v=20260612-timeline-fix2', { people: [], relations: [] });
       window.peopleAPI.setPeopleData(people);
       try { window.peopleAPI.renderPeopleGraph(); } catch (e) { console.error('renderPeopleGraph err:', e); }
     }
 
     if (window.mindmapAPI) {
-      var mindmaps = await loadJSON('./src/data/mindmaps.json?v=20260612-phase4-fix1', { maps: {} });
+      var mindmaps = await loadJSON('./src/data/mindmaps.json?v=20260612-timeline-fix2', { maps: {} });
       window.mindmapAPI.setMindmapData(mindmaps);
       try { window.mindmapAPI.renderAllMindmaps(); } catch (e) { console.error('renderAllMindmaps err:', e); }
     }
 
-    var podcasts = await loadJSON('./src/data/podcasts.json?v=20260612-phase4-fix1', []);
+    var podcasts = await loadJSON('./src/data/podcasts.json?v=20260612-timeline-fix2', []);
     if (window.podcastAPI) window.podcastAPI.setPodcasts(podcasts);
 
     if (window.quizAPI) {
-      var questions = await loadJSON('./src/data/questions.json?v=20260612-phase4-fix1', []);
+      var questions = await loadJSON('./src/data/questions.json?v=20260612-timeline-fix2', []);
       window.quizAPI.setQuestions(questions);
     }
 
-    var films = await loadJSON('./src/data/films.json?v=20260612-phase4-fix1', []);
-    var rankings = await loadJSON('./src/data/rankings.json?v=20260612-phase4-fix1', { book: [], film: [], doc: [] });
+    var films = await loadJSON('./src/data/films.json?v=20260612-timeline-fix2', []);
+    var rankings = await loadJSON('./src/data/rankings.json?v=20260612-timeline-fix2', { book: [], film: [], doc: [] });
     if (window.filmAPI) {
       window.filmAPI.setFilms(films);
       window.filmAPI.setRankings(rankings);
@@ -333,19 +333,19 @@
     }
 
     if (document.getElementById('meme-scroll')) {
-      renderMemes(await loadJSON('./src/data/memes.json?v=20260612-phase4-fix1', []));
+      renderMemes(await loadJSON('./src/data/memes.json?v=20260612-timeline-fix2', []));
     }
     if (document.getElementById('feedback-type-list')) {
-      renderFeedbackTypes(await loadJSON('./src/data/feedback-types.json?v=20260612-phase4-fix1', []));
+      renderFeedbackTypes(await loadJSON('./src/data/feedback-types.json?v=20260612-timeline-fix2', []));
     }
     if (document.getElementById('hot-articles')) {
-      renderHotArticles(await loadJSON('./src/data/hot-articles.json?v=20260612-phase4-fix1', []));
+      renderHotArticles(await loadJSON('./src/data/hot-articles.json?v=20260612-timeline-fix2', []));
     }
     if (document.querySelector('#discuss-page .dp')) {
-      renderDiscussions(await loadJSON('./src/data/discussions.json?v=20260612-phase4-fix1', []));
+      renderDiscussions(await loadJSON('./src/data/discussions.json?v=20260612-timeline-fix2', []));
     }
     if (document.querySelector('#profile-page .mg')) {
-      renderProfileMenu(await loadJSON('./src/data/profile-menu.json?v=20260612-phase4-fix1', { study: [], settings: [] }));
+      renderProfileMenu(await loadJSON('./src/data/profile-menu.json?v=20260612-timeline-fix2', { study: [], settings: [] }));
     }
 
     if (window.learningStatsAPI && typeof window.learningStatsAPI.updateProfileStats === 'function') {

@@ -102,9 +102,9 @@ describe('adapter wiring', () => {
     await import('../src/js/app.js');
     await new Promise(function (resolvePromise) { setTimeout(resolvePromise, 0); });
 
-    expect(loadJSON).toHaveBeenCalledWith('./src/data/nouns.json?v=20260612-phase4-fix1', {});
-    expect(loadJSON).toHaveBeenCalledWith('./src/data/timeline.json?v=20260612-phase4-fix1', { dynasties: [], events: [] });
-    expect(loadJSON).toHaveBeenCalledWith('./src/data/podcasts.json?v=20260612-phase4-fix1', []);
+    expect(loadJSON).toHaveBeenCalledWith('./src/data/nouns.json?v=20260612-timeline-fix2', {});
+    expect(loadJSON).toHaveBeenCalledWith('./src/data/timeline.json?v=20260612-timeline-fix2', { dynasties: [], events: [] });
+    expect(loadJSON).toHaveBeenCalledWith('./src/data/podcasts.json?v=20260612-timeline-fix2', []);
     expect(global.fetch).not.toHaveBeenCalled();
     expect(window.nounAPI.setNounData).toHaveBeenCalledWith({ adapterNoun: { text: 'from adapter' } });
     expect(window.timelineAPI.setDynasties).toHaveBeenCalledWith(['qin']);
@@ -123,9 +123,9 @@ describe('adapter wiring', () => {
     await import('../src/js/app.js');
     await new Promise(function (resolvePromise) { setTimeout(resolvePromise, 0); });
 
-    expect(global.fetch).toHaveBeenCalledWith('./src/data/nouns.json?v=20260612-phase4-fix1');
-    expect(global.fetch).toHaveBeenCalledWith('./src/data/timeline.json?v=20260612-phase4-fix1');
-    expect(global.fetch).toHaveBeenCalledWith('./src/data/podcasts.json?v=20260612-phase4-fix1');
+    expect(global.fetch).toHaveBeenCalledWith('./src/data/nouns.json?v=20260612-timeline-fix2');
+    expect(global.fetch).toHaveBeenCalledWith('./src/data/timeline.json?v=20260612-timeline-fix2');
+    expect(global.fetch).toHaveBeenCalledWith('./src/data/podcasts.json?v=20260612-timeline-fix2');
   });
 
   test('index loads adapters before business modules', () => {

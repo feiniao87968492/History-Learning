@@ -6,7 +6,7 @@ import { describe, expect, test } from 'vitest';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const projectRoot = path.resolve(__dirname, '..');
-const CACHE_VERSION = 'v=20260612-phase4-fix1';
+const CACHE_VERSION = 'v=20260612-timeline-fix2';
 
 function readProjectFile(filePath) {
   return fs.readFileSync(path.join(projectRoot, filePath), 'utf8');
