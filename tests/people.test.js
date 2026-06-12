@@ -1,5 +1,12 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { mountDOM, resetGlobals } from './helpers/dom-test-utils.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const projectRoot = path.resolve(__dirname, '..');
 
 const PEOPLE_DATA = {
   defaultCenter: 'wu-zetian',
@@ -104,17 +111,92 @@ describe('people relationship graph', () => {
     expect(document.getElementById('relation-svg').textContent).not.toContain('狄仁杰');
   });
 
+  test('supports all required relation filters', async () => {
+    await import('../src/js/people.js');
+    window.peopleAPI.setPeopleData(PEOPLE_DATA);
+
+    const cases = [
+      { type: 'all', expectedLines: 4, visible: ['狄仁杰', '李治', '上官婉儿', '李隆基'] },
+      { type: 'career', expectedLines: 1, visible: ['狄仁杰'] },
+      { type: 'family', expectedLines: 1, visible: ['李治'] },
+      { type: 'teacher', expectedLines: 1, visible: ['上官婉儿'] },
+      { type: 'political', expectedLines: 1, visible: ['李隆基'] }
+    ];
+
+    cases.forEach((item) => {
+      window.peopleAPI.filterPeopleRelations(item.type, document.querySelector('[data-relation-filter="' + item.type + '"]'));
+      expect(document.querySelectorAll('#relation-svg .relation-line')).toHaveLength(item.expectedLines);
+      item.visible.forEach((name) => {
+        expect(document.getElementById('relation-svg').textContent).toContain(name);
+      });
+    });
+  });
+
+  test('escapes graph data in person and relation detail rendering', async () => {
+    await import('../src/js/people.js');
+    window.peopleAPI.setPeopleData({
+      defaultCenter: 'evil-center',
+      people: [
+        {
+          id: 'evil-center',
+          name: '<img src=x onerror="window.__peopleNameXss=true">',
+          dynasty: '<script>window.__peopleDynastyXss=true</script>',
+          summary: '<img src=x onerror="window.__peopleSummaryXss=true">',
+          yearTable: ['<script>window.__peopleYearXss=true</script>'],
+          evaluation: '<img src=x onerror="window.__peopleEvalXss=true">'
+        },
+        {
+          id: 'safe-target',
+          name: '安全人物',
+          dynasty: '测试',
+          summary: '安全说明'
+        }
+      ],
+      relations: [
+        {
+          source: 'evil-center',
+          target: 'safe-target',
+          type: 'career',
+          label: '<img src=x onerror="window.__peopleLabelXss=true">',
+          description: '<img src=x onerror="window.__peopleRelationXss=true">'
+        }
+      ]
+    });
+
+    window.peopleAPI.renderPeopleGraph();
+    window.peopleAPI.openPeoDet('evil-center');
+
+    expect(document.getElementById('pd-name').textContent).toContain('<img src=x');
+    expect(document.getElementById('pd-info').innerHTML).toContain('&lt;img src=x');
+    expect(document.getElementById('pd-info').querySelector('img')).toBeNull();
+    expect(document.getElementById('pd-year-table').querySelector('script')).toBeNull();
+    expect(document.getElementById('pd-eval').querySelector('img')).toBeNull();
+
+    document.querySelector('#relation-svg .relation-line').dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+    expect(document.getElementById('pd-name').textContent).toContain('<img src=x');
+    expect(document.getElementById('pd-info').innerHTML).toContain('&lt;img src=x');
+    expect(document.getElementById('pd-info').querySelector('img')).toBeNull();
+    expect(window.__peopleNameXss).toBeUndefined();
+    expect(window.__peopleDynastyXss).toBeUndefined();
+    expect(window.__peopleSummaryXss).toBeUndefined();
+    expect(window.__peopleYearXss).toBeUndefined();
+    expect(window.__peopleEvalXss).toBeUndefined();
+    expect(window.__peopleLabelXss).toBeUndefined();
+    expect(window.__peopleRelationXss).toBeUndefined();
+  });
+
   test('detects duplicate and invalid relations', async () => {
     await import('../src/js/people.js');
     window.peopleAPI.setPeopleData({
       people: PEOPLE_DATA.people,
       relations: PEOPLE_DATA.relations.concat([
-        { source: 'wu-zetian', target: 'di-renjie', type: 'career', label: '重复', description: '重复关系' },
+        { source: 'di-renjie', target: 'wu-zetian', type: 'career', label: '反向重复', description: '反向重复关系' },
         { source: 'wu-zetian', target: 'missing-person', type: 'career', label: '缺失', description: '无效关系' }
       ])
     });
 
-    expect(window.peopleAPI.detectDuplicateRelations()).toContain('wu-zetian__di-renjie__career');
+    expect(window.peopleAPI.detectDuplicateRelations()).toContain('di-renjie__wu-zetian__career');
     expect(window.peopleAPI.detectInvalidRelations()).toContain('wu-zetian->missing-person');
   });
 
@@ -128,5 +210,15 @@ describe('people relationship graph', () => {
     window.peopleAPI.renderPeopleGraph();
     expect(document.getElementById('relation-svg').textContent).toContain('孤立人物');
     expect(document.getElementById('relation-svg').textContent).toContain('暂无关联人物');
+  });
+
+  test('index.html no longer contains the legacy inline people graph implementation', () => {
+    const html = fs.readFileSync(path.join(projectRoot, 'index.html'), 'utf8');
+
+    expect(html).not.toContain('var peoData=');
+    expect(html).not.toContain('function renderRel()');
+    expect(html).not.toContain('function swPeoGroup(btn, group)');
+    expect(html).not.toContain("document.getElementById('center-name')");
+    expect(html).toContain('人物关系网 已迁移到 src/js/people.js');
   });
 });

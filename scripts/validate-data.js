@@ -131,6 +131,22 @@ function validateTimeline(data, fileName) {
   });
 }
 
+var PEOPLE_RELATION_TYPES = {
+  career: true,
+  family: true,
+  teacher: true,
+  friend: true,
+  political: true
+};
+
+function getUndirectedRelationKey(relation) {
+  var source = relation && relation.source ? String(relation.source) : '';
+  var target = relation && relation.target ? String(relation.target) : '';
+  var first = source < target ? source : target;
+  var second = source < target ? target : source;
+  return first + '__' + second + '__' + (relation && relation.type ? relation.type : '');
+}
+
 function validatePeople(data, fileName) {
   var ids = {};
   var relationKeys = {};
@@ -161,6 +177,14 @@ function validatePeople(data, fileName) {
   if (data && typeof data === 'object' && Array.isArray(data.people)) {
     data.people.forEach(validatePerson);
 
+    if (fileName === 'people.json' && (data.people.length < 10 || data.people.length > 15)) {
+      addResult('ERROR', fileName, 'people seed count must be between 10 and 15 for Phase 4');
+    }
+
+    if (data.defaultCenter && !ids[data.defaultCenter]) {
+      addResult('ERROR', fileName, 'defaultCenter not found: ' + data.defaultCenter);
+    }
+
     if (!Array.isArray(data.relations)) {
       addResult('ERROR', fileName, 'missing relations array');
       return;
@@ -179,6 +203,14 @@ function validatePeople(data, fileName) {
         }
       });
 
+      if (!isBlank(relation.type) && !PEOPLE_RELATION_TYPES[relation.type]) {
+        addResult('ERROR', fileName, 'relations[' + index + '] unsupported type: ' + relation.type);
+      }
+
+      if (!isBlank(relation.source) && relation.source === relation.target) {
+        addResult('ERROR', fileName, 'relations[' + index + '] source and target must differ: ' + relation.source);
+      }
+
       if (!isBlank(relation.source) && !ids[relation.source]) {
         addResult('ERROR', fileName, 'relations[' + index + '] source not found: ' + relation.source);
       }
@@ -187,7 +219,7 @@ function validatePeople(data, fileName) {
         addResult('ERROR', fileName, 'relations[' + index + '] target not found: ' + relation.target);
       }
 
-      key = relation.source + '__' + relation.target + '__' + relation.type;
+      key = getUndirectedRelationKey(relation);
       if (relationKeys[key]) {
         addResult('ERROR', fileName, 'duplicate relation: ' + key);
       } else {
@@ -304,6 +336,16 @@ function validateAllJsonFiles() {
   }
 }
 
+function validatePeopleDataForTest(data) {
+  var previousResults = results;
+  var snapshot;
+  results = [];
+  validatePeople(data, 'people.json');
+  snapshot = results.slice();
+  results = previousResults;
+  return snapshot;
+}
+
 function main() {
   console.log('History Learning data validation');
   console.log('');
@@ -312,4 +354,8 @@ function main() {
   printSummary();
 }
 
-main();
+if (!process.env.VITEST) {
+  main();
+}
+
+export { validatePeopleDataForTest };

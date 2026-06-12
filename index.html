@@ -661,84 +661,7 @@ function subFB(){
 
 // ===== AI播客 / AI助手 已迁移到 src/js/podcast.js 和 src/js/ai-assistant.js =====
 
-// ===== 人物关系网 =====
-var peoData={
-  '武则天':{name:'武则天',nick:'武曌、则天皇后',career:[{name:'狄仁杰',role:'宰相',deeds:['断案如神','劝立李显为太子']},{name:'上官婉儿',role:'女官',deeds:['起草诏令','称量天下']},{name:'来俊臣',role:'酷吏',deeds:['编《罗织经》','制造冤狱']},{name:'姚崇',role:'宰相',deeds:['开元名相','灭蝗灾']},{name:'宋璟',role:'宰相',deeds:['刚正不阿','与姚崇并称']},{name:'张易之',role:'男宠',deeds:['干预朝政','被张柬之诛杀']}],family:[{name:'李治',role:'丈夫（唐高宗）',deeds:['在位34年','废王立武']},{name:'李显',role:'第三子（唐中宗）',deeds:['两度登基','被韦后毒杀']},{name:'李旦',role:'第四子（唐睿宗）',deeds:['禅位给李隆基','政事堂改革']},{name:'太平公主',role:'女儿',deeds:['权倾朝野','被李隆基赐死']},{name:'武三思',role:'侄子',deeds:['权倾一时','与韦后勾结']},{name:'武承嗣',role:'侄子',deeds:['请立武氏七庙','未能成为太子']}],yearTable:['637年 生于利州','655年 被立为皇后','690年 废唐建周，称帝','697年 酷吏政治结束','705年 神龙革命，退位'],evaluation:'中国历史上唯一正统女皇帝。统治期间打击关陇集团，推广科举，重用寒门人才；但晚年宠信男宠、重用酷吏，政治严酷。总体而言，其统治为开元盛世奠定了坚实基础。'},
-  '秦始皇':{name:'秦始皇',nick:'嬴政、始皇帝',career:[{name:'李斯',role:'丞相',deeds:['统一文字','制定秦律']},{name:'王翦',role:'大将',deeds:['灭楚之战','战功赫赫']},{name:'蒙恬',role:'大将',deeds:['北击匈奴','修长城']},{name:'赵高',role:'宦官',deeds:['沙丘之变','指鹿为马']}],family:[{name:'秦庄襄王',role:'父亲',deeds:['在位仅3年','重用吕不韦']},{name:'吕不韦',role:'仲父',deeds:['辅政大臣','《吕氏春秋》']},{name:'扶苏',role:'长子',deeds:['被矫诏赐死','素有贤名']},{name:'胡亥',role:'第十八子（秦二世）',deeds:['沙丘之变继位','被赵高逼死']}],yearTable:['前259年 嬴政生于赵国邯郸','前247年 13岁即位秦王','前238年 平定嫪毐之乱，罢黜吕不韦','前221年 灭齐，统一六国','前213年 焚书','前212年 坑儒','前210年 沙丘病逝，赵高篡改遗诏'],evaluation:'中国历史上第一个大一统王朝的创立者。废分封、行郡县、书同文、车同轨，其制度创新影响中国两千年。但严刑峻法、焚书坑儒、徭役繁重，导致民怨沸腾，秦朝二世而亡。「千古一帝」与「暴君」的评价并存。'},
-  '汉武帝':{name:'汉武帝',nick:'刘彻、孝武皇帝',career:[{name:'卫青',role:'大将军',deeds:['七击匈奴','收复河套']},{name:'霍去病',role:'骠骑将军',deeds:['封狼居胥','打通河西']},{name:'董仲舒',role:'大儒',deeds:['独尊儒术','天人三策']},{name:'张骞',role:'探险家',deeds:['通西域','开辟丝绸之路']}],family:[{name:'汉景帝',role:'父亲',deeds:['文景之治','平定七国之乱']},{name:'卫子夫',role:'皇后',deeds:['卫青之姐','被废自杀']},{name:'刘据',role:'太子（卫太子）',deeds:['巫蛊之祸被杀','平反后追谥戾太子']},{name:'钩弋夫人',role:'妃子',deeds:['生汉昭帝','被汉武帝赐死']}]},
-  '唐太宗':{name:'唐太宗',nick:'李世民、天可汗',career:[{name:'魏征',role:'谏议大夫',deeds:['犯颜直谏','《谏太宗十思疏》']},{name:'房玄龄',role:'宰相',deeds:['谋略著称','贞观名相']},{name:'杜如晦',role:'宰相',deeds:['善断大事','与房玄龄并称房谋杜断']},{name:'李靖',role:'大将',deeds:['灭东突厥','兵家亚圣']}],family:[{name:'李渊',role:'父亲（唐高祖）',deeds:['太原起兵','建立唐朝']},{name:'长孙皇后',role:'皇后',deeds:['贤德表率','《女则》']},{name:'李承乾',role:'太子',deeds:['因谋反被废','足疾']},{name:'李治',role:'第九子（唐高宗）',deeds:['即位后立武则天为后','永徽之治']}]},
-  '朱元璋':{name:'朱元璋',nick:'洪武皇帝、朱重八',career:[{name:'刘伯温',role:'谋士',deeds:['神机妙算','《烧饼歌》']},{name:'徐达',role:'大将',deeds:['灭元之战','帅才无双']},{name:'胡惟庸',role:'丞相',deeds:['胡惟庸案','废丞相制度']},{name:'蓝玉',role:'大将',deeds:['捕鱼儿海大捷','蓝玉案']}],family:[{name:'朱标',role:'太子',deeds:['英年早逝','朱元璋最属意的继承人']},{name:'朱棣',role:'第四子（明成祖）',deeds:['靖难之役夺位','永乐盛世']},{name:'马皇后',role:'皇后（马大脚）',deeds:['贤德宽厚','多次保护大臣免遭屠戮']},{name:'朱允炆',role:'孙子（建文帝）',deeds:['削藩引发靖难之役','城破后下落成谜']}]},
-  '康熙':{name:'康熙',nick:'爱新觉罗·玄烨、圣祖',career:[{name:'鳌拜',role:'辅政大臣',deeds:['专权被擒','康熙智擒鳌拜']},{name:'姚启圣',role:'大学士',deeds:['收复台湾之策','举荐施琅']},{name:'施琅',role:'水师提督',deeds:['收复台湾','力主驻守台湾']},{name:'张廷玉',role:'大学士',deeds:['编纂《明史》','配享太庙']}],family:[{name:'顺治',role:'父亲',deeds:['清军入关后第一位皇帝','出家传闻']},{name:'孝庄太后',role:'祖母',deeds:['辅佐两代君主','联姻策略']},{name:'雍正',role:'第四子（清世宗）',deeds:['康熙晚年传位','推行改土归流']},{name:'乾隆',role:'孙子（清高宗）',deeds:['康熙最疼爱的孙子','自称十全老人']}]}
-};
-var curCenter='武则天',curGroup='career';
-function renderRel() {
-  var svg=document.getElementById('relation-svg');
-  var data=peoData[curCenter];if(!data)return;
-  var list=curGroup==='career'?data.career:data.family;
-  while(svg.children.length>2)svg.removeChild(svg.lastChild);
-  var cx=175,cy=200,r=140,l=list.length;
-  list.forEach(function(p,i){
-    var a=(2*Math.PI*i/l)-Math.PI/2,px=cx+r*Math.cos(a),py=cy+r*Math.sin(a);
-    var ln=document.createElementNS('http://www.w3.org/2000/svg','line');
-    ln.setAttribute('x1',cx);ln.setAttribute('y1',cy);ln.setAttribute('x2',px);ln.setAttribute('y2',py);
-    ln.setAttribute('stroke','#D4C9B8');ln.setAttribute('stroke-width','1.5');ln.setAttribute('opacity','0.6');
-    svg.appendChild(ln);
-    var mx=(cx+px)/2,my=(cy+py)/2;
-    var tx=document.createElementNS('http://www.w3.org/2000/svg','text');
-    tx.setAttribute('x',mx);tx.setAttribute('y',my-6);
-    tx.setAttribute('text-anchor','middle');tx.setAttribute('font-size','8');tx.setAttribute('fill','#8A8279');tx.setAttribute('pointer-events','none');
-    tx.textContent=p.role;svg.appendChild(tx);
-    var c=document.createElementNS('http://www.w3.org/2000/svg','circle');
-    c.setAttribute('cx',px);c.setAttribute('cy',py);c.setAttribute('r','9');
-    c.setAttribute('fill','#7EBDA6');c.setAttribute('stroke','#6DAB95');c.setAttribute('stroke-width','1.5');
-    c.setAttribute('cursor','pointer');
-    c.onclick=(function(pp){return function(){
-      if(peoData[pp.name]){curCenter=pp.name;renderRel();showToast('已切换到：'+pp.name)}
-      else{openPeoDet(curCenter,pp)}
-    }})(p);
-    svg.appendChild(c);
-    var tx=document.createElementNS('http://www.w3.org/2000/svg','text');
-    tx.setAttribute('x',px);tx.setAttribute('y',py-12);
-    tx.setAttribute('text-anchor','middle');tx.setAttribute('font-size','10');
-    tx.setAttribute('fill','#2C1810');tx.textContent=p.name;
-    svg.appendChild(tx);
-  });
-  document.getElementById('center-name').textContent=curCenter;
-}
-function openCenterDet() {
-  var d=peoData[curCenter];
-  if(!d)return;
-  openPeoDet(curCenter,{name:d.name,role:'核心人物',nick:d.nick||'',deeds:(d.yearTable||[]).slice(0,3)});
-}
-function openPeoDet(center, person) {
-  var centerData=peoData[center];
-  var displayName=person.name+(person.nick?'（'+person.nick+'）':'');
-  if(center===person.name&&centerData&&centerData.nick)displayName=centerData.name+'（'+centerData.nick+'）';
-  document.getElementById('pd-name').textContent=displayName;
-  document.getElementById('pd-role').textContent=person.role;
-  document.getElementById('pd-info').innerHTML='<div class="ii"><div class="lbl">身份</div><div class="val">'+(person.role||'—')+'</div></div><div class="ii"><div class="lbl">关系</div><div class="val">'+(curGroup==='career'?'事业相关':'亲属相关')+'</div></div>';
-  var ul=document.getElementById('pd-deeds');ul.innerHTML='';
-  (person.deeds||[]).forEach(function(d){var li=document.createElement('li');li.textContent=d;ul.appendChild(li)});
-  // 大事年表
-  var yt=document.getElementById('pd-year-table');yt.innerHTML='';
-  var ydata=centerData&&centerData.yearTable;
-  if(ydata){ydata.forEach(function(y){var li=document.createElement('li');li.textContent=y;yt.appendChild(li)})}
-  // 历史评价
-  var ev=document.getElementById('pd-eval');
-  if(centerData&&centerData.evaluation){ev.style.display='block';ev.querySelector('p').textContent=centerData.evaluation}
-  else{ev.style.display='none'}
-  document.getElementById('people-detail-card').classList.add('act');
-}
-function closePeoDet(){document.getElementById('people-detail-card').classList.remove('act')}
-function swPeoGroup(btn, group) {
-  document.querySelectorAll('#people-page .dtab').forEach(function(t){t.classList.remove('act')});
-  btn.classList.add('act');curGroup=group;renderRel();
-}
-function searchPeople() {
-  var v=document.getElementById('people-search-input').value.trim();
-  if(peoData[v]){curCenter=v;renderRel();showToast('已切换到：'+v)}
-  else if(v){showToast('暂未收录，试试：武则天、秦始皇、汉武帝、唐太宗、朱元璋、康熙')}
-}
+// ===== 人物关系网 已迁移到 src/js/people.js，并通过 app.js 暴露为兼容全局函数 =====
 
 // ===== 思维导图 已迁移到 src/js/mindmap.js，并通过 app.js 暴露为兼容全局函数 =====
 
@@ -762,7 +685,7 @@ function renderCheckinCalendar(){if(window.checkinAPI&&window.checkinAPI.renderC
 function updateCheckinStats(){if(window.checkinAPI&&window.checkinAPI.updateCheckinStats)return window.checkinAPI.updateCheckinStats()}
 function calcStreak(checkins){return window.checkinAPI&&window.checkinAPI.calcStreak?window.checkinAPI.calcStreak(checkins):0}
 
-// ===== 初始化：renderTimeline / renderEventList / renderRel / updateCheckinStats 已由 app.js 统一调度 =====
+// ===== 初始化：Phase 4 模块与打卡统计已由 app.js 统一调度 =====
 </script>
 </body>
 </html>
