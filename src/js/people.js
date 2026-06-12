@@ -309,12 +309,21 @@
     }
   }
 
+  function getRelationKey(relation) {
+    var source = relation && relation.source ? String(relation.source) : '';
+    var target = relation && relation.target ? String(relation.target) : '';
+    var first = source < target ? source : target;
+    var second = source < target ? target : source;
+    return first + '__' + second + '__' + (relation && relation.type ? relation.type : '');
+  }
+
   function detectDuplicateRelations() {
     var seen = {};
     var duplicates = [];
     peopleData.relations.forEach(function (relation) {
-      var key = relation.source + '__' + relation.target + '__' + relation.type;
-      if (seen[key]) duplicates.push(key);
+      var key = getRelationKey(relation);
+      var originalKey = relation.source + '__' + relation.target + '__' + relation.type;
+      if (seen[key]) duplicates.push(originalKey);
       seen[key] = true;
     });
     return duplicates;

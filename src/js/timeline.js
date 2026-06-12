@@ -97,16 +97,61 @@
 
   function showTimelineDetail(idx) {
     var e = getVisibleEvents()[idx] || timelineEvents[idx];
-    if (!e) return;
-    window.openFeatDet('📅 ' + e.name + '（' + e.year + '）', e.description);
+    if (!e || typeof window.openFeatDet !== 'function') return false;
+    window.openFeatDet('📅 ' + (e.name || '') + '（' + (e.year || '') + '）', e.description || '');
+    return true;
   }
 
   function showTimelineConn(idx, dim) {
     var e = getVisibleEvents()[idx] || timelineEvents[idx];
-    if (!e || !e.conn) return;
     var dimMap = { pol: '🏛️ 政治影响', eco: '💰 经济影响', cul: '📚 文化影响' };
-    var txt = '从【' + e.name + '】到【' + e.conn.next + '】\n\n' + dimMap[dim] + '：\n' + e.conn[dim];
-    window.openFeatDet('🔗 ' + e.name + ' → ' + e.conn.next, txt);
+    var label = dimMap[dim] || '影响';
+    var txt;
+
+    if (!e || !e.conn || typeof window.openFeatDet !== 'function') return false;
+    txt = '从【' + (e.name || '') + '】到【' + (e.conn.next || '') + '】\n\n' + label + '：\n' + (e.conn[dim] || '暂无说明');
+    window.openFeatDet('🔗 ' + (e.name || '') + ' → ' + (e.conn.next || ''), txt);
+    return true;
+  }
+
+  function findClosestWithClass(node, className) {
+    while (node && node !== document) {
+      if (node.classList && node.classList.contains(className)) {
+        return node;
+      }
+      node = node.parentNode;
+    }
+    return null;
+  }
+
+  function bindTimelineClicks() {
+    var chart = document.getElementById('coord-chart');
+    var eventList = document.getElementById('event-list');
+
+    if (chart && chart.getAttribute('data-click-bound') !== 'true') {
+      chart.setAttribute('data-click-bound', 'true');
+      chart.addEventListener('click', function (event) {
+        var dash = findClosestWithClass(event.target, 'tldash');
+        var node = findClosestWithClass(event.target, 'tlevt');
+        if (dash) {
+          showTimelineConn(Number(dash.getAttribute('data-i')), dash.getAttribute('data-dim'));
+          return;
+        }
+        if (node) {
+          showTimelineDetail(Number(node.getAttribute('data-i')));
+        }
+      });
+    }
+
+    if (eventList && eventList.getAttribute('data-click-bound') !== 'true') {
+      eventList.setAttribute('data-click-bound', 'true');
+      eventList.addEventListener('click', function (event) {
+        var item = findClosestWithClass(event.target, 'evitem');
+        if (item) {
+          showTimelineDetail(Number(item.getAttribute('data-i')));
+        }
+      });
+    }
   }
 
   function bindTimelineDrag() {
@@ -136,6 +181,7 @@
 
     if (!c) return;
     bindTimelineDrag();
+    bindTimelineClicks();
 
     if (!events.length) {
       c.innerHTML = '<div style="text-align:center;padding:24px;color:#B5ADA5">暂无时间轴事件</div>';
@@ -162,13 +208,13 @@
       var a = events[i];
       var b = events[i + 1];
       if (!a.conn || !b) continue;
-      s += '<line x1="' + safeNumber(a.x, 0) + '" y1="' + safeNumber(a.pol, 0) + '" x2="' + safeNumber(b.x, 0) + '" y2="' + safeNumber(b.pol, 0) + '" stroke="#C0392B" stroke-width="1" stroke-dasharray="5,3" opacity="0.4" class="tldash" data-i="' + i + '" data-dim="pol" onclick="showTimelineConn(' + i + ',\'pol\')" style="cursor:pointer"/>';
-      s += '<line x1="' + safeNumber(a.x, 0) + '" y1="' + safeNumber(a.eco, 0) + '" x2="' + safeNumber(b.x, 0) + '" y2="' + safeNumber(b.eco, 0) + '" stroke="#27AE60" stroke-width="1" stroke-dasharray="5,3" opacity="0.4" class="tldash" data-i="' + i + '" data-dim="eco" onclick="showTimelineConn(' + i + ',\'eco\')" style="cursor:pointer"/>';
-      s += '<line x1="' + safeNumber(a.x, 0) + '" y1="' + safeNumber(a.cul, 0) + '" x2="' + safeNumber(b.x, 0) + '" y2="' + safeNumber(b.cul, 0) + '" stroke="#8B6914" stroke-width="1" stroke-dasharray="5,3" opacity="0.4" class="tldash" data-i="' + i + '" data-dim="cul" onclick="showTimelineConn(' + i + ',\'cul\')" style="cursor:pointer"/>';
+      s += '<line x1="' + safeNumber(a.x, 0) + '" y1="' + safeNumber(a.pol, 0) + '" x2="' + safeNumber(b.x, 0) + '" y2="' + safeNumber(b.pol, 0) + '" stroke="#C0392B" stroke-width="1" stroke-dasharray="5,3" opacity="0.4" class="tldash" data-i="' + i + '" data-dim="pol" style="cursor:pointer"/>';
+      s += '<line x1="' + safeNumber(a.x, 0) + '" y1="' + safeNumber(a.eco, 0) + '" x2="' + safeNumber(b.x, 0) + '" y2="' + safeNumber(b.eco, 0) + '" stroke="#27AE60" stroke-width="1" stroke-dasharray="5,3" opacity="0.4" class="tldash" data-i="' + i + '" data-dim="eco" style="cursor:pointer"/>';
+      s += '<line x1="' + safeNumber(a.x, 0) + '" y1="' + safeNumber(a.cul, 0) + '" x2="' + safeNumber(b.x, 0) + '" y2="' + safeNumber(b.cul, 0) + '" stroke="#8B6914" stroke-width="1" stroke-dasharray="5,3" opacity="0.4" class="tldash" data-i="' + i + '" data-dim="cul" style="cursor:pointer"/>';
     }
 
     events.forEach(function (d, index) {
-      s += '<circle cx="' + safeNumber(d.x, 0) + '" cy="' + safeNumber(d.pol, 0) + '" r="6" fill="#C0392B" opacity="0.85" stroke="#fff" stroke-width="1" class="tlevt" onclick="showTimelineDetail(' + index + ')" style="cursor:pointer"/>';
+      s += '<circle cx="' + safeNumber(d.x, 0) + '" cy="' + safeNumber(d.pol, 0) + '" r="6" fill="#C0392B" opacity="0.85" stroke="#fff" stroke-width="1" class="tlevt" data-i="' + index + '" style="cursor:pointer"/>';
       s += '<text x="' + safeNumber(d.x, 0) + '" y="' + (safeNumber(d.pol, 0) - 10) + '" font-size="8" text-anchor="middle" fill="#C0392B" font-weight="700">' + escapeHtml(d.name) + '</text>';
       s += '<text x="' + safeNumber(d.x, 0) + '" y="' + (safeNumber(d.pol, 0) - 20) + '" font-size="7" text-anchor="middle" fill="#8A7A6A">' + escapeHtml(d.year) + '</text>';
       s += '<circle cx="' + safeNumber(d.x, 0) + '" cy="' + safeNumber(d.eco, 0) + '" r="5" fill="#27AE60" opacity="0.85" stroke="#fff" stroke-width="1"/>';
@@ -195,8 +241,9 @@
     var events = getVisibleEvents();
     var h = '';
     if (!el) return;
+    bindTimelineClicks();
     events.forEach(function (d, i) {
-      h += '<div class="evitem" onclick="showTimelineDetail(' + i + ')"><div class="evdot pol"></div><div class="evtxt"><h5>' + escapeHtml(d.name) + ' <span class="evyr">' + escapeHtml(d.year) + '</span></h5><div class="evdesc">' + escapeHtml(d.description) + '</div></div></div>';
+      h += '<div class="evitem" data-i="' + i + '"><div class="evdot pol"></div><div class="evtxt"><h5>' + escapeHtml(d.name) + ' <span class="evyr">' + escapeHtml(d.year) + '</span></h5><div class="evdesc">' + escapeHtml(d.description) + '</div></div></div>';
     });
     el.innerHTML = h || '<div style="padding:16px;text-align:center;color:#B5ADA5">暂无事件数据</div>';
   }

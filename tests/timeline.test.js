@@ -3,6 +3,7 @@ import { mountDOM, resetGlobals } from './helpers/dom-test-utils.js';
 
 const EVENTS = [
   { id: 'qin-unify', dynasty: 'qin', name: '秦统一', year: '前221年', x: 100, pol: 350, eco: 340, cul: 310, description: '秦灭六国。', conn: { next: '文景之治', pol: '中央制度延续', eco: '统一市场', cul: '书同文' } },
+  { id: 'junxian', dynasty: 'qin', name: '郡县制推行', year: '前221年后', x: 120, pol: 340, eco: 330, cul: 300, description: '地方制度定型。' },
   { id: 'wenjing', dynasty: 'han', name: '文景之治', year: '前180年', x: 160, pol: 320, eco: 300, cul: 280, description: '休养生息。', conn: { next: '贞观之治', pol: '治国经验', eco: '轻徭薄赋', cul: '以民为本' } },
   { id: 'zhenguan', dynasty: 'suitang', name: '贞观之治', year: '627年', x: 220, pol: 250, eco: 240, cul: 210, description: '盛世治理。' }
 ];
@@ -108,5 +109,106 @@ describe('timeline module drag and zoom bounds', () => {
 
     expect(document.getElementById('coord-chart').textContent).toContain('暂无时间轴事件');
     expect(document.getElementById('event-list').textContent).toContain('暂无事件数据');
+  });
+
+  test('node and causal detail APIs open safe detail content', async () => {
+    await import('../src/js/timeline.js');
+    window.timelineAPI.setTimelineEvents(EVENTS);
+
+    window.timelineAPI.showTimelineDetail(0);
+    expect(window.openFeatDet).toHaveBeenCalledWith('📅 秦统一（前221年）', '秦灭六国。');
+
+    window.timelineAPI.showTimelineConn(0, 'pol');
+    expect(window.openFeatDet).toHaveBeenLastCalledWith(
+      '🔗 秦统一 → 文景之治',
+      expect.stringContaining('🏛️ 政治影响')
+    );
+  });
+
+  test('detail APIs safely no-op for invalid indexes or missing modal API', async () => {
+    await import('../src/js/timeline.js');
+    window.timelineAPI.setTimelineEvents(EVENTS);
+
+    expect(() => window.timelineAPI.showTimelineDetail(99)).not.toThrow();
+    expect(() => window.timelineAPI.showTimelineConn(99, 'pol')).not.toThrow();
+
+    delete window.openFeatDet;
+    expect(() => window.timelineAPI.showTimelineDetail(0)).not.toThrow();
+    expect(() => window.timelineAPI.showTimelineConn(0, 'pol')).not.toThrow();
+  });
+
+  test('filters rendered events by the selected dynasty', async () => {
+    await import('../src/js/timeline.js');
+    window.timelineAPI.setDynasties(['qin', 'han', 'suitang']);
+    window.timelineAPI.setTimelineEvents(EVENTS);
+
+    window.timelineAPI.selDyn('han', document.querySelectorAll('#dynasty-tabs .dtab')[1]);
+
+    expect(window.timelineAPI.getTimelineState().eventCount).toBe(1);
+    expect(document.getElementById('event-list').textContent).toContain('文景之治');
+    expect(document.getElementById('event-list').textContent).not.toContain('秦统一');
+  });
+
+  test('prevDyn and nextDyn wrap through dynasties and reset the view', async () => {
+    await import('../src/js/timeline.js');
+    window.timelineAPI.setDynasties(['qin', 'han', 'suitang']);
+    window.timelineAPI.setTimelineEvents(EVENTS);
+
+    window.timelineAPI.zoomTL(1);
+    window.timelineAPI.pointerDown({ clientX: 0, clientY: 0, preventDefault: vi.fn() });
+    window.timelineAPI.pointerMove({ clientX: 80, clientY: 60, preventDefault: vi.fn() });
+    window.timelineAPI.pointerUp();
+
+    window.timelineAPI.prevDyn();
+    expect(window.timelineAPI.getTimelineState()).toMatchObject({ currentDynasty: 'suitang', zoom: 0, offsetX: 0, offsetY: 0 });
+
+    window.timelineAPI.nextDyn();
+    expect(window.timelineAPI.getTimelineState()).toMatchObject({ currentDynasty: 'qin', zoom: 0, offsetX: 0, offsetY: 0 });
+  });
+
+  test('rendered nodes and causal lines use data attributes and delegated clicks', async () => {
+    await import('../src/js/timeline.js');
+    window.timelineAPI.setTimelineEvents(EVENTS);
+    window.timelineAPI.renderTimeline();
+    window.timelineAPI.renderEventList();
+
+    document.querySelector('#coord-chart .tlevt').dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    expect(window.openFeatDet).toHaveBeenCalledWith('📅 秦统一（前221年）', '秦灭六国。');
+
+    document.querySelector('#coord-chart .tldash[data-dim="pol"]').dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    expect(window.openFeatDet).toHaveBeenLastCalledWith('🔗 秦统一 → 文景之治', expect.stringContaining('中央制度延续'));
+
+    document.querySelector('#event-list .evitem').dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    expect(window.openFeatDet).toHaveBeenLastCalledWith('📅 秦统一（前221年）', '秦灭六国。');
+  });
+
+  test('escapes timeline JSON fields before rendering list and chart HTML', async () => {
+    await import('../src/js/timeline.js');
+    window.timelineAPI.setTimelineEvents([
+      {
+        dynasty: 'qin',
+        name: '<img src=x onerror="window.__timelineNameXss=true">',
+        year: '<script>window.__timelineYearXss=true</script>',
+        x: 100,
+        pol: 350,
+        eco: 340,
+        cul: 310,
+        description: '<img src=x onerror="window.__timelineDescXss=true">',
+        conn: { next: '<img src=x onerror="window.__timelineConnXss=true">', pol: '<b>政治</b>', eco: '<b>经济</b>', cul: '<b>文化</b>' }
+      }
+    ]);
+
+    window.timelineAPI.renderTimeline();
+    window.timelineAPI.renderEventList();
+
+    expect(document.querySelector('#coord-chart img')).toBeNull();
+    expect(document.querySelector('#coord-chart script')).toBeNull();
+    expect(document.querySelector('#event-list img')).toBeNull();
+    expect(document.getElementById('coord-chart').innerHTML).toContain('&lt;img src=x');
+    expect(document.getElementById('event-list').innerHTML).toContain('&lt;img src=x');
+    expect(window.__timelineNameXss).toBeUndefined();
+    expect(window.__timelineYearXss).toBeUndefined();
+    expect(window.__timelineDescXss).toBeUndefined();
+    expect(window.__timelineConnXss).toBeUndefined();
   });
 });

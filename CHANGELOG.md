@@ -2,6 +2,22 @@
 
 ## 2026-06-12
 
+### Phase 4 最终验收补齐
+
+- 移除人物关系图残留内联实现，避免覆盖 `peopleAPI` 模块函数。
+- 时间轴事件补齐 `id` / `dynasty` 字段，并保证每个重点朝代具备 `3` 条 Demo 种子事件；节点与因果线点击改为事件委托。
+- 思维导图预置节点改为完全由 `mindmaps.json` 渲染，`index.html` 仅保留容器。
+- 补充 Phase 4 最终验收报告：`docs/superpowers/reports/2026-06-12-phase4-final-acceptance-report.md`。
+- 新增/扩展回归测试覆盖旧内联实现移除、关系筛选、XSS、JSON 数据接线、导图持久化与时间轴交互边界。
+
+#### 验证
+
+- `npx vitest run tests/timeline.test.js tests/people.test.js tests/mindmap.test.js tests/app-static-data.test.js tests/adapter-wiring.test.js tests/validate-data.test.js --environment jsdom`：通过，`6` 个测试文件、`46` 项测试通过。
+- `node scripts/validate-data.js`：通过，`15 OK`、`0 WARN`、`0 ERROR`。
+- `npx vitest run --environment jsdom`：通过，`32` 个测试文件、`204` 项测试通过。
+- `git diff --check`：通过。
+- Headless Chrome 运行时 smoke：通过，时间轴、人物关系图、思维导图交互均可执行，控制台未捕获阻断错误。
+
 ### Phase 4 Task 4.3：思维导图 Demo
 
 - 新增 `src/js/mindmap.js`，将 `swMind`、`openNode`、`saveNode`、`closeNodeNote` 从 `index.html` 迁移为独立 ES5 IIFE 模块。
