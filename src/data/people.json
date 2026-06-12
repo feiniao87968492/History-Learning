@@ -1,46 +1,115 @@
 {
-  "defaultCenter": "武则天",
-  "defaultGroup": "career",
-  "centers": {
-    "武则天": {
+  "defaultCenter": "wu-zetian",
+  "people": [
+    {
+      "id": "wu-zetian",
       "name": "武则天",
-      "nick": "武曌、则天皇后",
-      "career": [
-        { "name": "狄仁杰", "role": "宰相", "deeds": ["断案如神", "劝立李显为太子"] },
-        { "name": "上官婉儿", "role": "女官", "deeds": ["起草诏令", "称量天下"] },
-        { "name": "来俊臣", "role": "酷吏", "deeds": ["编《罗织经》", "制造冤狱"] },
-        { "name": "姚崇", "role": "宰相", "deeds": ["开元名相", "灭蝗灾"] },
-        { "name": "宋璟", "role": "宰相", "deeds": ["刚正不阿", "与姚崇并称"] },
-        { "name": "张易之", "role": "男宠", "deeds": ["干预朝政", "被张柬之诛杀"] }
-      ],
-      "family": [
-        { "name": "李治", "role": "丈夫（唐高宗）", "deeds": ["在位34年", "废王立武"] },
-        { "name": "李显", "role": "第三子（唐中宗）", "deeds": ["两度登基", "被韦后毒杀"] },
-        { "name": "李旦", "role": "第四子（唐睿宗）", "deeds": ["禅位给李隆基", "政事堂改革"] },
-        { "name": "太平公主", "role": "女儿", "deeds": ["权倾朝野", "被李隆基赐死"] },
-        { "name": "武三思", "role": "侄子", "deeds": ["权倾一时", "与韦后勾结"] },
-        { "name": "武承嗣", "role": "侄子", "deeds": ["请立武氏七庙", "未能成为太子"] }
-      ],
-      "yearTable": ["637年 生于利州", "655年 被立为皇后", "690年 废唐建周，称帝", "697年 酷吏政治结束", "705年 神龙革命，退位"],
-      "evaluation": "中国历史上唯一正统女皇帝。统治期间打击关陇集团，推广科举，重用寒门人才；但晚年宠信男宠、重用酷吏，政治严酷。总体而言，其统治为开元盛世奠定了坚实基础。"
+      "dynasty": "唐朝",
+      "summary": "中国历史上唯一正统女皇帝，改唐为周，重用酷吏与寒门官员并举。",
+      "yearTable": ["637年 生于利州", "655年 被立为皇后", "690年 建立武周", "705年 神龙政变后退位"],
+      "evaluation": "武则天打击关陇贵族集团，扩大科举取士，为开元盛世积累制度与人才基础；但酷吏政治也造成严重冤狱。"
     },
-    "秦始皇": {
+    {
+      "id": "li-zhi",
+      "name": "李治",
+      "dynasty": "唐朝",
+      "summary": "唐高宗，唐太宗第九子，在位前期延续贞观制度，史称永徽之治。",
+      "yearTable": ["628年 出生", "649年 即位", "655年 立武则天为皇后", "683年 去世"],
+      "evaluation": "李治在位时期唐朝版图扩展，但后期因身体原因逐渐让武则天参与政务。"
+    },
+    {
+      "id": "di-renjie",
+      "name": "狄仁杰",
+      "dynasty": "唐朝",
+      "summary": "武周时期名臣，以断案、公正和劝立李唐宗室著称。",
+      "yearTable": ["630年 出生", "696年 任宰相", "700年 去世"],
+      "evaluation": "狄仁杰在武周政治中保持士大夫立场，对恢复李唐皇统有关键影响。"
+    },
+    {
+      "id": "shangguan-waner",
+      "name": "上官婉儿",
+      "dynasty": "唐朝",
+      "summary": "唐代女官与文学家，长期掌管诏命文书。",
+      "yearTable": ["664年 出生", "696年前后 参与诏令起草", "710年 死于唐隆政变"],
+      "evaluation": "上官婉儿体现唐代宫廷政治与文学风气的交织。"
+    },
+    {
+      "id": "li-longji",
+      "name": "李隆基",
+      "dynasty": "唐朝",
+      "summary": "唐玄宗，开元年间整顿吏治并开创盛世，天宝后期引发安史之乱。",
+      "yearTable": ["685年 出生", "712年 即位", "713年 先天政变", "755年 安史之乱爆发"],
+      "evaluation": "李隆基前期励精图治，后期政治松弛，是盛唐转衰的核心人物。"
+    },
+    {
+      "id": "qin-shihuang",
       "name": "秦始皇",
-      "nick": "嬴政、始皇帝",
-      "career": [
-        { "name": "李斯", "role": "丞相", "deeds": ["统一文字", "制定秦律"] },
-        { "name": "王翦", "role": "大将", "deeds": ["灭楚之战", "战功赫赫"] },
-        { "name": "蒙恬", "role": "大将", "deeds": ["北击匈奴", "修长城"] },
-        { "name": "赵高", "role": "宦官", "deeds": ["沙丘之变", "指鹿为马"] }
-      ],
-      "family": [
-        { "name": "秦庄襄王", "role": "父亲", "deeds": ["在位仅3年", "重用吕不韦"] },
-        { "name": "吕不韦", "role": "仲父", "deeds": ["辅政大臣", "《吕氏春秋》"] },
-        { "name": "扶苏", "role": "长子", "deeds": ["被矫诏赐死", "素有贤名"] },
-        { "name": "胡亥", "role": "第十八子（秦二世）", "deeds": ["沙丘之变继位", "被赵高逼死"] }
-      ],
-      "yearTable": ["前259年 嬴政生于赵国邯郸", "前247年 13岁即位秦王", "前238年 平定嫪毐之乱，罢黜吕不韦", "前221年 灭齐，统一六国", "前210年 沙丘病逝，赵高篡改遗诏"],
-      "evaluation": "中国历史上第一个大一统王朝的创立者。废分封、行郡县、书同文、车同轨，其制度创新影响中国两千年。但严刑峻法、焚书坑儒、徭役繁重，导致民怨沸腾，秦朝二世而亡。"
+      "dynasty": "秦朝",
+      "summary": "秦王嬴政，统一六国后建立中国历史上第一个大一统中央集权王朝。",
+      "yearTable": ["前259年 出生", "前247年 即秦王位", "前221年 统一六国", "前210年 去世"],
+      "evaluation": "秦始皇建立皇帝制度、郡县制和统一文字度量衡，对中国制度史影响深远。"
+    },
+    {
+      "id": "li-si",
+      "name": "李斯",
+      "dynasty": "秦朝",
+      "summary": "秦朝丞相，参与制定郡县制、统一文字等制度。",
+      "yearTable": ["前247年前后 入秦", "前221年 参与统一制度设计", "前208年 被赵高陷害处死"],
+      "evaluation": "李斯是秦制的重要设计者，但在沙丘之变中附和赵高，历史评价复杂。"
+    },
+    {
+      "id": "wang-jian",
+      "name": "王翦",
+      "dynasty": "秦朝",
+      "summary": "秦国名将，主持灭楚战争，是秦统一六国的重要军事人物。",
+      "yearTable": ["前236年 参与攻赵", "前224年 率军伐楚", "前223年 灭楚"],
+      "evaluation": "王翦谨慎持重，是战国末期最具代表性的军事统帅之一。"
+    },
+    {
+      "id": "fusu",
+      "name": "扶苏",
+      "dynasty": "秦朝",
+      "summary": "秦始皇长子，因反对严刑峻法被派往北方监军，后被伪诏赐死。",
+      "yearTable": ["前213年前后 谏阻焚书坑儒", "前210年 被伪诏赐死"],
+      "evaluation": "扶苏常被视为秦朝可能转向宽政的象征性人物。"
+    },
+    {
+      "id": "han-wudi",
+      "name": "汉武帝",
+      "dynasty": "汉朝",
+      "summary": "西汉皇帝刘彻，推行推恩令、独尊儒术，并大规模经营边疆。",
+      "yearTable": ["前156年 出生", "前141年 即位", "前127年 推恩令", "前87年 去世"],
+      "evaluation": "汉武帝强化中央集权并开拓疆域，但长期战争和财政压力也加重社会负担。"
+    },
+    {
+      "id": "zhang-qian",
+      "name": "张骞",
+      "dynasty": "汉朝",
+      "summary": "西汉外交家，两次出使西域，开通丝绸之路的重要先驱。",
+      "yearTable": ["前138年 首次出使西域", "前119年 再次出使西域", "前114年 去世"],
+      "evaluation": "张骞出使让中原王朝获得西域知识，推动欧亚交通与贸易。"
+    },
+    {
+      "id": "dong-zhongshu",
+      "name": "董仲舒",
+      "dynasty": "汉朝",
+      "summary": "西汉儒学家，提出天人感应与罢黜百家、独尊儒术的政治主张。",
+      "yearTable": ["前179年 出生", "前134年 对策贤良", "前104年 去世"],
+      "evaluation": "董仲舒推动儒学成为王朝意识形态，对中国政治文化影响深远。"
     }
-  }
+  ],
+  "relations": [
+    { "source": "wu-zetian", "target": "li-zhi", "type": "family", "label": "夫妻", "description": "武则天为唐高宗李治皇后，二人共同影响高宗后期政局。" },
+    { "source": "wu-zetian", "target": "di-renjie", "type": "career", "label": "君臣", "description": "武则天重用狄仁杰处理政务，狄仁杰也劝其延续李唐继承。" },
+    { "source": "wu-zetian", "target": "shangguan-waner", "type": "teacher", "label": "主从", "description": "上官婉儿受武则天赏识，长期参与诏令文书。" },
+    { "source": "wu-zetian", "target": "li-longji", "type": "political", "label": "政治遗产", "description": "武周政治与唐中宗、睿宗时期斗争，构成李隆基崛起的背景。" },
+    { "source": "li-zhi", "target": "li-longji", "type": "family", "label": "祖孙", "description": "李隆基是李治之孙，其统治继承并重塑盛唐制度。" },
+    { "source": "qin-shihuang", "target": "li-si", "type": "career", "label": "君臣", "description": "李斯辅佐秦始皇统一制度，推动文字、度量衡与行政体系标准化。" },
+    { "source": "qin-shihuang", "target": "wang-jian", "type": "career", "label": "君将", "description": "王翦率军灭楚，是秦统一军事进程中的关键将领。" },
+    { "source": "qin-shihuang", "target": "fusu", "type": "family", "label": "父子", "description": "扶苏为秦始皇长子，因政见与继承问题成为秦末政治焦点。" },
+    { "source": "li-si", "target": "fusu", "type": "political", "label": "沙丘之变", "description": "李斯参与赵高篡改遗诏，导致扶苏被赐死。" },
+    { "source": "han-wudi", "target": "zhang-qian", "type": "career", "label": "君臣", "description": "汉武帝派张骞出使西域，为西汉经营西域创造条件。" },
+    { "source": "han-wudi", "target": "dong-zhongshu", "type": "career", "label": "思想政策", "description": "董仲舒的儒学政治主张契合汉武帝强化中央集权的需要。" },
+    { "source": "zhang-qian", "target": "dong-zhongshu", "type": "political", "label": "时代同构", "description": "对外开拓与意识形态整合共同构成汉武帝时代的重要特征。" }
+  ]
 }

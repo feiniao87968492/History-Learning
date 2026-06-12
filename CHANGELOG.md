@@ -2,6 +2,22 @@
 
 ## 2026-06-12
 
+### Phase 4 Task 4.2：人物关系图 Demo
+
+- 将 `src/data/people.json` 从 centers 嵌套结构迁移为 `people` / `relations` 图结构，首轮提供 `12` 位人物与 `12` 条关系。
+- 新增 `src/js/people.js`，人物关系图改为独立 ES5 IIFE 模块，支持中心人物、邻接关系渲染、人物详情、关系线详情和人物搜索。
+- 人物关系图支持 `all` / `career` / `family` / `teacher` / `political` 关系类型筛选。
+- 新增重复关系与无效人物引用检测能力，并扩展 `scripts/validate-data.js` 对图结构人物数据进行校验。
+- `app.js` 加载 `people.json` 后注入 `peopleAPI.setPeopleData()` 并渲染关系图，同时暴露人物专题内联事件兼容函数。
+- `index.html` 人物专题关系筛选 Tab 扩展为全部 / 事业 / 亲属 / 师友 / 政治，并保留空 SVG 容器由模块渲染。
+- 新增 `tests/people.test.js`，覆盖图结构解析、邻接查询、中心人物渲染、点击人物重心化、点击关系线、关系筛选、重复/无效关系检测和空/孤立人物降级。
+
+#### 验证
+
+- `npx vitest run tests/people.test.js --environment jsdom`：通过，`7` 项测试通过。
+- `npx vitest run tests/people.test.js tests/app-static-data.test.js tests/adapter-wiring.test.js --environment jsdom`：通过，`3` 个测试文件、`16` 项测试通过。
+- `node scripts/validate-data.js`：`14 OK`、`0 WARN`、`0 ERROR`。
+
 ### Phase 4 Task 4.1：时间轴 Demo
 
 - 更新 `src/js/timeline.js`，时间轴缩放边界改为 `-3` 到 `3`，连续放大 / 缩小会被稳定夹取在边界内。

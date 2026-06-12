@@ -133,29 +133,67 @@ function validateTimeline(data, fileName) {
 
 function validatePeople(data, fileName) {
   var ids = {};
+  var relationKeys = {};
+
+  function validatePerson(person, index) {
+    if (!person || typeof person !== 'object') {
+      addResult('ERROR', fileName, 'people[' + index + '] must be an object');
+      return;
+    }
+
+    if (isBlank(person.id)) {
+      addResult('ERROR', fileName, 'people[' + index + '] missing field: id');
+      return;
+    }
+
+    if (ids[person.id]) {
+      addResult('ERROR', fileName, 'duplicate person id: ' + person.id);
+    } else {
+      ids[person.id] = true;
+    }
+  }
 
   if (Array.isArray(data)) {
-    data.forEach(function (person, index) {
-      if (!person || typeof person !== 'object') {
-        addResult('ERROR', fileName, 'entries[' + index + '] must be an object');
+    data.forEach(validatePerson);
+    return;
+  }
+
+  if (data && typeof data === 'object' && Array.isArray(data.people)) {
+    data.people.forEach(validatePerson);
+
+    if (!Array.isArray(data.relations)) {
+      addResult('ERROR', fileName, 'missing relations array');
+      return;
+    }
+
+    data.relations.forEach(function (relation, index) {
+      var key;
+      if (!relation || typeof relation !== 'object') {
+        addResult('ERROR', fileName, 'relations[' + index + '] must be an object');
         return;
       }
 
-      if (isBlank(person.id)) {
-        addResult('ERROR', fileName, 'entries[' + index + '] missing field: id');
-        return;
+      ['source', 'target', 'type', 'label', 'description'].forEach(function (fieldName) {
+        if (isBlank(relation[fieldName])) {
+          addResult('ERROR', fileName, 'relations[' + index + '] missing field: ' + fieldName);
+        }
+      });
+
+      if (!isBlank(relation.source) && !ids[relation.source]) {
+        addResult('ERROR', fileName, 'relations[' + index + '] source not found: ' + relation.source);
       }
 
-      if (ids[person.id]) {
-        addResult('ERROR', fileName, 'duplicate person id: ' + person.id);
+      if (!isBlank(relation.target) && !ids[relation.target]) {
+        addResult('ERROR', fileName, 'relations[' + index + '] target not found: ' + relation.target);
+      }
+
+      key = relation.source + '__' + relation.target + '__' + relation.type;
+      if (relationKeys[key]) {
+        addResult('ERROR', fileName, 'duplicate relation: ' + key);
       } else {
-        ids[person.id] = true;
+        relationKeys[key] = true;
       }
     });
-
-    if (Array.isArray(data.relations)) {
-      addResult('WARN', fileName, 'array data with relations property is unexpected, relation checks skipped');
-    }
     return;
   }
 
