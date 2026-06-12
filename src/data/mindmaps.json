@@ -1,0 +1,32 @@
+{
+  "maps": {
+    "china": {
+      "id": "china",
+      "title": "中国通史",
+      "nodes": [
+        { "id": "china-root", "label": "中国通史", "root": true, "x": 140, "y": 180 },
+        { "id": "pre-qin", "label": "先秦", "x": 30, "y": 60, "parent": "china-root" },
+        { "id": "qin-han", "label": "秦汉", "x": 30, "y": 130, "parent": "china-root" },
+        { "id": "wei-jin", "label": "魏晋南北朝", "x": 30, "y": 200, "parent": "china-root" },
+        { "id": "sui-tang", "label": "隋唐", "x": 30, "y": 270, "parent": "china-root" },
+        { "id": "song-yuan", "label": "宋元", "x": 280, "y": 60, "parent": "china-root" },
+        { "id": "ming-qing", "label": "明清", "x": 280, "y": 130, "parent": "china-root" },
+        { "id": "modern", "label": "近代", "x": 280, "y": 200, "parent": "china-root" },
+        { "id": "contemporary", "label": "现代", "x": 280, "y": 270, "parent": "china-root" }
+      ]
+    },
+    "world": {
+      "id": "world",
+      "title": "世界史",
+      "nodes": [
+        { "id": "world-root", "label": "世界史", "root": true, "x": 140, "y": 180 },
+        { "id": "greece-rome", "label": "古希腊罗马", "x": 20, "y": 60, "parent": "world-root" },
+        { "id": "medieval-europe", "label": "中世纪欧洲", "x": 20, "y": 140, "parent": "world-root" },
+        { "id": "renaissance", "label": "文艺复兴", "x": 20, "y": 220, "parent": "world-root" },
+        { "id": "industrial-revolution", "label": "工业革命", "x": 280, "y": 60, "parent": "world-root" },
+        { "id": "world-wars", "label": "世界大战", "x": 280, "y": 140, "parent": "world-root" },
+        { "id": "cold-war", "label": "冷战至今", "x": 280, "y": 220, "parent": "world-root" }
+      ]
+    }
+  }
+}

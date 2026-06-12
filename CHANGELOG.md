@@ -2,6 +2,21 @@
 
 ## 2026-06-12
 
+### Phase 4 Task 4.3：思维导图 Demo
+
+- 新增 `src/js/mindmap.js`，将 `swMind`、`openNode`、`saveNode`、`closeNodeNote` 从 `index.html` 迁移为独立 ES5 IIFE 模块。
+- 新增 `src/data/mindmaps.json`，中国通史与世界史预设导图改为 JSON 数据驱动渲染。
+- 思维导图节点点击会打开节点笔记面板，并通过 `storageAPI.getStoredString` / `setStoredString` 持久化到 `mindmap_note_<nodeId>`。
+- `app.js` 加载 `mindmaps.json` 后注入 `mindmapAPI.setMindmapData()` 并渲染全部预设导图，同时暴露思维导图内联事件兼容函数。
+- `index.html` 删除已迁移的思维导图内联函数，保留页面容器和节点笔记面板。
+- 新增 `tests/mindmap.test.js`，覆盖 JSON 渲染节点和连线、Tab 切换、笔记读取、笔记保存和 XSS 转义。
+
+#### 验证
+
+- `npx vitest run tests/mindmap.test.js --environment jsdom`：通过，`5` 项测试通过。
+- `npx vitest run tests/mindmap.test.js tests/app-static-data.test.js tests/adapter-wiring.test.js --environment jsdom`：通过，`3` 个测试文件、`14` 项测试通过。
+- `node scripts/validate-data.js`：`15 OK`、`0 WARN`、`0 ERROR`。
+
 ### Phase 4 Task 4.2：人物关系图 Demo
 
 - 将 `src/data/people.json` 从 centers 嵌套结构迁移为 `people` / `relations` 图结构，首轮提供 `12` 位人物与 `12` 条关系。

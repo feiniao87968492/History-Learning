@@ -472,6 +472,7 @@
 <script src="./src/js/noun.js"></script>
 <script src="./src/js/timeline.js"></script>
 <script src="./src/js/people.js"></script>
+<script src="./src/js/mindmap.js"></script>
 <script src="./src/js/podcast.js"></script>
 <script src="./src/js/ai-assistant.js"></script>
 <script src="./src/js/quiz.js"></script>
@@ -739,29 +740,7 @@ function searchPeople() {
   else if(v){showToast('暂未收录，试试：武则天、秦始皇、汉武帝、唐太宗、朱元璋、康熙')}
 }
 
-// ===== 思维导图 =====
-function swMind(btn, tab) {
-  document.querySelectorAll('.mtab').forEach(function(t){t.classList.remove('act')});btn.classList.add('act');
-  document.getElementById('mm-china').style.display=tab==='china'?'block':'none';
-  document.getElementById('mm-world').style.display=tab==='world'?'block':'none';
-  document.getElementById('mm-custom').style.display=tab==='custom'?'flex':'none';
-  if(tab==='custom')document.getElementById('mm-custom').style.display='flex';
-}
-function openNode(name) {
-  document.getElementById('node-note-title').textContent='📝 '+name+' · 节点笔记';
-  document.getElementById('node-note-input').value=getStoredStringCompat('note_'+name,'');
-  document.getElementById('node-note-input').dataset.node=name;
-  document.getElementById('node-note-panel').style.display='flex';
-}
-function saveNode(){
-  var i=document.getElementById('node-note-input'),n=i.dataset.node;
-  setStoredStringCompat('note_'+n,i.value);
-  document.getElementById('node-note-panel').style.display='none';
-  showToast('「'+n+'」的笔记已保存！');
-}
-
-// ===== 笔记面板 =====
-function closeNodeNote(){document.getElementById('node-note-panel').style.display='none'}
+// ===== 思维导图 已迁移到 src/js/mindmap.js，并通过 app.js 暴露为兼容全局函数 =====
 
 // ===== 朝代特征详情 =====
 function openFeatDet(title, text) {

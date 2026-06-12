@@ -85,6 +85,13 @@
       window.searchPeople = window.peopleAPI.searchPeople;
     }
 
+    if (window.mindmapAPI) {
+      window.swMind = window.mindmapAPI.swMind;
+      window.openNode = window.mindmapAPI.openNode;
+      window.saveNode = window.mindmapAPI.saveNode;
+      window.closeNodeNote = window.mindmapAPI.closeNodeNote;
+    }
+
     if (window.podcastAPI) {
       window.filterPodcast = window.podcastAPI.filterPodcast;
       window.openPlayer = window.podcastAPI.openPlayer;
@@ -299,6 +306,12 @@
       var people = await loadJSON('./src/data/people.json', { people: [], relations: [] });
       window.peopleAPI.setPeopleData(people);
       try { window.peopleAPI.renderPeopleGraph(); } catch (e) { console.error('renderPeopleGraph err:', e); }
+    }
+
+    if (window.mindmapAPI) {
+      var mindmaps = await loadJSON('./src/data/mindmaps.json', { maps: {} });
+      window.mindmapAPI.setMindmapData(mindmaps);
+      try { window.mindmapAPI.renderAllMindmaps(); } catch (e) { console.error('renderAllMindmaps err:', e); }
     }
 
     var podcasts = await loadJSON('./src/data/podcasts.json', []);
