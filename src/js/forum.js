@@ -1,15 +1,21 @@
 (function () {
-  var STORAGE_KEY = 'xds_discussions';
+  var STORAGE_KEY = 'xds_forum_posts';
   var discussions = [];
   var expandedPostIds = Object.create(null);
-  var activeCategory = 'all';
+  var activeType = 'all';
+  var activeTag = 'all';
   var postTags = [];
-  var tagCategoryMap = {
-    '史观': 'view',
-    '冷知识': 'cold',
-    '求助': 'help',
-    '资源': 'resource'
+
+  var POST_TYPES = ['discussion', 'article', 'person', 'media', 'resource'];
+  var TYPE_LABELS = {
+    'discussion': '讨论',
+    'article': '文章',
+    'person': '人物',
+    'media': '书影',
+    'resource': '资源'
   };
+  var DYNASTY_TAGS = ['先秦', '秦', '汉', '三国', '晋', '南北朝', '隋', '唐', '宋', '元', '明', '清', '近代', '跨朝代'];
+  var TOPIC_TAGS = ['政治', '军事', '经济', '文化', '科技', '地理', '社会', '制度'];
 
   function escapeHtml(value) {
     if (window.htmlUtils && typeof window.htmlUtils.escapeHtml === 'function') {
@@ -78,7 +84,7 @@
   }
 
   function getListRoot() {
-    return document.getElementById('discussion-list') || document.querySelector('#discuss-page .dp');
+    return document.getElementById('forum-list') || document.getElementById('discussion-list') || document.querySelector('#discuss-page .dp');
   }
 
   function parseCount(value) {
@@ -113,11 +119,8 @@
     return null;
   }
 
-  function getCategoryFromTags() {
-    if (postTags.length && tagCategoryMap[postTags[0]]) {
-      return tagCategoryMap[postTags[0]];
-    }
-    return 'view';
+  function getDefaultPostType() {
+    return 'discussion';
   }
 
   function renderComment(comment) {
@@ -145,19 +148,78 @@
     return '<div class="cmt-list" style="display:' + display + ';padding:8px 0 0;border-top:1px solid #EDE8E0;margin-top:8px">' + html + '</div>';
   }
 
-  function renderPost(post) {
-    var category = post.category || 'view';
-    var visible = activeCategory === 'all' || activeCategory === category;
-    var commentsCount = post.comments;
+  function renderPostMeta(post) {
+    var type = post.type || 'discussion';
+    if (type === 'article') {
+      return '<div class="fm-meta">' +
+        '<span class="fm-type-tag article">📄 文章</span>' +
+        (post.metadata && post.metadata.externalUrl ? '<a class="fm-link" href="' + escapeHtml(post.metadata.externalUrl) + '" target="_blank" rel="noopener">阅读原文 →</a>' : '') +
+        '</div>';
+    }
+    if (type === 'person') {
+      return '<div class="fm-meta">' +
+        '<span class="fm-type-tag person">👤 人物</span>' +
+        '<span class="fm-dynasty">' + escapeHtml((post.metadata && post.metadata.dynasty) || '') + '</span>' +
+        '<span class="fm-role">' + escapeHtml((post.metadata && post.metadata.role) || '') + '</span>' +
+        '</div>';
+    }
+    if (type === 'media') {
+      return '<div class="fm-meta">' +
+        '<span class="fm-type-tag media">🎬 书影</span>' +
+        '<span class="fm-media-type">' + escapeHtml((post.metadata && post.metadata.mediaType) || '') + '</span>' +
+        (post.metadata && post.metadata.rating ? '<span class="fm-rating">★ ' + escapeHtml(post.metadata.rating) + '</span>' : '') +
+        '</div>';
+    }
+    if (type === 'resource') {
+      return '<div class="fm-meta">' +
+        '<span class="fm-type-tag resource">📦 资源</span>' +
+        (post.metadata && post.metadata.externalUrl ? '<a class="fm-link" href="' + escapeHtml(post.metadata.externalUrl) + '" target="_blank" rel="noopener">查看链接 →</a>' : '') +
+        '</div>';
+    }
+    return '';
+  }
 
+  function renderPostTags(post) {
+    var tags = Array.isArray(post.tags) ? post.tags : [];
+    if (!tags.length) return '';
+    return '<div class="fm-tags">' + tags.map(function (tag) {
+      return '<span class="fm-tag">' + escapeHtml(tag) + '</span>';
+    }).join('') + '</div>';
+  }
+
+  function renderPost(post) {
+    var type = post.type || 'discussion';
+    var visible = true;
+    if (activeType !== 'all' && activeType !== type) {
+      visible = false;
+    }
+    if (activeTag !== 'all') {
+      var tags = Array.isArray(post.tags) ? post.tags : [];
+      if (tags.indexOf(activeTag) === -1) {
+        visible = false;
+      }
+    }
+    var commentsCount = post.comments;
     if (commentsCount === null || typeof commentsCount === 'undefined') {
       commentsCount = Array.isArray(post.commentsList) ? post.commentsList.length : 0;
     }
+    if (post.stats && typeof post.stats.comments !== 'undefined' && commentsCount === 0) {
+      commentsCount = post.stats.comments;
+    }
 
-    return '<div class="pcard" data-post-id="' + escapeHtml(post.id || '') + '" data-discuss-cat="' + escapeHtml(category) + '" style="display:' + (visible ? 'block' : 'none') + '">' +
-      '<div class="pa"><div class="pav">' + escapeHtml(post.avatar || '🙂') + '</div><div><div class="nm">' + escapeHtml(post.author || '匿名') + '</div><div class="ti">' + escapeHtml(post.time || '刚刚') + '</div></div></div>' +
-      '<div class="pc"><h4>' + escapeHtml(post.title || '') + '</h4><p>' + escapeHtml(post.body || '') + '</p></div>' +
-      '<div class="pact"><span>❤️ ' + escapeHtml(post.likes || '0') + '</span><span class="comment-toggle" data-comment-post="' + escapeHtml(post.id || '') + '">💬 ' + escapeHtml(commentsCount) + '</span><span>⭐ ' + escapeHtml(post.favorite || '收藏') + '</span></div>' +
+    var authorName = (post.author && post.author.name) || post.author || '匿名';
+    var avatar = (post.author && post.author.avatar) || post.avatar || '🙂';
+    var time = post.time || post.createdAt || '';
+    var body = post.content || post.body || '';
+    var likes = (post.stats && post.stats.likes) || post.likes || '0';
+    var favorite = (post.stats && post.stats.favorites) || post.favorite || '收藏';
+
+    return '<div class="pcard" data-post-id="' + escapeHtml(post.id || '') + '" data-post-type="' + escapeHtml(type) + '" style="display:' + (visible ? 'block' : 'none') + '">' +
+      '<div class="pa"><div class="pav">' + escapeHtml(avatar) + '</div><div><div class="nm">' + escapeHtml(authorName) + '</div><div class="ti">' + escapeHtml(time) + '</div></div></div>' +
+      '<div class="pc"><h4>' + escapeHtml(post.title || '') + '</h4><p>' + escapeHtml(body) + '</p></div>' +
+      renderPostMeta(post) +
+      renderPostTags(post) +
+      '<div class="pact"><span>❤️ ' + escapeHtml(likes) + '</span><span class="comment-toggle" data-comment-post="' + escapeHtml(post.id || '') + '">💬 ' + escapeHtml(commentsCount) + '</span><span>⭐ ' + escapeHtml(favorite) + '</span></div>' +
       renderCommentList(post) +
     '</div>';
   }
@@ -184,19 +246,21 @@
     if (!root) return;
 
     if (!discussions.length) {
-      root.innerHTML = '<div style="text-align:center;padding:24px;color:#B5ADA5">暂无讨论</div>';
+      root.innerHTML = '<div style="text-align:center;padding:24px;color:#B5ADA5">还没有帖子，来发第一条吧</div>';
       return;
     }
 
     discussions.forEach(function (post) {
-      if (activeCategory === 'all' || post.category === activeCategory) {
+      var type = post.type || 'discussion';
+      var tagMatch = activeTag === 'all' || (Array.isArray(post.tags) && post.tags.indexOf(activeTag) !== -1);
+      if ((activeType === 'all' || type === activeType) && tagMatch) {
         visibleCount += 1;
       }
     });
 
     html = discussions.map(renderPost).join('');
     if (!visibleCount) {
-      html += '<div class="discussion-empty" style="text-align:center;padding:24px;color:#B5ADA5">暂无讨论</div>';
+      html += '<div class="discussion-empty" style="text-align:center;padding:24px;color:#B5ADA5">该分类下暂无内容</div>';
     }
 
     root.innerHTML = html;
@@ -206,15 +270,30 @@
   function setInitialDiscussions(list) {
     var stored = getStoredDiscussions();
     expandedPostIds = Object.create(null);
-    activeCategory = 'all';
+    activeType = 'all';
+    activeTag = 'all';
     discussions = cloneList(Array.isArray(stored) ? stored : list);
     renderDiscussions();
   }
 
-  function filterDiscuss(category, button) {
-    activeCategory = category || 'all';
+  function filterForum(type, button) {
+    activeType = type || 'all';
 
-    document.querySelectorAll('#discuss-page .htabs .htab, #discuss-tabs .htab').forEach(function (tab) {
+    document.querySelectorAll('#forum-tabs .htab').forEach(function (tab) {
+      tab.classList.remove('act');
+    });
+
+    if (button) {
+      button.classList.add('act');
+    }
+
+    renderDiscussions();
+  }
+
+  function filterForumByTag(tag, button) {
+    activeTag = (tag === 'all' || !tag) ? 'all' : tag;
+
+    document.querySelectorAll('#forum-tag-tabs .htab').forEach(function (tab) {
       tab.classList.remove('act');
     });
 
@@ -276,10 +355,12 @@
   function clearPostForm() {
     var titleInput = document.getElementById('post-title');
     var bodyInput = document.getElementById('post-body');
+    var typeSelect = document.getElementById('post-type-select');
     var overlay = document.getElementById('post-overlay');
 
     if (titleInput) titleInput.value = '';
     if (bodyInput) bodyInput.value = '';
+    if (typeSelect) typeSelect.value = 'discussion';
     if (overlay) overlay.classList.remove('act');
 
     document.querySelectorAll('#post-overlay .ft').forEach(function (button) {
@@ -293,7 +374,10 @@
     var bodyInput = document.getElementById('post-body');
     var title = titleInput ? titleInput.value.trim() : '';
     var body = bodyInput ? bodyInput.value.trim() : '';
+    var typeSelect = document.getElementById('post-type-select');
+    var selectedType = typeSelect ? typeSelect.value : 'discussion';
     var post;
+    var now;
 
     if (!title) {
       showToast('请输入帖子标题');
@@ -305,19 +389,41 @@
       return false;
     }
 
+    if (postTags.length === 0) {
+      showToast('请至少选择一个标签');
+      return false;
+    }
+
+    if (postTags.length > 5) {
+      showToast('最多选择5个标签');
+      return false;
+    }
+
+    now = new Date();
+
     post = {
-      id: 'post-user-' + new Date().getTime() + '-' + (discussions.length + 1),
-      category: getCategoryFromTags(),
-      author: '我',
+      id: 'post-user-' + now.getTime() + '-' + (discussions.length + 1),
+      type: selectedType,
+      title: title,
+      content: body,
+      author: {
+        id: 'u_local',
+        name: '我',
+        avatar: '🙂'
+      },
+      tags: postTags.slice(),
+      metadata: {},
+      stats: { views: 0, likes: 0, comments: 0, favorites: 0 },
+      createdAt: now.toISOString(),
+      updatedAt: now.toISOString(),
+      commentsList: [],
+      body: body,
+      authorName: '我',
       avatar: '🙂',
       time: '刚刚',
-      title: title,
-      body: body,
       likes: '0',
       comments: '0',
-      favorite: '收藏',
-      tags: postTags.slice(),
-      commentsList: []
+      favorite: '收藏'
     };
 
     discussions.unshift(post);
@@ -350,6 +456,9 @@
       body: text
     });
     post.comments = String(parseCount(post.comments) + 1);
+    if (post.stats) {
+      post.stats.comments = parseCount(post.stats.comments) + 1;
+    }
     expandedPostIds[postId] = true;
     saveDiscussions();
     renderDiscussions();
@@ -368,10 +477,11 @@
     return cloneList(discussions);
   }
 
-  window.discussAPI = {
+  window.forumAPI = {
     setInitialDiscussions: setInitialDiscussions,
     renderDiscussions: renderDiscussions,
-    filterDiscuss: filterDiscuss,
+    filterForum: filterForum,
+    filterForumByTag: filterForumByTag,
     toggleComments: toggleComments,
     openPost: openPost,
     closePost: closePost,
@@ -379,10 +489,20 @@
     submitPost: submitPost,
     addComment: addComment,
     addCommentFromInput: addCommentFromInput,
-    getDiscussions: getDiscussions
+    getDiscussions: getDiscussions,
+    getPostTypes: function () { return POST_TYPES.slice(); },
+    getTypeLabels: function () { return Object.assign({}, TYPE_LABELS); },
+    getDynastyTags: function () { return DYNASTY_TAGS.slice(); },
+    getTopicTags: function () { return TOPIC_TAGS.slice(); }
   };
 
-  window.filterDiscuss = filterDiscuss;
+  // Backward compatibility alias
+  window.discussAPI = window.forumAPI;
+
+  // Global compatibility functions
+  window.filterForum = filterForum;
+  window.filterForumByTag = filterForumByTag;
+  window.filterDiscuss = filterForum;
   window.toggleComments = toggleComments;
   window.openPost = openPost;
   window.closePost = closePost;
