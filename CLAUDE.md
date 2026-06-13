@@ -41,16 +41,16 @@ src/
 │   ├── film.js         # 影视书目 + 待看栏
 │   └── adapters/       # 平台适配层
 └── data/
-    ├── nouns.json      # 名词数据（当前 10 条，目标 50+）
-    ├── timeline.json   # 时间轴事件（当前 13 条，目标 40+）
-    ├── people.json     # 人物数据（待从 index.html 迁移）
-    ├── films.json      # 影视书目数据
-    ├── podcasts.json   # 播客数据
+    ├── nouns.json      # 名词数据（当前 51 条）
+    ├── timeline.json   # 时间轴事件（当前 42 条）
+    ├── people.json     # 人物关系图数据（32 人 / 30 条关系）
+    ├── films.json      # 影视书目数据（书籍 / 影视 / 纪录片各 15 条）
+    ├── podcasts.json   # 播客数据（当前 6 条，使用本地预览音频）
     ├── rankings.json   # 影视书目排行榜
     ├── memes.json      # 梗图轮播
-    ├── books.json      # 书籍数据
-    ├── discussions.json
-    ├── hot-articles.json
+    ├── books.json      # 书籍 / 影视 / 纪录片分组数据
+    ├── discussions.json # 讨论区种子帖
+    ├── hot-articles.json # 首页热点文章（当前 10 条）
     ├── science-tools.json
     ├── profile-menu.json
     └── feedback-types.json
@@ -91,13 +91,17 @@ src/js/adapters/
 
 未来迁移小程序时只替换 adapter 实现，不重写业务逻辑。
 
-### 当前进度（2026-06-11）
+### 当前进度（2026-06-12）
 
-- 当前工作分支：`phase1-storage-adapter`。
-- 已完成并提交：Phase 1 Task 1.1–1.6，adapter 层与现有模块接线已完成。
-- 正在推进：Phase 2 Task 2.1 `名词解释种子数据与数据驱动渲染`。
-- 已完成本地实现：`src/data/nouns.json` 扩充为 10 条结构化种子数据，`src/js/noun.js` 从 JSON 渲染卡片与详情，`index.html` 删除硬编码名词卡片。
-- 下一步：Phase 2 Task 2.2 `名词收藏与标记已学`，在 `src/js/noun.js` 中通过 storage adapter 持久化收藏/已学状态。
+- 当前工作分支：`main`。
+- 已完成并提交 / 部署：Phase 1–5 Web 原型补完、原 Task 6（Phase 3 Task 3.4 讨论区）验收补齐、时间轴缩放与布局修复。
+- 最新线上部署 commit：`3b04abc`（`fix: extend timeline chart background`），线上地址 `http://118.178.140.171:9090`。
+- Phase 5 内容扩充已完成：名词 51 条、时间轴 42 条、人物 32 人 / 30 条关系、影视书目每类 15 条、选择题 30 道、热点文章 10 条、播客 6 条。
+- `scripts/validate-data.js` 已扩展 Phase 5 / 讨论区校验；最近验证结果：`15 OK`、`0 WARN`、`0 ERROR`。
+- 全量测试最近通过：`npx vitest run --environment jsdom` 为 28 个测试文件、206 项测试通过。
+- 时间轴已改为固定逻辑坐标 + SVG `viewBox` 缩放：当前朝代节点会横向铺开，放大 / 缩小按钮语义已修正，拖拽后背景统一为淡黄色。
+- 静态资源缓存版本已更新为 `v=20260612-timeline-fix2`，避免线上浏览器继续命中旧版 JS/CSS。
+- 仍未处理的本地未跟踪文件：`docs/学的是史.docx`、`docs/（temp）review for phase1's plan.md`、`resources/名词解释/`。
 
 ## 本地运行
 
