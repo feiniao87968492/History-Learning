@@ -139,86 +139,6 @@
 <button class="lbtn gold" style="max-width:100%;margin-top:10px" onclick="saveNode()">保存笔记</button>
 </div>
 
-<div id="podcast-page" class="sub">
-<div class="tt">
-<button class="act" onclick="swSubTab(this,'podcast-page')">AI播客</button>
-<button onclick="swSubTab(this,'people-page')">人物专题</button>
-<button onclick="swSubTab(this,'film-page')">影视书目推荐</button>
-</div>
-<div class="pctabs" id="podcast-tabs">
-<button class="pctab act" onclick="filterPodcast('all',this)">全部</button>
-<button class="pctab" onclick="filterPodcast('qin',this)">先秦</button>
-<button class="pctab" onclick="filterPodcast('han',this)">秦汉</button>
-<button class="pctab" onclick="filterPodcast('suitang',this)">隋唐</button>
-<button class="pctab" onclick="filterPodcast('song',this)">宋元</button>
-<button class="pctab" onclick="filterPodcast('mingqing',this)">明清</button>
-<button class="pctab" onclick="filterPodcast('modern',this)">近代</button>
-</div>
-<div class="pclist" id="podcast-list"></div>
-</div>
-
-<!-- 播客播放器 -->
-<div class="pplayer" id="podcast-player">
-<div class="plhead">
-<div class="plicon" id="pl-icon" style="background:linear-gradient(135deg,#5A3E1B,#8B6914)">🏛️</div>
-<div class="pltxt"><h4 id="pl-title">贞观之治</h4><p id="pl-author">AI历史助手 制作</p></div>
-<button class="plclose" onclick="closePlayer()">✕</button>
-</div>
-<div class="plbar" id="pl-bar" onclick="seekPodcast(event)"><div class="plprog" id="pl-prog"></div></div>
-<div style="display:flex;justify-content:space-between;font-size:10px;color:#8A8279;margin-bottom:12px">
-<span id="pl-cur">00:00</span><span id="pl-dur">28:00</span>
-</div>
-<div class="plbtns">
-<button class="plbtn" onclick="toggleSpeed()" id="pl-speed">1.0x</button>
-<button class="plbtn" onclick="prevPodcast()">⏮</button>
-<button class="plbtn" id="pl-playbtn" onclick="togglePlay()">▶</button>
-<button class="plbtn" onclick="nextPodcast()">⏭</button>
-<button class="plbtn" onclick="showTimer()">⏱️</button>
-</div>
-<div class="pltimer" id="pl-timer" style="display:none;text-align:center;margin-top:8px">
-<button class="plspeed" onclick="setTimer(15)">15分钟</button>
-<button class="plspeed" onclick="setTimer(30)">30分钟</button>
-<button class="plspeed" onclick="setTimer(60)">60分钟</button>
-<button class="plspeed" onclick="setTimer(0)">取消</button>
-</div>
-</div>
-
-<!-- ===== 影视书目推荐 ===== -->
-<div id="film-page" class="sub">
-<div class="tt">
-<button onclick="swSubTab(this,'podcast-page')">AI播客</button>
-<button onclick="swSubTab(this,'people-page')">人物专题</button>
-<button class="act" onclick="swSubTab(this,'film-page')">影视书目推荐</button>
-</div>
-<div class="fg2">
-<button class="dtab act" onclick="filFilm(this,'all')">全部</button>
-<button class="dtab" onclick="filFilm(this,'book')">📖 书籍</button>
-<button class="dtab" onclick="filFilm(this,'film')">🎬 影视</button>
-<button class="dtab" onclick="filFilm(this,'doc')">📺 纪录片</button>
-</div>
-<div class="fg3" id="film-grid">
-<div class="fcard" data-type="book">
-<div class="fimg" style="background:linear-gradient(135deg,#5A3E1B,#8B6914)"><span style="background:rgba(0,0,0,.5);color:#fff;padding:2px 8px;border-radius:4px;font-size:11px">书籍</span></div>
-<div class="fin"><h4>万历十五年</h4><div style="font-size:11px;color:#8A8279;margin-bottom:4px">黄仁宇 著 · 1981年</div><div class="rt">★★★★★ 9.0 <span style="color:#B5ADA5;font-size:11px">(21.2万人评)</span></div><p class="desc">以1587年为切入点，从"大历史观"审视明朝中晚期的政治、经济与文化困境。</p><div style="display:flex;gap:6px;margin-top:6px"><span style="font-size:10px;padding:2px 8px;background:#F5F0E8;border-radius:6px;color:#8A8279">历史</span><span style="font-size:10px;padding:2px 8px;background:#F5F0E8;border-radius:6px;color:#8A8279">大历史观</span></div></div>
-<button class="wbtn add" onclick="togWL(this)">✓ 已添加</button>
-</div>
-<div class="fcard" data-type="film">
-<div class="fimg" style="background:linear-gradient(135deg,#1A1A2E,#16213E)"><span style="background:rgba(0,0,0,.5);color:#fff;padding:2px 8px;border-radius:4px;font-size:11px">影视</span></div>
-<div class="fin"><h4>末代皇帝</h4><div style="font-size:11px;color:#8A8279;margin-bottom:4px">贝纳尔多·贝托鲁奇 导演 · 1987年</div><div class="rt">★★★★★ 9.3 <span style="color:#B5ADA5;font-size:11px">(66.6万人评)</span></div><p class="desc">从溥仪三岁登基到成为新中国公民，跨越清末、民国、抗战、新中国四个历史时期。</p><div style="display:flex;gap:6px;margin-top:6px"><span style="font-size:10px;padding:2px 8px;background:#F5F0E8;border-radius:6px;color:#8A8279">清朝</span><span style="font-size:10px;padding:2px 8px;background:#F5F0E8;border-radius:6px;color:#8A8279">传记</span><span style="font-size:10px;padding:2px 8px;background:#F5F0E8;border-radius:6px;color:#8A8279">奥斯卡</span></div></div>
-<button class="wbtn" onclick="togWL(this)">＋ 待看</button>
-</div>
-<div class="fcard" data-type="doc">
-<div class="fimg" style="background:linear-gradient(135deg,#2E7D4F,#27AE60)"><span style="background:rgba(0,0,0,.5);color:#fff;padding:2px 8px;border-radius:4px;font-size:11px">纪录片</span></div>
-<div class="fin"><h4>河西走廊</h4><div style="font-size:11px;color:#8A8279;margin-bottom:4px">央视纪录片 · 2015年 · 10集</div><div class="rt">★★★★★ 9.7 <span style="color:#B5ADA5;font-size:11px">(17.1万人评)</span></div><p class="desc">以河西走廊为线索，探寻汉、三国、隋、唐、元、明、清等朝代中，中国与西域的文明交汇。</p><div style="display:flex;gap:6px;margin-top:6px"><span style="font-size:10px;padding:2px 8px;background:#F5F0E8;border-radius:6px;color:#8A8279">历史</span><span style="font-size:10px;padding:2px 8px;background:#F5F0E8;border-radius:6px;color:#8A8279">丝绸之路</span></div></div>
-<button class="wbtn" onclick="togWL(this)">＋ 待看</button>
-</div>
-<div class="fcard" data-type="book">
-<div class="fimg" style="background:linear-gradient(135deg,#8B6914,#D4A843)"><span style="background:rgba(0,0,0,.5);color:#fff;padding:2px 8px;border-radius:4px;font-size:11px">书籍</span></div>
-<div class="fin"><h4>中国大历史</h4><div class="rt">★ 8.3</div><p class="desc">黄仁宇另一力作，从宏观视角梳理中国历史脉络</p></div>
-<button class="wbtn" onclick="togWL(this)">＋ 待看</button>
-</div>
-</div>
-</div>
 
 <!-- ===== 讨论区 ===== -->
 <div id="tools-page" class="page">
@@ -451,66 +371,19 @@ function setStoredStringCompat(key, value) {
 function swTab(btn, pid) {
   document.querySelectorAll('.sub').forEach(function(p){p.classList.remove('act')});
   document.querySelectorAll('.nd').forEach(function(p){p.classList.remove('act')});
-  document.getElementById('node-note-panel').style.display='none';
-  document.getElementById('people-detail-card').classList.remove('act');
-  document.getElementById('noun-detail').classList.remove('act');
+  var nodeNote = document.getElementById('node-note-panel');
+  if (nodeNote) nodeNote.style.display = 'none';
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
   document.querySelectorAll('.ni').forEach(function(n){n.classList.remove('act')});
-  document.getElementById(pid).classList.add('active');
-  btn.classList.add('act');
+  var target = document.getElementById(pid);
+  if (target) target.classList.add('active');
+  if (btn) btn.classList.add('act');
   var af = document.getElementById('ai-fab');
-  if(false){}
-  else{af.classList.add('sh');document.getElementById('bnav').style.display='flex'}
-  resetAIFab();
+  if (af) { af.classList.add('sh'); }
+  var bnav = document.getElementById('bnav');
+  if (bnav) bnav.style.display = 'flex';
+  if (typeof resetAIFab === 'function') resetAIFab();
 }
-
-);
-  document.getElementById(pageId).classList.add('act');
-}
-
-// ===== 朝代切换 / prevDyn / nextDyn 已迁移到 src/js/timeline.js =====
-
-// ===== 梗图轮播 =====
-var memeData=[
-  {emoji:'🏺',title:'秦始皇陵兵马俑',origin:'1974年陕西农民打井时意外挖出陶俑碎片，经考古发掘后发现规模宏大的兵马俑坑。秦始皇13岁即位就开始修建陵墓，历时39年，役使70余万人。每个兵马俑面容不同，千人千面，被誉为"世界第八大奇迹"。',tag:'#考古发现 #秦朝 #世界遗产'},
-  {emoji:'📜',title:'唐朝公务员写诗内卷',origin:'唐朝科举常设"进士科"，考试内容包含诗赋。诗写得好不仅能中举，还能直接当官。李白靠诗名被唐玄宗召见，王维靠诗画赢得太平公主推荐。为了科举和仕途，整个唐朝文人圈陷入写诗"内卷"。',tag:'#科举 #唐朝 #文化史'},
-  {emoji:'⚔️',title:'朱元璋反贪大案',origin:'明太祖朱元璋出身贫农，对贪官深恶痛绝。他规定贪污60两银子以上即处死，甚至发明"剥皮楦草"酷刑。洪武年间大案频发：空印案、郭桓案、胡惟庸案，诛杀官吏数以万计。',tag:'#明朝 #反腐 #制度史'},
-  {emoji:'🏯',title:'宋朝的经济奇迹',origin:'北宋时期GDP占全球60%以上，远超同时期欧洲各国总和。开封城人口超百万，是世界上最大的城市。但宋军"重文轻武"，虽有百万禁军，却连年败于辽、西夏、金，最终亡于蒙古。',tag:'#宋朝 #经济史 #反思'},
-  {emoji:'🐉',title:'康乾盛世的代价',origin:'康熙、雍正、乾隆三代虽号称盛世，但闭关锁国政策使中国错失工业革命。乾隆拒绝英国马戛尔尼使团的通商请求，埋下近代屈辱的伏笔。与此同时，贪污盛行，和珅一人贪银折合今人民币超千亿。',tag:'#清朝 #反思 #转折'}
-];
-function openMeme(idx){
-  var d=memeData[idx];
-  document.getElementById('meme-emoji').textContent=d.emoji;
-  document.getElementById('meme-title').textContent=d.title;
-  document.getElementById('meme-origin').textContent=d.origin;
-  document.getElementById('meme-tag').textContent=d.tag;
-  document.getElementById('meme-overlay').classList.add('act');
-}
-function closeMeme(e){if(e.target===document.getElementById('meme-overlay'))document.getElementById('meme-overlay').classList.remove('act')}
-
-// 轮播滚动指示器
-(function(){
-  var sc=document.getElementById('meme-scroll');
-  var dots=document.querySelectorAll('#meme-dots .meme-dot');
-  if(!sc||!dots.length)return;
-  sc.addEventListener('scroll',function(){
-    var idx=Math.round(sc.scrollLeft/(sc.scrollWidth/dots.length));
-    dots.forEach(function(d,i){d.classList.toggle('act',i===Math.min(idx,dots.length-1))});
-  });
-})();
-
-);
-  btn.classList.add('act');
-  document.querySelectorAll('#hot-articles .hl, #hot-articles .hi').forEach(function(c){
-    c.style.display=(dyn==='all'||c.dataset.dynasty===dyn)?'block':'none';
-  });
-}
-
-// ===== 登录 / Toast 已迁移到 src/js/navigation.js，并通过 app.js 暴露为兼容全局函数 =====
-
-// ===== 名词解释 / 名词搜索 已迁移到 src/js/noun.js =====
-
-// ===== 时间轴坐标系 / 渲染 / 缩放 / 拖拽 / 事件详情 / 连线 / 朝代选择 / 朝代切换 已迁移到 src/js/timeline.js =====
 
 // ===== 反馈 =====
 function openFB(){document.getElementById('feedback-overlay').classList.add('act')}
@@ -524,11 +397,9 @@ function subFB(){
   showToast('反馈已提交，感谢你的建议！');
 }
 
-// ===== AI播客 / AI助手 已迁移到 src/js/podcast.js 和 src/js/ai-assistant.js =====
+// ===== AI助手 已迁移到 src/js/ai-assistant.js =====
 
-// ===== 人物关系网 已迁移到 src/js/people.js，并通过 app.js 暴露为兼容全局函数 =====
-
-// ===== 思维导图 已迁移到 src/js/mindmap.js，并通过 app.js 暴露为兼容全局函数 =====
+// ===== 思维导图 已迁移到 src/js/mindmap.js =====
 
 // ===== 朝代特征详情 =====
 function openFeatDet(title, text) {
@@ -540,7 +411,7 @@ function closeFeatDet(e){if(e.target===document.getElementById('feat-detail-over
 
 // ===== AI助手拖动 已迁移到 src/js/ai-assistant.js =====
 
-// ===== 讨论区功能 已迁移到 src/js/discuss.js，并通过 app.js 暴露为兼容全局函数 =====
+// ===== 论坛功能 由 src/js/forum.js 实现，并通过 app.js 暴露为兼容全局函数 =====
 
 // ===== 打卡签到 已迁移到 src/js/checkin.js，并通过 app.js 暴露为兼容全局函数 =====
 function openCheckin(){if(window.checkinAPI&&window.checkinAPI.openCheckin)return window.checkinAPI.openCheckin()}
