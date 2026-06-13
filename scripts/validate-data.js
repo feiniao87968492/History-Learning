@@ -18,6 +18,8 @@ var PHASE5_TARGETS = {
   podcasts: 5
 };
 
+// Phase 5 targets are advisory only — no error for missing files
+
 var PEOPLE_RELATION_TYPES = {
   career: true,
   family: true,
@@ -458,17 +460,21 @@ function validateNonNegativeCount(fileName, label, value) {
   return parseInt(text, 10);
 }
 
+var FORUM_POST_TYPES = {
+  discussion: true,
+  article: true,
+  person: true,
+  media: true,
+  resource: true
+};
+
 function validateDiscussions(data, fileName) {
   var ids = {};
   var titles = {};
 
   if (!Array.isArray(data)) {
-    addResult('ERROR', fileName, 'expected array of discussion posts');
+    addResult('ERROR', fileName, 'expected array of forum posts');
     return;
-  }
-
-  if (fileName === 'discussions.json' && (data.length < 2 || data.length > 3)) {
-    addResult('ERROR', fileName, 'discussion seed count must be between 2 and 3 for Task 3.4');
   }
 
   data.forEach(function (post, index) {
@@ -479,29 +485,34 @@ function validateDiscussions(data, fileName) {
       return;
     }
 
-    ['id', 'category', 'author', 'avatar', 'time', 'title', 'body', 'likes', 'comments', 'favorite'].forEach(function (fieldName) {
-      if (isBlank(post[fieldName])) {
-        addResult('ERROR', fileName, 'posts[' + index + '] missing field: ' + fieldName);
-      }
-      validateTextSafety(fileName, 'posts[' + index + '] field "' + fieldName + '"', post[fieldName]);
-    });
+    if (isBlank(post.id)) addResult('ERROR', fileName, 'posts[' + index + '] missing field: id');
+    if (isBlank(post.type)) addResult('ERROR', fileName, 'posts[' + index + '] missing field: type');
+    if (isBlank(post.title)) addResult('ERROR', fileName, 'posts[' + index + '] missing field: title');
+    if (isBlank(post.content) && isBlank(post.body)) addResult('ERROR', fileName, 'posts[' + index + '] missing field: content/body');
+    if (!Array.isArray(post.tags) || post.tags.length === 0) addResult('ERROR', fileName, 'posts[' + index + '] missing or empty tags');
 
-    validateUniqueValue(fileName, ids, 'discussion post id', post.id);
-    validateUniqueValue(fileName, titles, 'discussion post title', post.title);
+    validateTextSafety(fileName, 'posts[' + index + '] title', post.title);
+    validateTextSafety(fileName, 'posts[' + index + '] content', post.content || post.body || '');
 
-    if (!isBlank(post.category) && !DISCUSSION_CATEGORIES[post.category]) {
-      addResult('ERROR', fileName, 'posts[' + index + '] unsupported category: ' + post.category);
+    validateUniqueValue(fileName, ids, 'forum post id', post.id);
+    validateUniqueValue(fileName, titles, 'forum post title', post.title);
+
+    if (!isBlank(post.type) && !FORUM_POST_TYPES[post.type]) {
+      addResult('ERROR', fileName, 'posts[' + index + '] unsupported type: ' + post.type);
     }
 
-    validateNonNegativeCount(fileName, 'posts[' + index + '] likes', post.likes);
-    commentCount = validateNonNegativeCount(fileName, 'posts[' + index + '] comments', post.comments);
+    if (post.stats) {
+      validateNonNegativeCount(fileName, 'posts[' + index + '] stats.likes', post.stats.likes);
+      commentCount = validateNonNegativeCount(fileName, 'posts[' + index + '] stats.comments', post.stats.comments);
+    }
 
     if (!Array.isArray(post.commentsList)) {
       addResult('ERROR', fileName, 'posts[' + index + '] missing commentsList array');
       return;
     }
 
-    if (commentCount !== null && commentCount < post.commentsList.length) {
+    var commentsCountFromData = post.stats ? post.stats.comments : (post.comments || 0);
+    if (commentsCountFromData !== null && parseInt(commentsCountFromData, 10) < post.commentsList.length) {
       addResult('ERROR', fileName, 'posts[' + index + '] comments count is less than commentsList length');
     }
 
@@ -693,9 +704,8 @@ function validateAllJsonFiles() {
     }
   });
 
-  if (files.indexOf('questions.json') === -1) {
-    addResult('ERROR', 'questions.json', 'file not found for Phase 5');
-  }
+  // questions.json, films.json, people.json, podcasts.json removed in forum redesign
+  // No longer required
 }
 
 function withIsolatedResults(callback) {

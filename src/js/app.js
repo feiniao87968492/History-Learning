@@ -177,10 +177,10 @@
   }
 
   async function initializeData() {
-    var nouns = await loadJSON('./src/data/nouns.json?v=20260612-timeline-fix2', {});
+    var nouns = await loadJSON('./src/data/nouns.json?v=20260613-forum-v1', {});
     if (window.nounAPI) window.nounAPI.setNounData(nouns);
 
-    var timeline = await loadJSON('./src/data/timeline.json?v=20260612-timeline-fix2', { dynasties: [], events: [] });
+    var timeline = await loadJSON('./src/data/timeline.json?v=20260613-forum-v1', { dynasties: [], events: [] });
     if (window.timelineAPI) {
       window.timelineAPI.setDynasties(timeline.dynasties);
       window.timelineAPI.setTimelineEvents(timeline.events);
@@ -189,19 +189,19 @@
     }
 
     if (window.mindmapAPI) {
-      var mindmaps = await loadJSON('./src/data/mindmaps.json?v=20260612-timeline-fix2', { maps: {} });
+      var mindmaps = await loadJSON('./src/data/mindmaps.json?v=20260613-forum-v1', { maps: {} });
       window.mindmapAPI.setMindmapData(mindmaps);
       try { window.mindmapAPI.renderAllMindmaps(); } catch (e) { console.error('renderAllMindmaps err:', e); }
     }
 
     if (document.getElementById('feedback-type-list')) {
-      renderFeedbackTypes(await loadJSON('./src/data/feedback-types.json?v=20260612-timeline-fix2', []));
+      renderFeedbackTypes(await loadJSON('./src/data/feedback-types.json?v=20260613-forum-v1', []));
     }
     if (document.getElementById('forum-list') || document.querySelector('#discuss-page .dp') || document.querySelector('#forum-page')) {
       renderDiscussions(await loadJSON('./src/data/discussions.json?v=20260613-forum-v1', []));
     }
     if (document.querySelector('#profile-page .mg')) {
-      renderProfileMenu(await loadJSON('./src/data/profile-menu.json?v=20260612-timeline-fix2', { study: [], settings: [] }));
+      renderProfileMenu(await loadJSON('./src/data/profile-menu.json?v=20260613-forum-v1', { study: [], settings: [] }));
     }
   }
 

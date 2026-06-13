@@ -6,7 +6,7 @@ import { describe, expect, test } from 'vitest';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const projectRoot = path.resolve(__dirname, '..');
-const CACHE_VERSION = 'v=20260612-timeline-fix2';
+const CACHE_VERSION = 'v=20260613-forum-v1';
 
 function readProjectFile(filePath) {
   return fs.readFileSync(path.join(projectRoot, filePath), 'utf8');
@@ -17,7 +17,7 @@ describe('static asset cache busting', () => {
     const html = readProjectFile('index.html');
     const assetRefs = Array.from(html.matchAll(/(?:href|src)="(\.\/src\/(?:css|js)\/[^"]+)"/g)).map((match) => match[1]);
 
-    expect(assetRefs.length).toBeGreaterThan(10);
+    expect(assetRefs.length).toBeGreaterThan(5);
     assetRefs.forEach((ref) => {
       expect(ref).toContain('?' + CACHE_VERSION);
     });
@@ -27,7 +27,7 @@ describe('static asset cache busting', () => {
     const app = readProjectFile('src/js/app.js');
     const dataRefs = Array.from(app.matchAll(/loadJSON\('(\.\/src\/data\/[^']+\.json[^']*)'/g)).map((match) => match[1]);
 
-    expect(dataRefs.length).toBeGreaterThan(10);
+    expect(dataRefs.length).toBeGreaterThan(4);
     dataRefs.forEach((ref) => {
       expect(ref).toContain('?' + CACHE_VERSION);
     });

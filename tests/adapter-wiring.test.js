@@ -5,16 +5,7 @@ import { mountDOM, resetGlobals } from './helpers/dom-test-utils.js';
 
 function mountAppShell() {
   mountDOM(`
-    <div id="meme-scroll"></div>
-    <div id="meme-dots"></div>
-    <div id="meme-overlay"></div>
-    <span id="meme-emoji"></span>
-    <h3 id="meme-title"></h3>
-    <p id="meme-origin"></p>
-    <p id="meme-tag"></p>
-    <div id="science-page"><div class="sg"></div></div>
-    <div id="hot-articles"></div>
-    <div id="discuss-page"><div class="dp"></div></div>
+    <div id="forum-page"><div id="forum-list"></div></div>
     <div id="profile-page"><div class="mg"></div><div class="mg"></div></div>
     <div id="feedback-overlay"><div class="fty" id="feedback-type-list"></div></div>
     <div id="toast"></div>
@@ -45,7 +36,6 @@ function mountAppShell() {
     renderTimeline: vi.fn(),
     renderEventList: vi.fn()
   };
-  window.podcastAPI = { setPodcasts: vi.fn() };
 }
 
 beforeEach(() => {
@@ -91,7 +81,7 @@ describe('adapter wiring', () => {
     var loadJSON = vi.fn(async function (path, fallback) {
       if (path.indexOf('nouns.json') !== -1) return { adapterNoun: { text: 'from adapter' } };
       if (path.indexOf('timeline.json') !== -1) return { dynasties: ['qin'], events: [] };
-      if (path.indexOf('podcasts.json') !== -1) return [{ title: 'adapter podcast' }];
+      if (path.indexOf('discussions.json') !== -1) return [{ id: 'adapter-discussion', type: 'discussion', title: 'test' }];
       return fallback;
     });
     window.dataLoaderAPI = { loadJSON: loadJSON };
@@ -102,13 +92,11 @@ describe('adapter wiring', () => {
     await import('../src/js/app.js');
     await new Promise(function (resolvePromise) { setTimeout(resolvePromise, 0); });
 
-    expect(loadJSON).toHaveBeenCalledWith('./src/data/nouns.json?v=20260612-timeline-fix2', {});
-    expect(loadJSON).toHaveBeenCalledWith('./src/data/timeline.json?v=20260612-timeline-fix2', { dynasties: [], events: [] });
-    expect(loadJSON).toHaveBeenCalledWith('./src/data/podcasts.json?v=20260612-timeline-fix2', []);
+    expect(loadJSON).toHaveBeenCalledWith('./src/data/nouns.json?v=20260613-forum-v1', {});
+    expect(loadJSON).toHaveBeenCalledWith('./src/data/timeline.json?v=20260613-forum-v1', { dynasties: [], events: [] });
     expect(global.fetch).not.toHaveBeenCalled();
     expect(window.nounAPI.setNounData).toHaveBeenCalledWith({ adapterNoun: { text: 'from adapter' } });
     expect(window.timelineAPI.setDynasties).toHaveBeenCalledWith(['qin']);
-    expect(window.podcastAPI.setPodcasts).toHaveBeenCalledWith([{ title: 'adapter podcast' }]);
   });
 
   test('app data loading falls back to fetch when dataLoaderAPI is absent', async () => {
@@ -123,9 +111,8 @@ describe('adapter wiring', () => {
     await import('../src/js/app.js');
     await new Promise(function (resolvePromise) { setTimeout(resolvePromise, 0); });
 
-    expect(global.fetch).toHaveBeenCalledWith('./src/data/nouns.json?v=20260612-timeline-fix2');
-    expect(global.fetch).toHaveBeenCalledWith('./src/data/timeline.json?v=20260612-timeline-fix2');
-    expect(global.fetch).toHaveBeenCalledWith('./src/data/podcasts.json?v=20260612-timeline-fix2');
+    expect(global.fetch).toHaveBeenCalledWith('./src/data/nouns.json?v=20260613-forum-v1');
+    expect(global.fetch).toHaveBeenCalledWith('./src/data/timeline.json?v=20260613-forum-v1');
   });
 
   test('index loads adapters before business modules', () => {
@@ -146,13 +133,10 @@ describe('adapter wiring', () => {
     var appJs = readFileSync(resolve(process.cwd(), 'src/js/app.js'), 'utf8');
     var storageJs = readFileSync(resolve(process.cwd(), 'src/js/storage.js'), 'utf8');
     var checkinJs = readFileSync(resolve(process.cwd(), 'src/js/checkin.js'), 'utf8');
-    var podcastJs = readFileSync(resolve(process.cwd(), 'src/js/podcast.js'), 'utf8');
-
     expect(indexHtml).not.toContain('window.open(');
     expect(indexHtml).not.toContain('localStorage.');
     expect(appJs).not.toContain('fetch(');
     expect(storageJs).not.toContain('localStorage.');
     expect(checkinJs).not.toContain('localStorage.');
-    expect(podcastJs).not.toContain('new Audio');
   });
 });

@@ -2,7 +2,7 @@
 
 ## 项目概述
 
-中国历史学习网站 Web 原型。当前阶段：**Web 原型补完与模块化整理**，为后续微信小程序迁移做准备。
+中国历史学习网站 Web 原型。当前阶段：**论坛首页重构（讨论区为主页）**，为后续微信小程序迁移做准备。2026-06-13 完成大架构简化：讨论区升级为首页，热点/人物/影视并入帖子区，AI播客/错题/题目功能移除。
 
 - 线上地址：`http://118.178.140.171:9090`
 - GitHub：`https://github.com/feiniao87968492/History-Learning`
@@ -22,39 +22,42 @@ Python http.server 静态部署
 ## 项目结构
 
 ```
-index.html              # 页面骨架，引用外部 CSS/JS
+index.html              # 页面骨架（论坛首页 + 工具页 + 我的）
 src/
 ├── css/
 │   ├── base.css        # reset、全局规则
-│   ├── components.css  # 可复用组件样式
+│   ├── components.css  # 可复用组件样式（含论坛帖子类型样式）
 │   └── pages.css       # 页面级样式
 ├── js/
 │   ├── app.js          # 入口：初始化编排、全局暴露
 │   ├── storage.js      # LocalStorage 封装（后续由 adapters/storage.js 取代）
-│   ├── navigation.js   # 登录、页面切换、toast
+│   ├── navigation.js   # 页面切换、toast（登录已移除）
+│   ├── forum.js        # 论坛核心模块（5种帖子类型 + 标签系统）
 │   ├── noun.js         # 名词解释
 │   ├── timeline.js     # 时间轴
-│   ├── podcast.js      # AI 播客播放器
 │   ├── ai-assistant.js # AI 助手问答与拖拽
 │   ├── checkin.js      # 打卡签到
 │   ├── favorites.js    # 收藏管理
-│   ├── film.js         # 影视书目 + 待看栏
+│   ├── tools.js        # 工具页（名词+时间轴+思维导图入口）
+│   ├── mindmap.js      # 思维导图
 │   └── adapters/       # 平台适配层
+│       ├── storage.js
+│       ├── navigation.js
+│       ├── external-link.js
+│       └── data-loader.js
 └── data/
-    ├── nouns.json      # 名词数据（当前 51 条）
-    ├── timeline.json   # 时间轴事件（当前 42 条）
-    ├── people.json     # 人物关系图数据（32 人 / 30 条关系）
-    ├── films.json      # 影视书目数据（书籍 / 影视 / 纪录片各 15 条）
-    ├── podcasts.json   # 播客数据（当前 6 条，使用本地预览音频）
-    ├── rankings.json   # 影视书目排行榜
-    ├── memes.json      # 梗图轮播
-    ├── books.json      # 书籍 / 影视 / 纪录片分组数据
-    ├── discussions.json # 讨论区种子帖
-    ├── hot-articles.json # 首页热点文章（当前 10 条）
+    ├── nouns.json      # 名词数据（51 条）
+    ├── timeline.json   # 时间轴事件（42 条）
+    ├── discussions.json # 论坛种子帖（29 条，5 种类型）
+    ├── mindmaps.json   # 思维导图数据
     ├── science-tools.json
     ├── profile-menu.json
     └── feedback-types.json
 ```
+
+### 已移除的模块（2026-06-13）
+podcast.js, quiz.js, review.js, learning-stats.js, film.js, people.js, audio.js adapter
+对应数据文件：podcasts.json, questions.json, films.json, people.json, rankings.json, books.json, hot-articles.json, memes.json
 
 ## JS 模块规范
 
@@ -91,17 +94,16 @@ src/js/adapters/
 
 未来迁移小程序时只替换 adapter 实现，不重写业务逻辑。
 
-### 当前进度（2026-06-12）
+### 当前进度（2026-06-13）
 
 - 当前工作分支：`main`。
-- 已完成并提交 / 部署：Phase 1–5 Web 原型补完、原 Task 6（Phase 3 Task 3.4 讨论区）验收补齐、时间轴缩放与布局修复。
-- 最新线上部署 commit：`3b04abc`（`fix: extend timeline chart background`），线上地址 `http://118.178.140.171:9090`。
-- Phase 5 内容扩充已完成：名词 51 条、时间轴 42 条、人物 32 人 / 30 条关系、影视书目每类 15 条、选择题 30 道、热点文章 10 条、播客 6 条。
-- `scripts/validate-data.js` 已扩展 Phase 5 / 讨论区校验；最近验证结果：`15 OK`、`0 WARN`、`0 ERROR`。
-- 全量测试最近通过：`npx vitest run --environment jsdom` 为 28 个测试文件、206 项测试通过。
-- 时间轴已改为固定逻辑坐标 + SVG `viewBox` 缩放：当前朝代节点会横向铺开，放大 / 缩小按钮语义已修正，拖拽后背景统一为淡黄色。
-- 静态资源缓存版本已更新为 `v=20260612-timeline-fix2`，避免线上浏览器继续命中旧版 JS/CSS。
-- 仍未处理的本地未跟踪文件：`docs/学的是史.docx`、`docs/（temp）review for phase1's plan.md`、`resources/名词解释/`。
+- **论坛首页重构已完成**：讨论区升级为首页，热点文章/人物/影视书目内容并入帖子区（29 条种子帖、5 种类型），AI 播客/错题/题目功能移除，登录页移除直接进首页，工具页收纳名词+时间轴+思维导图。
+- 最新线上部署 commit：待部署。
+- 数据校验：`7 OK`、`0 WARN`、`0 ERROR`。
+- 全量测试：`npx vitest run --environment jsdom` 为 22 个测试文件、140 项测试通过。
+- 静态资源缓存版本已更新为 `v=20260613-forum-v1`。
+- 设计文档：`docs/superpowers/specs/2026-06-13-forum-homepage-redesign.md`
+- 实施计划：`docs/superpowers/plans/2026-06-13-forum-homepage-redesign-plan.md`
 
 ## 本地运行
 

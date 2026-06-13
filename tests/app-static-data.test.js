@@ -79,16 +79,7 @@ beforeEach(() => {
   vi.restoreAllMocks();
   resetGlobals();
   mountDOM(`
-    <div id="meme-scroll"></div>
-    <div id="meme-dots"></div>
-    <div id="meme-overlay"></div>
-    <span id="meme-emoji"></span>
-    <h3 id="meme-title"></h3>
-    <p id="meme-origin"></p>
-    <p id="meme-tag"></p>
-    <div id="science-page"><div class="sg"></div></div>
-    <div id="hot-articles"></div>
-    <div id="discuss-page"><div class="dp"></div></div>
+    <div id="forum-page"><div id="forum-list"></div></div>
     <div id="profile-page"><div class="mg"></div><div class="mg"></div></div>
     <div id="feedback-overlay"><div class="fty" id="feedback-type-list"></div></div>
     <div id="toast"></div>
@@ -102,7 +93,6 @@ beforeEach(() => {
   window.navigationAPI = {
     showToast: vi.fn(),
     resetAIFab: vi.fn(),
-    login: vi.fn(),
     openSub: vi.fn(),
     closeSub: vi.fn()
   };
@@ -119,10 +109,6 @@ beforeEach(() => {
     renderTimeline: vi.fn(),
     renderEventList: vi.fn()
   };
-  window.peopleAPI = {
-    setPeopleData: vi.fn(),
-    renderPeopleGraph: vi.fn()
-  };
   window.mindmapAPI = {
     setMindmapData: vi.fn(),
     renderAllMindmaps: vi.fn(),
@@ -131,18 +117,8 @@ beforeEach(() => {
     saveNode: vi.fn(),
     closeNodeNote: vi.fn()
   };
-  window.podcastAPI = { setPodcasts: vi.fn() };
-  window.filmAPI = {
-    setFilms: vi.fn(),
-    setRankings: vi.fn(),
-    initializeFilmModule: vi.fn(),
-    filterFilms: vi.fn(),
-    switchRankingTab: vi.fn(),
-    openWatchlist: vi.fn(),
-    closeWatchlist: vi.fn(),
-    switchWatchlistTab: vi.fn(),
-    toggleWatchlistItem: vi.fn(),
-    moveWatchlistItem: vi.fn()
+  window.forumAPI = {
+    setInitialDiscussions: vi.fn()
   };
   window.checkinAPI = { updateCheckinStats: vi.fn() };
   window.aiAssistantAPI = {
@@ -170,14 +146,10 @@ describe('app static content data wiring', () => {
     expect(global.fetch).not.toHaveBeenCalledWith(expect.stringContaining('questions.json'));
   });
 
-  test('loads meme and feedback datasets and renders them into the shell containers', async () => {
+  test('loads feedback types and renders them into the shell container', async () => {
     global.fetch = vi.fn(async (path) => {
       if (path.indexOf('nouns.json') !== -1) return { ok: true, json: async () => ({}) };
       if (path.indexOf('timeline.json') !== -1) return { ok: true, json: async () => ({ dynasties: [], events: [] }) };
-      if (path.indexOf('podcasts.json') !== -1) return { ok: true, json: async () => [] };
-      if (path.indexOf('films.json') !== -1) return { ok: true, json: async () => [] };
-      if (path.indexOf('rankings.json') !== -1) return { ok: true, json: async () => ({ book: [], film: [], doc: [] }) };
-      if (path.indexOf('memes.json') !== -1) return { ok: true, json: async () => MEMES };
       if (path.indexOf('feedback-types.json') !== -1) return { ok: true, json: async () => FEEDBACK_TYPES };
       return { ok: true, json: async () => [] };
     });
@@ -185,22 +157,15 @@ describe('app static content data wiring', () => {
     await import('../src/js/app.js');
     await new Promise((resolve) => setTimeout(resolve, 0));
 
-    expect(document.querySelectorAll('#meme-scroll .meme-card')).toHaveLength(2);
     expect(document.getElementById('feedback-type-list').textContent).toContain('功能异常');
-    expect(document.getElementById('feedback-type-list').textContent).toContain('其他');
   });
 
-  test('loads hot articles, discussions, and profile menu datasets into their shell containers', async () => {
+  test('loads forum discussions and profile menu datasets into their shell containers', async () => {
     global.fetch = vi.fn(async (path) => {
       if (path.indexOf('nouns.json') !== -1) return { ok: true, json: async () => ({}) };
       if (path.indexOf('timeline.json') !== -1) return { ok: true, json: async () => ({ dynasties: [], events: [] }) };
-      if (path.indexOf('podcasts.json') !== -1) return { ok: true, json: async () => [] };
-      if (path.indexOf('films.json') !== -1) return { ok: true, json: async () => [] };
-      if (path.indexOf('rankings.json') !== -1) return { ok: true, json: async () => ({ book: [], film: [], doc: [] }) };
-      if (path.indexOf('memes.json') !== -1) return { ok: true, json: async () => [] };
       if (path.indexOf('feedback-types.json') !== -1) return { ok: true, json: async () => [] };
       if (path.indexOf('discussions.json') !== -1) return { ok: true, json: async () => DISCUSSIONS };
-      if (path.indexOf('hot-articles.json') !== -1) return { ok: true, json: async () => HOT_ARTICLES };
       if (path.indexOf('profile-menu.json') !== -1) return { ok: true, json: async () => PROFILE_MENU };
       return { ok: true, json: async () => [] };
     });
@@ -208,33 +173,23 @@ describe('app static content data wiring', () => {
     await import('../src/js/app.js');
     await new Promise((resolve) => setTimeout(resolve, 0));
 
-    expect(document.querySelectorAll('#hot-articles .hl')).toHaveLength(1);
-    expect(document.querySelectorAll('#hot-articles .hi')).toHaveLength(1);
-    expect(document.querySelector('#discuss-page .pcard h4')?.textContent).toContain('科举制和高考');
     expect(document.querySelectorAll('#profile-page .mg')[0].textContent).toContain('学习记录');
     expect(document.querySelectorAll('#profile-page .mg')[1].textContent).toContain('问题反馈');
   });
 
-  test('loads people and mindmap datasets into Phase 4 modules', async () => {
-    const people = { people: [{ id: 'wu-zetian', name: '武则天' }], relations: [] };
+  test('loads mindmap dataset into module', async () => {
     const mindmaps = { maps: { china: { id: 'china', nodes: [] } } };
 
     global.fetch = vi.fn(async (path) => {
       if (path.indexOf('nouns.json') !== -1) return { ok: true, json: async () => ({}) };
       if (path.indexOf('timeline.json') !== -1) return { ok: true, json: async () => ({ dynasties: [], events: [] }) };
-      if (path.indexOf('people.json') !== -1) return { ok: true, json: async () => people };
       if (path.indexOf('mindmaps.json') !== -1) return { ok: true, json: async () => mindmaps };
-      if (path.indexOf('podcasts.json') !== -1) return { ok: true, json: async () => [] };
-      if (path.indexOf('films.json') !== -1) return { ok: true, json: async () => [] };
-      if (path.indexOf('rankings.json') !== -1) return { ok: true, json: async () => ({ book: [], film: [], doc: [] }) };
       return { ok: true, json: async () => [] };
     });
 
     await import('../src/js/app.js');
     await new Promise((resolve) => setTimeout(resolve, 0));
 
-    expect(window.peopleAPI.setPeopleData).toHaveBeenCalledWith(people);
-    expect(window.peopleAPI.renderPeopleGraph).toHaveBeenCalled();
     expect(window.mindmapAPI.setMindmapData).toHaveBeenCalledWith(mindmaps);
     expect(window.mindmapAPI.renderAllMindmaps).toHaveBeenCalled();
   });
