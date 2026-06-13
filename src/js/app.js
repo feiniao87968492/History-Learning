@@ -96,15 +96,16 @@
       window.updateCheckinStats = window.checkinAPI.updateCheckinStats;
     }
 
-    if (window.discussAPI) {
-      window.filterDiscuss = window.discussAPI.filterDiscuss;
-      window.toggleComments = window.discussAPI.toggleComments;
-      window.openPost = window.discussAPI.openPost;
-      window.closePost = window.discussAPI.closePost;
-      window.togglePostTag = window.discussAPI.togglePostTag;
-      window.submitPost = window.discussAPI.submitPost;
-      window.addComment = window.discussAPI.addComment;
-      window.addCommentFromInput = window.discussAPI.addCommentFromInput;
+    if (window.forumAPI) {
+      window.filterForum = window.forumAPI.filterForum;
+      window.filterForumByTag = window.forumAPI.filterForumByTag;
+      window.toggleComments = window.forumAPI.toggleComments;
+      window.openPost = window.forumAPI.openPost;
+      window.closePost = window.forumAPI.closePost;
+      window.togglePostTag = window.forumAPI.togglePostTag;
+      window.submitPost = window.forumAPI.submitPost;
+      window.addComment = window.forumAPI.addComment;
+      window.addCommentFromInput = window.forumAPI.addCommentFromInput;
     }
   }
 
@@ -139,22 +140,24 @@
   }
 
   function renderDiscussions(discussions) {
-    var root;
     if (!Array.isArray(discussions)) return;
 
-    if (window.discussAPI && typeof window.discussAPI.setInitialDiscussions === 'function') {
-      window.discussAPI.setInitialDiscussions(discussions);
+    if (window.forumAPI && typeof window.forumAPI.setInitialDiscussions === 'function') {
+      window.forumAPI.setInitialDiscussions(discussions);
       return;
     }
 
-    root = document.getElementById('discussion-list') || document.querySelector('#discuss-page .dp');
+    var root = document.getElementById('forum-list') || document.getElementById('discussion-list');
     if (!root) return;
 
     root.innerHTML = discussions.map(function (item) {
-      return '<div class="pcard" data-post-id="' + escapeHtml(item.id || '') + '" data-discuss-cat="' + escapeHtml(item.category || '') + '">' +
-        '<div class="pa"><div class="pav">' + escapeHtml(item.avatar || '') + '</div><div><div class="nm">' + escapeHtml(item.author || '') + '</div><div class="ti">' + escapeHtml(item.time || '') + '</div></div></div>' +
-        '<div class="pc"><h4>' + escapeHtml(item.title || '') + '</h4><p>' + escapeHtml(item.body || '') + '</p></div>' +
-        '<div class="pact"><span>❤️ ' + escapeHtml(item.likes || '0') + '</span><span>💬 ' + escapeHtml(item.comments || '0') + '</span><span>⭐ ' + escapeHtml(item.favorite || '收藏') + '</span></div>' +
+      var authorName = (item.author && item.author.name) || item.author || '';
+      var avatar = (item.author && item.author.avatar) || item.avatar || '';
+      var body = item.content || item.body || '';
+      return '<div class="pcard" data-post-id="' + escapeHtml(item.id || '') + '" data-post-type="' + escapeHtml(item.type || 'discussion') + '">' +
+        '<div class="pa"><div class="pav">' + escapeHtml(avatar) + '</div><div><div class="nm">' + escapeHtml(authorName) + '</div><div class="ti">' + escapeHtml(item.time || item.createdAt || '') + '</div></div></div>' +
+        '<div class="pc"><h4>' + escapeHtml(item.title || '') + '</h4><p>' + escapeHtml(body) + '</p></div>' +
+        '<div class="pact"><span>❤️ ' + escapeHtml((item.stats && item.stats.likes) || item.likes || '0') + '</span><span>💬 ' + escapeHtml((item.stats && item.stats.comments) || item.comments || '0') + '</span><span>⭐ 收藏</span></div>' +
       '</div>';
     }).join('');
   }
@@ -194,8 +197,8 @@
     if (document.getElementById('feedback-type-list')) {
       renderFeedbackTypes(await loadJSON('./src/data/feedback-types.json?v=20260612-timeline-fix2', []));
     }
-    if (document.querySelector('#discuss-page .dp')) {
-      renderDiscussions(await loadJSON('./src/data/discussions.json?v=20260612-timeline-fix2', []));
+    if (document.getElementById('forum-list') || document.querySelector('#discuss-page .dp') || document.querySelector('#forum-page')) {
+      renderDiscussions(await loadJSON('./src/data/discussions.json?v=20260613-forum-v1', []));
     }
     if (document.querySelector('#profile-page .mg')) {
       renderProfileMenu(await loadJSON('./src/data/profile-menu.json?v=20260612-timeline-fix2', { study: [], settings: [] }));

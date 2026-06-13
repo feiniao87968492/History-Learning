@@ -121,3 +121,25 @@
 .wltab{padding:6px 14px;border-radius:14px;border:1.5px solid #EDE8E0;background:#fff;font-size:12px;cursor:pointer;color:#8A8279;transition:all .2s}
 .wltab.act{background:#2C1810;color:#fff;border-color:#2C1810}
 
+/* ===== 论坛帖子类型 Meta 行 ===== */
+.fm-meta{display:flex;gap:8px;align-items:center;padding:4px 0 8px;font-size:11px}
+.fm-type-tag{padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600}
+.fm-type-tag.article{background:#E8F0FE;color:#1A73E8}
+.fm-type-tag.person{background:#FCE8E6;color:#C5221F}
+.fm-type-tag.media{background:#E6F4EA;color:#137333}
+.fm-type-tag.resource{background:#FEF7E0;color:#B06000}
+.fm-dynasty{color:#8A8279;font-size:11px}
+.fm-role{color:#C9A96E;font-size:11px;font-weight:500}
+.fm-media-type{color:#8A8279;font-size:11px}
+.fm-rating{color:#E8A838;font-size:11px;font-weight:700}
+.fm-link{color:#C9A96E;text-decoration:none;font-size:11px;margin-left:auto}
+.fm-link:hover{text-decoration:underline}
+
+/* ===== 帖子标签 ===== */
+.fm-tags{display:flex;gap:4px;flex-wrap:wrap;padding:4px 0 8px}
+.fm-tag{padding:2px 8px;background:#F5F0E8;border-radius:10px;font-size:10px;color:#8B6914;font-weight:500}
+
+/* ===== 发帖面板 ===== */
+.ft.act{background:#C9A96E!important;color:#fff!important;border-color:#C9A96E!important}
+#post-type-select{font-family:inherit}
+

@@ -4,59 +4,40 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>学的是史</title>
-<link rel="stylesheet" href="./src/css/base.css?v=20260612-timeline-fix2">
-<link rel="stylesheet" href="./src/css/components.css?v=20260612-timeline-fix2">
-<link rel="stylesheet" href="./src/css/pages.css?v=20260612-timeline-fix2">
+<link rel="stylesheet" href="./src/css/base.css?v=20260613-forum-v1">
+<link rel="stylesheet" href="./src/css/components.css?v=20260613-forum-v1">
+<link rel="stylesheet" href="./src/css/pages.css?v=20260613-forum-v1">
 </head>
 <body>
 
-<!-- 登录页 -->
-<div id="login-page" class="page active">
-<div class="lb">
-<span class="lo">📜</span><h1>学的是史</h1><p>以史为鉴 · 可知兴替</p>
-</div>
-<button class="lbtn phone" onclick="showToast('手机号登录功能开发中')">📱 手机号登录</button>
-<button class="lbtn wechat" onclick="login()">💬 微信登录</button>
-</div>
-
-<!-- 首页 -->
-<div id="home-page" class="page">
+<!-- 论坛首页 -->
+<div id="forum-page" class="page active">
 <div class="hh"><h2>学的是史</h2><div class="sch" onclick="showToast('搜索功能开发中')">🔍</div></div>
-<!-- 梗图轮播 -->
-<div class="meme-scroll" id="meme-scroll">
-<div class="meme-card" onclick="openMeme(0)" style="background:linear-gradient(135deg,#C0392B,#E74C3C)"><span style="font-size:64px;display:flex;align-items:center;justify-content:center;width:100%;height:100%">🏺</span><div class="meme-cap">秦始皇：朕的江山，你们随便挖</div></div>
-<div class="meme-card" onclick="openMeme(1)" style="background:linear-gradient(135deg,#8E44AD,#9B59B6)"><span style="font-size:64px;display:flex;align-items:center;justify-content:center;width:100%;height:100%">📜</span><div class="meme-cap">唐朝公务员：上班如上坟，还要写诗</div></div>
-<div class="meme-card" onclick="openMeme(2)" style="background:linear-gradient(135deg,#2C3E50,#34495E)"><span style="font-size:64px;display:flex;align-items:center;justify-content:center;width:100%;height:100%">⚔️</span><div class="meme-cap">朱元璋：我杀贪官的速度比贪官贪钱的速度还快</div></div>
-<div class="meme-card" onclick="openMeme(3)" style="background:linear-gradient(135deg,#D35400,#E67E22)"><span style="font-size:64px;display:flex;align-items:center;justify-content:center;width:100%;height:100%">🏯</span><div class="meme-cap">宋朝GDP占世界60%：我有钱，但我怂</div></div>
-<div class="meme-card" onclick="openMeme(4)" style="background:linear-gradient(135deg,#27AE60,#2ECC71)"><span style="font-size:64px;display:flex;align-items:center;justify-content:center;width:100%;height:100%">🐉</span><div class="meme-cap">康乾盛世：表面万岁，底下全是窟窿</div></div>
+<div class="htabs" id="forum-tabs" style="padding:0 16px 12px;display:flex;gap:8px;overflow-x:auto">
+<button class="htab act" onclick="filterForum('all',this)">全部</button>
+<button class="htab" onclick="filterForum('discussion',this)">💬 讨论</button>
+<button class="htab" onclick="filterForum('article',this)">📄 文章</button>
+<button class="htab" onclick="filterForum('person',this)">👤 人物</button>
+<button class="htab" onclick="filterForum('media',this)">🎬 书影</button>
+<button class="htab" onclick="filterForum('resource',this)">📦 资源</button>
 </div>
-<div class="meme-dots" id="meme-dots">
-<span class="meme-dot act"></span><span class="meme-dot"></span><span class="meme-dot"></span><span class="meme-dot"></span><span class="meme-dot"></span>
+<div class="htabs" id="forum-tag-tabs" style="padding:0 16px 12px;display:flex;gap:6px;overflow-x:auto">
+<button class="htab act" onclick="filterForumByTag('all',this)">全部标签</button>
+<button class="htab" onclick="filterForumByTag('唐',this)">唐</button>
+<button class="htab" onclick="filterForumByTag('宋',this)">宋</button>
+<button class="htab" onclick="filterForumByTag('明',this)">明</button>
+<button class="htab" onclick="filterForumByTag('清',this)">清</button>
+<button class="htab" onclick="filterForumByTag('政治',this)">政治</button>
+<button class="htab" onclick="filterForumByTag('军事',this)">军事</button>
+<button class="htab" onclick="filterForumByTag('文化',this)">文化</button>
 </div>
-<div class="sng">
-<button class="snt" onclick="openSub('noun-page')"><span class="ic">📖</span><span class="lbl">名词解释</span></button>
-<button class="snt" onclick="openSub('timeline-page')"><span class="ic">🕐</span><span class="lbl">时间轴</span></button>
-<button class="snt" onclick="openSub('science-page')"><span class="ic">📝</span><span class="lbl">科学备考</span></button>
-<button class="snt" onclick="openSub('podcast-page')"><span class="ic">🎙️</span><span class="lbl">AI播客</span></button>
-<button class="snt" onclick="openSub('people-page')"><span class="ic">👤</span><span class="lbl">人物专题</span></button>
-<button class="snt sel" onclick="openSub('film-page')"><span class="ic">🎬</span><span class="lbl">影视书目</span></button>
-</div>
-<div class="rh">← 返回热点</div>
-<!-- 热点分类Tab -->
-<div class="htabs" id="hot-tabs">
-<button class="htab act" onclick="filterHot('all',this)">全部</button>
-<button class="htab" onclick="filterHot('qinhan',this)">秦汉</button>
-<button class="htab" onclick="filterHot('suitang',this)">隋唐</button>
-<button class="htab" onclick="filterHot('song',this)">宋元</button>
-<button class="htab" onclick="filterHot('mingqing',this)">明清</button>
-<button class="htab" onclick="filterHot('modern',this)">近代</button>
-</div>
-<div class="ha" id="hot-articles"></div>
+<div id="forum-list"></div>
+<button class="fab" onclick="openPost()">＋</button>
 </div>
 
 <!-- ===== 名词解释 ===== -->
 <div id="noun-page" class="sub">
-<div class="sh"><button class="bk" onclick="closeSub('home-page')">←</button><h2>学的是史</h2></div>
+<div class="sh"><button class="bk" onclick="closeSub('forum-page')">←</button><h2>学的是史</h2></div>
 <div class="sb" style="padding:10px 16px">
 <input type="text" id="noun-search-input" placeholder="🔍 搜索名词（如：商鞅变法、科举制...）" oninput="searchNouns()">
 </div>
@@ -75,7 +56,7 @@
 
 <!-- ===== 时间轴 ===== -->
 <div id="timeline-page" class="sub">
-<div class="sh"><button class="bk" onclick="closeSub('home-page')">←</button><h2>学的是史</h2><div style="margin-left:auto;display:flex;gap:8px"><button class="bk" onclick="prevDyn()">‹</button><button class="bk" onclick="nextDyn()">›</button></div></div>
+<div class="sh"><button class="bk" onclick="closeSub('forum-page')">←</button><h2>学的是史</h2><div style="margin-left:auto;display:flex;gap:8px"><button class="bk" onclick="prevDyn()">‹</button><button class="bk" onclick="nextDyn()">›</button></div></div>
 <div class="tc">
 <div class="dt" id="dynasty-tabs">
 <button class="dtab act" onclick="selDyn('qin',this)">秦</button>
@@ -138,24 +119,8 @@
 </div>
 </div>
 
-<!-- ===== 科学备考 ===== -->
-<div id="science-page" class="sub">
-<div class="sh"><button class="bk" onclick="closeSub('home-page')">←</button><h2>学的是史</h2></div>
-<div class="sg">
-<button class="scard" onclick="startQuiz()"><span class="ic">📝</span><h4>真题演练</h4><p>基础选择题训练</p></button>
-<button class="scard" onclick="renderWrongQuestions()"><span class="ic">📌</span><h4>错题集</h4><p>回顾未掌握题目</p></button>
-<button class="scard" onclick="showToast('联机PK功能开发中')"><span class="ic">⚔️</span><h4>联机PK</h4><p>和全国考生实时对战</p></button>
-<button class="scard" onclick="renderReviewZone()"><span class="ic">📚</span><h4>复习专区</h4><p>已学名词与错题复习</p></button>
-<button class="scard" onclick="openSub('mindmap-page')"><span class="ic">🧠</span><h4>思维导图</h4><p>知识导图·笔记标注</p></button>
-</div>
-<div id="quiz-panel"></div>
-<div id="wrong-question-panel"></div>
-<div id="review-zone-panel"></div>
-</div>
-
-<!-- ===== 思维导图 ===== -->
 <div id="mindmap-page" class="sub">
-<div class="sh"><button class="bk" onclick="closeSub('science-page')">←</button><h2>学的是史</h2></div>
+<div class="sh"><button class="bk" onclick="closeSub('tools-page')">←</button><h2>学的是史</h2></div>
 <div class="mm">
 <div class="mt">
 <button class="mtab act" onclick="swMind(this,'china')">中国通史</button>
@@ -174,45 +139,6 @@
 <button class="lbtn gold" style="max-width:100%;margin-top:10px" onclick="saveNode()">保存笔记</button>
 </div>
 
-<!-- ===== 人物专题 ===== -->
-<div id="people-page" class="sub">
-<div class="tt">
-<button onclick="swSubTab(this,'podcast-page')">AI播客</button>
-<button class="act" onclick="swSubTab(this,'people-page')">人物专题</button>
-<button onclick="swSubTab(this,'film-page')">影视书目推荐</button>
-</div>
-<div class="ps">
-<div class="sb"><input type="text" id="people-search-input" placeholder="🔍 搜索历史人物，查看其关系网"><button onclick="searchPeople()">搜索</button></div>
-<div style="text-align:center;margin-bottom:8px;font-size:13px;color:#8A8279">当前人物：<span id="cur-peo-name" style="color:#2C1810;font-weight:600">武则天</span></div>
-<div class="dt" style="margin-bottom:16px;justify-content:center">
-<button class="dtab act" data-relation-filter="all" onclick="swPeoGroup(this,'all')">全部</button>
-<button class="dtab" data-relation-filter="career" onclick="swPeoGroup(this,'career')">⚔️ 事业</button>
-<button class="dtab" data-relation-filter="family" onclick="swPeoGroup(this,'family')">👨‍👩‍👧 亲属</button>
-<button class="dtab" data-relation-filter="teacher" onclick="swPeoGroup(this,'teacher')">📚 师友</button>
-<button class="dtab" data-relation-filter="political" onclick="swPeoGroup(this,'political')">🏛️ 政治</button>
-</div>
-<div class="rs"><svg id="relation-svg" viewBox="0 0 350 400" xmlns="http://www.w3.org/2000/svg"></svg></div>
-</div>
-</div>
-<!-- 人物资料卡 -->
-<div class="pdc" id="people-detail-card">
-<div class="ch">
-<div style="width:44px;height:44px;background:linear-gradient(135deg,#8B6914,#D4A843);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;color:white" id="pd-avatar">👤</div>
-<div><h3 style="font-size:16px;font-weight:700;color:#3A2A1A" id="pd-name"></h3><p style="font-size:12px;color:#8A7A6A" id="pd-role"></p></div>
-<button style="margin-left:auto;background:none;border:none;font-size:20px;cursor:pointer;color:#8A7A6A" onclick="closePeoDet()">✕</button>
-</div>
-<div class="cb">
-<div class="ig" id="pd-info"></div>
-<h4 style="font-size:14px;color:#8B6914;font-weight:700;margin-bottom:8px">相关事迹</h4>
-<ul class="dl" id="pd-deeds"></ul>
-<h4 style="font-size:14px;color:#8B6914;font-weight:700;margin:16px 0 8px">大事年表</h4>
-<ul class="dl" id="pd-year-table"></ul>
-<h4 style="font-size:14px;color:#8B6914;font-weight:700;margin:16px 0 8px">历史评价</h4>
-<div class="sec" id="pd-eval" style="display:none"><p style="font-size:13px;color:#2C1810;line-height:1.7" id="pd-eval-text"></p></div>
-</div>
-</div>
-
-<!-- ===== AI播客 ===== -->
 <div id="podcast-page" class="sub">
 <div class="tt">
 <button class="act" onclick="swSubTab(this,'podcast-page')">AI播客</button>
@@ -295,22 +221,13 @@
 </div>
 
 <!-- ===== 讨论区 ===== -->
-<div id="discuss-page" class="page">
-<div class="hh" style="padding-bottom:8px"><h2>讨论区</h2><div class="sch" onclick="showToast('搜索功能开发中')">🔍</div></div>
-<div class="dp">
-<div style="display:flex;gap:16px;padding:0 16px 12px;font-size:12px;color:#8A8279">
-<span>🔥 1.2k 讨论</span><span>⭐ 486 收藏</span>
+<div id="tools-page" class="page">
+<div class="hh"><h2>学习工具</h2></div>
+<div class="sg" style="padding:16px">
+<button class="scard" onclick="openSub('noun-page')"><span class="ic">📖</span><h4>名词解释</h4><p>查询重要历史名词</p></button>
+<button class="scard" onclick="openSub('timeline-page')"><span class="ic">🕐</span><h4>时间轴</h4><p>按朝代浏览历史事件</p></button>
+<button class="scard" onclick="openSub('mindmap-page')"><span class="ic">🧠</span><h4>思维导图</h4><p>知识导图·笔记标注</p></button>
 </div>
-<div class="htabs" id="discuss-tabs" style="padding:0 16px 12px;display:flex;gap:8px;overflow-x:auto">
-<button class="htab act" onclick="filterDiscuss('all',this)">全部</button>
-<button class="htab" onclick="filterDiscuss('view',this)">史观</button>
-<button class="htab" onclick="filterDiscuss('cold',this)">冷知识</button>
-<button class="htab" onclick="filterDiscuss('help',this)">求助</button>
-<button class="htab" onclick="filterDiscuss('resource',this)">资源</button>
-</div>
-<div id="discussion-list"></div>
-</div>
-<button class="fab" onclick="openPost()">＋</button>
 </div>
 
 <!-- 发布弹窗 -->
@@ -323,11 +240,32 @@
 <div style="margin-bottom:12px">
 <textarea id="post-body" placeholder="说点什么吧..." style="width:100%;min-height:120px;padding:12px;border:1.5px solid #EDE8E0;border-radius:12px;font-size:14px;resize:vertical;outline:none;font-family:inherit;color:#2C1810;box-sizing:border-box"></textarea>
 </div>
-<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
-<button class="ft" onclick="togglePostTag(this,'史观')">史观</button>
-<button class="ft" onclick="togglePostTag(this,'冷知识')">冷知识</button>
-<button class="ft" onclick="togglePostTag(this,'求助')">求助</button>
-<button class="ft" onclick="togglePostTag(this,'资源')">资源</button>
+<div style="margin-bottom:12px">
+<label style="font-size:12px;color:#8A8279;display:block;margin-bottom:4px">帖子类型</label>
+<select id="post-type-select" style="width:100%;padding:10px 14px;border:1.5px solid #EDE8E0;border-radius:14px;font-size:14px;outline:none;color:#2C1810;box-sizing:border-box;background:white">
+<option value="discussion">💬 讨论</option>
+<option value="article">📄 文章</option>
+<option value="person">👤 人物</option>
+<option value="media">🎬 书影</option>
+<option value="resource">📦 资源</option>
+</select>
+</div>
+<div style="margin-bottom:12px">
+<label style="font-size:12px;color:#8A8279;display:block;margin-bottom:4px">标签（可多选）</label>
+<div style="display:flex;gap:6px;flex-wrap:wrap" id="post-tag-list">
+<button class="ft" onclick="togglePostTag(this,'秦')">秦</button>
+<button class="ft" onclick="togglePostTag(this,'汉')">汉</button>
+<button class="ft" onclick="togglePostTag(this,'唐')">唐</button>
+<button class="ft" onclick="togglePostTag(this,'宋')">宋</button>
+<button class="ft" onclick="togglePostTag(this,'明')">明</button>
+<button class="ft" onclick="togglePostTag(this,'清')">清</button>
+<button class="ft" onclick="togglePostTag(this,'近代')">近代</button>
+<button class="ft" onclick="togglePostTag(this,'政治')">政治</button>
+<button class="ft" onclick="togglePostTag(this,'军事')">军事</button>
+<button class="ft" onclick="togglePostTag(this,'经济')">经济</button>
+<button class="ft" onclick="togglePostTag(this,'文化')">文化</button>
+<button class="ft" onclick="togglePostTag(this,'制度')">制度</button>
+</div>
 </div>
 <div style="font-size:11px;color:#B5ADA5;margin-bottom:16px">💡 图片上传功能开发中</div>
 <button class="fsub" onclick="submitPost()">发布帖子</button>
@@ -373,9 +311,9 @@
 </div>
 
 <!-- ===== 底部导航 ===== -->
-<div id="bnav" class="bnav" style="display:none">
-<button class="ni act" onclick="swTab(this,'home-page')"><span>🏠</span>首页</button>
-<button class="ni" onclick="swTab(this,'discuss-page')"><span>👁️</span>发现</button>
+<div id="bnav" class="bnav" style="display:flex">
+<button class="ni act" onclick="swTab(this,'forum-page')"><span>🏠</span>首页</button>
+<button class="ni" onclick="swTab(this,'tools-page')"><span>🔧</span>工具</button>
 <button class="ni" onclick="swTab(this,'profile-page')"><span>👤</span>我的</button>
 </div>
 
@@ -438,20 +376,21 @@
 <!-- ===== Toast ===== -->
 <div class="toast" id="toast"></div>
 
-<script src="./src/js/adapters/storage.js?v=20260612-timeline-fix2"></script>
-<script src="./src/js/adapters/navigation.js?v=20260612-timeline-fix2"></script>
-<script src="./src/js/adapters/external-link.js?v=20260612-timeline-fix2"></script>
-<script src="./src/js/adapters/data-loader.js?v=20260612-timeline-fix2"></script>
-<script src="./src/js/storage.js?v=20260612-timeline-fix2"></script>
-<script src="./src/js/navigation.js?v=20260612-timeline-fix2"></script>
-<script src="./src/js/favorites.js?v=20260612-timeline-fix2"></script>
-<script src="./src/js/noun.js?v=20260612-timeline-fix2"></script>
-<script src="./src/js/timeline.js?v=20260612-timeline-fix2"></script>
-<script src="./src/js/mindmap.js?v=20260612-timeline-fix2"></script>
-<script src="./src/js/ai-assistant.js?v=20260612-timeline-fix2"></script>
-<script src="./src/js/checkin.js?v=20260612-timeline-fix2"></script>
-<script src="./src/js/discuss.js?v=20260612-timeline-fix2"></script>
-<script src="./src/js/app.js?v=20260612-timeline-fix2"></script>
+<script src="./src/js/adapters/storage.js?v=20260613-forum-v1"></script>
+<script src="./src/js/adapters/navigation.js?v=20260613-forum-v1"></script>
+<script src="./src/js/adapters/external-link.js?v=20260613-forum-v1"></script>
+<script src="./src/js/adapters/data-loader.js?v=20260613-forum-v1"></script>
+<script src="./src/js/storage.js?v=20260613-forum-v1"></script>
+<script src="./src/js/navigation.js?v=20260613-forum-v1"></script>
+<script src="./src/js/favorites.js?v=20260613-forum-v1"></script>
+<script src="./src/js/noun.js?v=20260613-forum-v1"></script>
+<script src="./src/js/timeline.js?v=20260613-forum-v1"></script>
+<script src="./src/js/mindmap.js?v=20260613-forum-v1"></script>
+<script src="./src/js/ai-assistant.js?v=20260613-forum-v1"></script>
+<script src="./src/js/checkin.js?v=20260613-forum-v1"></script>
+<script src="./src/js/tools.js?v=20260613-forum-v1"></script>
+<script src="./src/js/forum.js?v=20260613-forum-v1"></script>
+<script src="./src/js/app.js?v=20260613-forum-v1"></script>
 <script>
 function openExternalLink(url) {
   if (window.externalLinkAPI && typeof window.externalLinkAPI.open === 'function') {
@@ -520,14 +459,12 @@ function swTab(btn, pid) {
   document.getElementById(pid).classList.add('active');
   btn.classList.add('act');
   var af = document.getElementById('ai-fab');
-  if(pid==='login-page'){af.classList.remove('sh');document.getElementById('bnav').style.display='none'}
+  if(false){}
   else{af.classList.add('sh');document.getElementById('bnav').style.display='flex'}
   resetAIFab();
 }
 
-// 子页面Tab切换
-function swSubTab(btn, pageId) {
-  document.querySelectorAll('.sub').forEach(function(p){p.classList.remove('act')});
+);
   document.getElementById(pageId).classList.add('act');
 }
 
@@ -562,9 +499,7 @@ function closeMeme(e){if(e.target===document.getElementById('meme-overlay'))docu
   });
 })();
 
-// 热点分类筛选
-function filterHot(dyn,btn){
-  document.querySelectorAll('#hot-tabs .htab').forEach(function(t){t.classList.remove('act')});
+);
   btn.classList.add('act');
   document.querySelectorAll('#hot-articles .hl, #hot-articles .hi').forEach(function(c){
     c.style.display=(dyn==='all'||c.dataset.dynasty===dyn)?'block':'none';
@@ -576,48 +511,6 @@ function filterHot(dyn,btn){
 // ===== 名词解释 / 名词搜索 已迁移到 src/js/noun.js =====
 
 // ===== 时间轴坐标系 / 渲染 / 缩放 / 拖拽 / 事件详情 / 连线 / 朝代选择 / 朝代切换 已迁移到 src/js/timeline.js =====
-
-// ===== 影视筛选 =====
-function filFilm(btn, type) {
-  document.querySelectorAll('#film-page .dtab').forEach(function(t){t.classList.remove('act')});
-  btn.classList.add('act');
-  document.querySelectorAll('#film-grid .fcard').forEach(function(c){c.style.display=(type==='all'||c.dataset.type===type)?'block':'none'});
-}
-function togWL(btn) {
-  if(btn.classList.contains('add')){btn.classList.remove('add');btn.textContent='＋ 待看';showToast('已移出待看栏')}
-  else{btn.classList.add('add');btn.textContent='✓ 已添加';showToast('已添加到待看栏！')}
-}
-
-// 榜单
-var rankData={
-  book:[{title:'万历十五年',sub:'黄仁宇 著',score:'9.0',idx:1},{title:'中国大历史',sub:'黄仁宇 著',score:'8.3',idx:2},{title:'明朝那些事儿',sub:'当年明月 著',score:'9.1',idx:3}],
-  film:[{title:'末代皇帝',sub:'贝纳尔多·贝托鲁奇 1987',score:'9.3',idx:1},{title:'大明王朝1566',sub:'张黎导演 2007',score:'9.7',idx:2}],
-  doc:[{title:'河西走廊',sub:'央视纪录片 2015',score:'9.7',idx:1},{title:'大国崛起',sub:'央视纪录片 2006',score:'9.2',idx:2}]
-};
-function swRnkTab(btn,type){
-  document.querySelectorAll('#film-rank .rnkt').forEach(function(t){t.classList.remove('act')});
-  btn.classList.add('act');renderRnk(type);
-}
-function renderRnk(type){
-  var list=rankData[type]||[];var h='';
-  list.forEach(function(d){h+='<div class="rnkitem"><div class="rnkidx">'+(d.idx||'-')+'</div><div class="rnkimg" style="background:#EDE8E0;font-size:20px">📖</div><div class="rnkname"><h5>'+d.title+'</h5><p>'+d.sub+' · ★ '+d.score+'</p></div></div>'});
-  document.getElementById('rnk-list').innerHTML=h;
-}
-
-// 收藏夹
-var wlData={watching:[],watched:[],want:[]};
-function openWL(){document.getElementById('watchlist-panel').classList.add('act');renderWL('watching')}
-function closeWL(){document.getElementById('watchlist-panel').classList.remove('act')}
-function swWLTab(btn,type){
-  document.querySelectorAll('#watchlist-panel .wltab').forEach(function(t){t.classList.remove('act')});
-  btn.classList.add('act');renderWL(type);
-}
-function renderWL(type){
-  var list=wlData[type]||[];var h='';
-  if(list.length===0){h='<div style="text-align:center;padding:24px;color:#B5ADA5;font-size:13px">暂无内容，去添加吧～</div>'}
-  // TODO: 渲染收藏夹列表项
-  document.getElementById('wl-list').innerHTML=h;
-}
 
 // ===== 反馈 =====
 function openFB(){document.getElementById('feedback-overlay').classList.add('act')}

@@ -1,45 +1,276 @@
 [
   {
-    "id": "post-keju-neijuan",
-    "category": "view",
-    "author": "长安一片月",
-    "avatar": "🧑",
-    "time": "5小时前",
-    "title": "科举制和高考，跨越千年的「内卷」",
-    "body": "从隋唐到明清，科举从“取士”变成“困士”。八股文把思维框死。回头看看今天的高考，感觉历史的车轮又在重复转动。",
-    "likes": "986",
-    "comments": "392",
-    "favorite": "收藏",
+    "id": "post-keju-neijuan", "type": "discussion", "title": "科举制和高考，跨越千年的内卷",
+    "content": "从隋唐到明清，科举从取士变成困士。当代高考是否也在经历类似的内卷化过程？",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["隋", "唐", "宋", "制度", "社会"], "metadata": {},
+    "stats": { "views": 1280, "likes": 986, "comments": 392, "favorites": 86 },
+    "createdAt": "2026-06-10T08:00:00Z", "updatedAt": "2026-06-12T15:30:00Z",
     "commentsList": [
-      { "author": "历史小白", "avatar": "🧒", "body": "真的，我看到八股文就想到现在的高考作文..." },
-      { "author": "教书匠", "avatar": "🧓", "body": "科举是阶层跃升，高考也是，本质没变。" }
-    ],
-    "moreCommentsLabel": "展开全部 390 条评论"
+      { "author": "历史小白", "avatar": "🧒", "body": "科举至少给了寒门一个上升通道，高考也是。" },
+      { "author": "教书匠", "avatar": "🧓", "body": "但从八股文到应试教育，形式化的趋势确实很像。" }
+    ], "time": "3天前", "likes": "986", "comments": "392", "favorite": "收藏"
   },
   {
-    "id": "post-zhangjuzheng",
-    "category": "view",
-    "author": "史海拾贝",
-    "avatar": "👩",
-    "time": "2小时前",
-    "title": "如果张居正多活十年，明朝会怎样？",
-    "body": "一条鞭法改革初见成效，国库充盈，边防稳固。但张居正一死，万历立刻翻脸，所有改革付诸东流。",
-    "likes": "534",
-    "comments": "189",
-    "favorite": "收藏",
-    "commentsList": []
+    "id": "post-wangmang", "type": "discussion", "title": "王莽改制 — 是理想主义者还是穿越者？",
+    "content": "王莽的土地国有、废除奴隶制、计划经济……细看很像现代制度。他到底是超前理想家还是穿越小说主角？",
+    "author": { "id": "u_system", "name": "故纸堆里的人", "avatar": "🧔" },
+    "tags": ["汉", "制度", "经济"], "metadata": {},
+    "stats": { "views": 856, "likes": 103, "comments": 28, "favorites": 15 },
+    "createdAt": "2026-06-09T14:00:00Z", "updatedAt": "2026-06-11T09:00:00Z",
+    "commentsList": [], "time": "4天前", "likes": "103", "comments": "28", "favorite": "收藏"
   },
   {
-    "id": "post-wangmang",
-    "category": "cold",
-    "author": "故纸堆里的人",
-    "avatar": "🧔",
-    "time": "8小时前",
-    "title": "历史课本里被一笔带过的“小事”",
-    "body": "王莽改制在课本上就几行字，但细看他的改革措施——盐铁、土地国有、计划经济，简直是穿越者...",
-    "likes": "103",
-    "comments": "28",
-    "favorite": "收藏",
-    "commentsList": []
+    "id": "post-help-liangzhou", "type": "discussion", "title": "凉州词应该放在哪个专题里？",
+    "content": "求助：唐诗中的边塞诗与汉代丝绸之路有什么关系？凉州词应该归入文学史还是边疆史？",
+    "author": { "id": "u_system", "name": "边塞新手", "avatar": "🙋" },
+    "tags": ["唐", "文化", "地理"], "metadata": {},
+    "stats": { "views": 234, "likes": 12, "comments": 5, "favorites": 3 },
+    "createdAt": "2026-06-12T10:00:00Z", "updatedAt": "2026-06-12T10:00:00Z",
+    "commentsList": [{ "author": "助教", "avatar": "🧑‍🏫", "body": "可以先放入隋唐边疆专题，边塞诗本质是军事与文学的交汇。" }],
+    "time": "1天前", "likes": "12", "comments": "5", "favorite": "收藏"
+  },
+  {
+    "id": "art-zhenguan", "type": "article", "title": "贞观之治：中国古代治理的巅峰时刻",
+    "content": "唐太宗李世民登基后，虚心纳谏、任用贤能，房玄龄、杜如晦、魏徵等名臣辅佐，开创贞观之治。政治清明，法律完备，《贞观律》成为后世法典蓝本。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["唐", "政治", "制度"], "metadata": { "externalUrl": "https://baike.baidu.com/item/贞观之治" },
+    "stats": { "views": 3200, "likes": 1560, "comments": 210, "favorites": 320 },
+    "createdAt": "2026-06-08T06:00:00Z", "updatedAt": "2026-06-08T06:00:00Z",
+    "commentsList": [], "time": "5天前", "likes": "1560", "comments": "210", "favorite": "收藏"
+  },
+  {
+    "id": "art-qinshihuang", "type": "article", "title": "秦始皇统一六国：中央集权制度的开创",
+    "content": "公元前221年秦王嬴政统一六国，建立中国历史上第一个大一统王朝。废分封、设郡县，书同文、车同轨、统一度量衡，建立皇帝制度。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["秦", "政治", "制度"], "metadata": { "externalUrl": "https://baike.baidu.com/item/秦始皇" },
+    "stats": { "views": 2800, "likes": 1320, "comments": 185, "favorites": 290 },
+    "createdAt": "2026-06-07T06:00:00Z", "updatedAt": "2026-06-07T06:00:00Z",
+    "commentsList": [], "time": "6天前", "likes": "1320", "comments": "185", "favorite": "收藏"
+  },
+  {
+    "id": "art-silkroad", "type": "article", "title": "丝绸之路：连接东西方的文明动脉",
+    "content": "张骞出使西域开辟丝绸之路，中国的丝绸、瓷器、造纸术西传，西域的葡萄、胡桃、佛教东来。丝绸之路深刻改变了欧亚大陆的文明格局。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["汉", "唐", "经济", "地理"], "metadata": { "externalUrl": "https://baike.baidu.com/item/丝绸之路" },
+    "stats": { "views": 2100, "likes": 980, "comments": 145, "favorites": 210 },
+    "createdAt": "2026-06-06T06:00:00Z", "updatedAt": "2026-06-06T06:00:00Z",
+    "commentsList": [], "time": "7天前", "likes": "980", "comments": "145", "favorite": "收藏"
+  },
+  {
+    "id": "art-anlushan", "type": "article", "title": "安史之乱：盛唐的转折点",
+    "content": "755年安禄山起兵叛乱，持续八年的战乱使唐朝从巅峰跌落。人口锐减三分之二，藩镇割据局面形成。安史之乱是唐朝由盛转衰的关键节点。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["唐", "军事", "政治"], "metadata": { "externalUrl": "https://baike.baidu.com/item/安史之乱" },
+    "stats": { "views": 1800, "likes": 860, "comments": 120, "favorites": 175 },
+    "createdAt": "2026-06-05T06:00:00Z", "updatedAt": "2026-06-05T06:00:00Z",
+    "commentsList": [], "time": "8天前", "likes": "860", "comments": "120", "favorite": "收藏"
+  },
+  {
+    "id": "art-song-economy", "type": "article", "title": "宋朝经济：GDP占全球60%的超级经济体",
+    "content": "北宋时期中国GDP占全球60%以上，商品经济高度发达。世界上最早的纸币「交子」在四川出现。海外贸易繁荣，工商业税收首次超过农业税。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["宋", "经济", "科技"], "metadata": { "externalUrl": "https://baike.baidu.com/item/宋代经济" },
+    "stats": { "views": 2400, "likes": 1150, "comments": 170, "favorites": 250 },
+    "createdAt": "2026-06-04T06:00:00Z", "updatedAt": "2026-06-04T06:00:00Z",
+    "commentsList": [], "time": "9天前", "likes": "1150", "comments": "170", "favorite": "收藏"
+  },
+  {
+    "id": "art-opium", "type": "article", "title": "鸦片战争：天朝迷梦的破碎",
+    "content": "1840年英国发动鸦片战争，清军惨败。1842年《南京条约》签订，割让香港岛、开放五口通商。中国从此沦为半殖民地半封建社会。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["清", "近代", "军事", "政治"], "metadata": { "externalUrl": "https://baike.baidu.com/item/鸦片战争" },
+    "stats": { "views": 3100, "likes": 1480, "comments": 230, "favorites": 340 },
+    "createdAt": "2026-06-03T06:00:00Z", "updatedAt": "2026-06-03T06:00:00Z",
+    "commentsList": [], "time": "10天前", "likes": "1480", "comments": "230", "favorite": "收藏"
+  },
+  {
+    "id": "art-ming-zhenghe", "type": "article", "title": "郑和下西洋：中国人最早的大航海",
+    "content": "1405年至1433年间，郑和七次率船队下西洋，远达东非海岸。比哥伦布到达美洲早87年。然而明代后期的海禁政策使中国错失了海洋时代。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["明", "地理", "经济"], "metadata": { "externalUrl": "https://baike.baidu.com/item/郑和下西洋" },
+    "stats": { "views": 2600, "likes": 1250, "comments": 195, "favorites": 280 },
+    "createdAt": "2026-06-02T06:00:00Z", "updatedAt": "2026-06-02T06:00:00Z",
+    "commentsList": [], "time": "11天前", "likes": "1250", "comments": "195", "favorite": "收藏"
+  },
+  {
+    "id": "art-reform", "type": "article", "title": "戊戌变法：百日维新的理想与悲剧",
+    "content": "1898年光绪帝支持康有为、梁启超推行维新变法，废科举、兴学堂、练新军。但变法仅持续103天便被慈禧太后发动政变镇压。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["清", "近代", "政治", "制度"], "metadata": { "externalUrl": "https://baike.baidu.com/item/戊戌变法" },
+    "stats": { "views": 1950, "likes": 920, "comments": 140, "favorites": 180 },
+    "createdAt": "2026-06-01T06:00:00Z", "updatedAt": "2026-06-01T06:00:00Z",
+    "commentsList": [], "time": "12天前", "likes": "920", "comments": "140", "favorite": "收藏"
+  },
+  {
+    "id": "per-qinshihuang", "type": "person", "title": "秦始皇嬴政",
+    "content": "中国历史上第一位皇帝，统一六国，建立中央集权制度。推行郡县制，书同文车同轨，修筑长城。功过争议极大，但「百代皆行秦政制」的历史影响无可否认。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["秦", "政治"], "metadata": { "dynasty": "秦朝", "role": "皇帝·政治家·改革者" },
+    "stats": { "views": 5600, "likes": 2800, "comments": 420, "favorites": 650 },
+    "createdAt": "2026-05-28T06:00:00Z", "updatedAt": "2026-05-28T06:00:00Z",
+    "commentsList": [], "time": "16天前", "likes": "2800", "comments": "420", "favorite": "收藏"
+  },
+  {
+    "id": "per-wuzetian", "type": "person", "title": "武则天",
+    "content": "中国历史上唯一的女皇帝。从唐太宗才人到高宗皇后，再到自立为帝，建立武周王朝。在位期间发展科举、提拔寒门，为开元盛世奠定基础。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["唐", "政治"], "metadata": { "dynasty": "唐朝·武周", "role": "皇帝·政治家" },
+    "stats": { "views": 4800, "likes": 2350, "comments": 380, "favorites": 520 },
+    "createdAt": "2026-05-27T06:00:00Z", "updatedAt": "2026-05-27T06:00:00Z",
+    "commentsList": [], "time": "17天前", "likes": "2350", "comments": "380", "favorite": "收藏"
+  },
+  {
+    "id": "per-zhugeliang", "type": "person", "title": "诸葛亮",
+    "content": "三国时期蜀汉丞相。隆中对策定天下三分之计，辅佐刘备建立蜀汉。五次北伐未能克复中原，最终病逝五丈原。「出师未捷身先死」成为千古绝唱。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["三国", "政治", "军事"], "metadata": { "dynasty": "三国·蜀汉", "role": "丞相·军事家·政治家" },
+    "stats": { "views": 5100, "likes": 2600, "comments": 450, "favorites": 590 },
+    "createdAt": "2026-05-26T06:00:00Z", "updatedAt": "2026-05-26T06:00:00Z",
+    "commentsList": [], "time": "18天前", "likes": "2600", "comments": "450", "favorite": "收藏"
+  },
+  {
+    "id": "per-kangxi", "type": "person", "title": "康熙帝",
+    "content": "清朝入关后第二位皇帝，8岁登基，在位61年。擒鳌拜、平三藩、收台湾、平定准噶尔，奠定了清朝鼎盛版图。编纂《康熙字典》，但晚年倦政，吏治渐趋腐败。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["清", "政治", "军事"], "metadata": { "dynasty": "清朝", "role": "皇帝·政治家" },
+    "stats": { "views": 3500, "likes": 1700, "comments": 250, "favorites": 380 },
+    "createdAt": "2026-05-25T06:00:00Z", "updatedAt": "2026-05-25T06:00:00Z",
+    "commentsList": [], "time": "19天前", "likes": "1700", "comments": "250", "favorite": "收藏"
+  },
+  {
+    "id": "per-yuefei", "type": "person", "title": "岳飞",
+    "content": "南宋抗金名将。率领岳家军北伐，大破金军主力，直捣中原。却被宋高宗和秦桧以「莫须有」罪名杀害于风波亭。精忠报国的精神流传千古。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["宋", "军事"], "metadata": { "dynasty": "南宋", "role": "将领·民族英雄" },
+    "stats": { "views": 4200, "likes": 2100, "comments": 320, "favorites": 470 },
+    "createdAt": "2026-05-24T06:00:00Z", "updatedAt": "2026-05-24T06:00:00Z",
+    "commentsList": [], "time": "20天前", "likes": "2100", "comments": "320", "favorite": "收藏"
+  },
+  {
+    "id": "per-sushi", "type": "person", "title": "苏轼",
+    "content": "北宋文学家、书画家、美食家。诗词文书画俱佳，「大江东去浪淘尽」千古传唱。一生仕途坎坷，多次被贬，但始终乐观豁达。乌台诗案后写下前后《赤壁赋》。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["宋", "文化"], "metadata": { "dynasty": "北宋", "role": "文学家·书画家·官员" },
+    "stats": { "views": 3900, "likes": 1950, "comments": 280, "favorites": 440 },
+    "createdAt": "2026-05-23T06:00:00Z", "updatedAt": "2026-05-23T06:00:00Z",
+    "commentsList": [], "time": "21天前", "likes": "1950", "comments": "280", "favorite": "收藏"
+  },
+  {
+    "id": "per-zhangqian", "type": "person", "title": "张骞",
+    "content": "汉代外交家、探险家。两次出使西域，历经十余年艰辛，开辟了通往中亚的道路——史称「凿空之旅」。为丝绸之路的开通奠定了基础。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["汉", "地理", "政治"], "metadata": { "dynasty": "汉朝", "role": "外交家·探险家" },
+    "stats": { "views": 3100, "likes": 1500, "comments": 210, "favorites": 350 },
+    "createdAt": "2026-05-22T06:00:00Z", "updatedAt": "2026-05-22T06:00:00Z",
+    "commentsList": [], "time": "22天前", "likes": "1500", "comments": "210", "favorite": "收藏"
+  },
+  {
+    "id": "per-linzexu", "type": "person", "title": "林则徐",
+    "content": "清代政治家、民族英雄。1839年受命为钦差大臣赴广东禁烟，虎门销烟震惊中外。鸦片战争爆发后被革职流放伊犁。「苟利国家生死以，岂因祸福避趋之」。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["清", "近代", "政治"], "metadata": { "dynasty": "清朝", "role": "政治家·民族英雄" },
+    "stats": { "views": 3300, "likes": 1650, "comments": 230, "favorites": 370 },
+    "createdAt": "2026-05-21T06:00:00Z", "updatedAt": "2026-05-21T06:00:00Z",
+    "commentsList": [], "time": "23天前", "likes": "1650", "comments": "230", "favorite": "收藏"
+  },
+  {
+    "id": "med-wanli", "type": "media", "title": "万历十五年",
+    "content": "黄仁宇著。以1587年为切入点，从「大历史观」审视明朝中晚期的政治、经济与文化困境。万历皇帝、张居正、海瑞、戚继光等人物的命运交织。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["明", "政治", "制度"], "metadata": { "mediaType": "书籍", "rating": "9.0", "author": "黄仁宇", "year": "1981" },
+    "stats": { "views": 4500, "likes": 2200, "comments": 340, "favorites": 580 },
+    "createdAt": "2026-05-20T06:00:00Z", "updatedAt": "2026-05-20T06:00:00Z",
+    "commentsList": [], "time": "24天前", "likes": "2200", "comments": "340", "favorite": "收藏"
+  },
+  {
+    "id": "med-last-emperor", "type": "media", "title": "末代皇帝",
+    "content": "贝纳尔多·贝托鲁奇导演作品。讲述溥仪从三岁登基到成为新中国公民的一生，跨越清末、民国、抗战、新中国四个历史时期。获第60届奥斯卡九项大奖。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["清", "近代", "政治"], "metadata": { "mediaType": "电影", "rating": "9.3", "author": "贝纳尔多·贝托鲁奇", "year": "1987" },
+    "stats": { "views": 5200, "likes": 2600, "comments": 390, "favorites": 640 },
+    "createdAt": "2026-05-19T06:00:00Z", "updatedAt": "2026-05-19T06:00:00Z",
+    "commentsList": [], "time": "25天前", "likes": "2600", "comments": "390", "favorite": "收藏"
+  },
+  {
+    "id": "med-hexi", "type": "media", "title": "河西走廊",
+    "content": "央视纪录片，以河西走廊为线索探寻中国与西域的文明交汇。从汉代张骞出使到敦煌莫高窟，跨越两千年的历史画卷。豆瓣评分9.7。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["汉", "唐", "明", "地理", "文化"], "metadata": { "mediaType": "纪录片", "rating": "9.7", "author": "央视", "year": "2015" },
+    "stats": { "views": 6100, "likes": 3200, "comments": 480, "favorites": 780 },
+    "createdAt": "2026-05-18T06:00:00Z", "updatedAt": "2026-05-18T06:00:00Z",
+    "commentsList": [], "time": "26天前", "likes": "3200", "comments": "480", "favorite": "收藏"
+  },
+  {
+    "id": "med-daming", "type": "media", "title": "大明王朝1566",
+    "content": "张黎导演的历史剧巅峰之作。以嘉靖皇帝与海瑞的对抗为主线，展现明代中期的政治生态和财政危机。豆瓣评分9.7，被众多观众评为「中国历史剧第一」。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["明", "政治", "经济"], "metadata": { "mediaType": "电视剧", "rating": "9.7", "author": "张黎", "year": "2007" },
+    "stats": { "views": 5800, "likes": 2900, "comments": 450, "favorites": 700 },
+    "createdAt": "2026-05-17T06:00:00Z", "updatedAt": "2026-05-17T06:00:00Z",
+    "commentsList": [], "time": "27天前", "likes": "2900", "comments": "450", "favorite": "收藏"
+  },
+  {
+    "id": "med-sanguo", "type": "media", "title": "三国演义",
+    "content": "罗贯中著，中国四大名著之一。以东汉末年至西晋统一为背景，描写魏蜀吴三国的政治军事斗争。「天下大势分久必合合久必分」的历史观影响深远。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["三国", "文化", "军事"], "metadata": { "mediaType": "书籍", "rating": "9.5", "author": "罗贯中", "year": "元末明初" },
+    "stats": { "views": 7000, "likes": 3800, "comments": 560, "favorites": 950 },
+    "createdAt": "2026-05-16T06:00:00Z", "updatedAt": "2026-05-16T06:00:00Z",
+    "commentsList": [], "time": "28天前", "likes": "3800", "comments": "560", "favorite": "收藏"
+  },
+  {
+    "id": "med-zhongguo", "type": "media", "title": "中国通史",
+    "content": "社科院历史研究所编写，范文澜、蔡美彪等主编。系统梳理从远古到清朝灭亡的中国历史，是大陆最具权威性的通史著作之一，适合作为入门参考书。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["跨朝代", "文化"], "metadata": { "mediaType": "书籍", "rating": "9.1", "author": "范文澜等", "year": "1978-2000" },
+    "stats": { "views": 3800, "likes": 1850, "comments": 260, "favorites": 450 },
+    "createdAt": "2026-05-15T06:00:00Z", "updatedAt": "2026-05-15T06:00:00Z",
+    "commentsList": [], "time": "29天前", "likes": "1850", "comments": "260", "favorite": "收藏"
+  },
+  {
+    "id": "med-daguo", "type": "media", "title": "大国崛起",
+    "content": "央视大型纪录片，梳理葡萄牙、西班牙、荷兰、英国、法国、德国、日本、俄罗斯、美国九国崛起历程。以全球视角理解近代世界格局变迁。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["近代", "政治", "经济"], "metadata": { "mediaType": "纪录片", "rating": "9.2", "author": "央视", "year": "2006" },
+    "stats": { "views": 4200, "likes": 2050, "comments": 310, "favorites": 500 },
+    "createdAt": "2026-05-14T06:00:00Z", "updatedAt": "2026-05-14T06:00:00Z",
+    "commentsList": [], "time": "30天前", "likes": "2050", "comments": "310", "favorite": "收藏"
+  },
+  {
+    "id": "med-tangshi", "type": "media", "title": "唐诗三百首",
+    "content": "蘅塘退士编选，收录77家诗共311首。涵盖李白、杜甫、王维、白居易等唐代主要诗人代表作。是学习唐诗和了解唐代文化的最佳入门读物。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["唐", "文化"], "metadata": { "mediaType": "书籍", "rating": "9.6", "author": "蘅塘退士（编）", "year": "清乾隆年间" },
+    "stats": { "views": 5500, "likes": 2700, "comments": 400, "favorites": 680 },
+    "createdAt": "2026-05-13T06:00:00Z", "updatedAt": "2026-05-13T06:00:00Z",
+    "commentsList": [], "time": "31天前", "likes": "2700", "comments": "400", "favorite": "收藏"
+  },
+  {
+    "id": "med-mingchao", "type": "media", "title": "明朝那些事儿",
+    "content": "当年明月著，以幽默风趣的语言讲述明朝三百年历史。从朱元璋出生到崇祯自缢，将严肃历史写得像小说一样好读。销量超过千万册。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["明", "文化"], "metadata": { "mediaType": "书籍", "rating": "9.1", "author": "当年明月", "year": "2006-2009" },
+    "stats": { "views": 6500, "likes": 3400, "comments": 520, "favorites": 820 },
+    "createdAt": "2026-05-11T06:00:00Z", "updatedAt": "2026-05-11T06:00:00Z",
+    "commentsList": [], "time": "33天前", "likes": "3400", "comments": "520", "favorite": "收藏"
+  },
+  {
+    "id": "res-timeline-tool", "type": "resource", "title": "中国历史时间轴工具推荐",
+    "content": "整理了几个好用的在线历史时间轴工具，支持朝代对比、事件标注和导出图片，适合辅助学习和备课。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["跨朝代", "科技"], "metadata": { "externalUrl": null },
+    "stats": { "views": 1200, "likes": 580, "comments": 85, "favorites": 160 },
+    "createdAt": "2026-05-10T06:00:00Z", "updatedAt": "2026-05-10T06:00:00Z",
+    "commentsList": [], "time": "34天前", "likes": "580", "comments": "85", "favorite": "收藏"
+  },
+  {
+    "id": "res-study-plan", "type": "resource", "title": "中国历史自学路线图（高中版）",
+    "content": "根据最新考纲整理的中国历史自学路线图。按朝代顺序分为12个学习单元，每个单元包含核心知识点、推荐阅读书目和相关试题链接。",
+    "author": { "id": "u_system", "name": "学史小助手", "avatar": "🧑‍🏫" },
+    "tags": ["跨朝代", "制度", "文化"], "metadata": { "externalUrl": null },
+    "stats": { "views": 1800, "likes": 920, "comments": 130, "favorites": 230 },
+    "createdAt": "2026-05-09T06:00:00Z", "updatedAt": "2026-05-09T06:00:00Z",
+    "commentsList": [], "time": "35天前", "likes": "920", "comments": "130", "favorite": "收藏"
   }
 ]

@@ -33,29 +33,6 @@
     }, 2000);
   }
 
-  function login() {
-    var loginPage = document.getElementById('login-page');
-    var homePage = document.getElementById('home-page');
-    var aiFab = document.getElementById('ai-fab');
-    var bottomNav = document.getElementById('bnav');
-
-    if (loginPage) {
-      loginPage.classList.remove('active');
-    }
-    if (homePage) {
-      homePage.classList.add('active');
-    }
-    if (aiFab) {
-      aiFab.classList.add('sh');
-    }
-    if (bottomNav) {
-      bottomNav.style.display = 'flex';
-    }
-
-    resetAIFab();
-    showToast('欢迎回来，历史学习者！');
-  }
-
   function openSub(id) {
     var target = document.getElementById(id);
     if (target) {
@@ -84,7 +61,6 @@
   window.navigationAPI = {
     resetAIFab: resetAIFab,
     showToast: showToast,
-    login: login,
     openSub: openSub,
     closeSub: closeSub
   };
